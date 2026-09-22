@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (27 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 27 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "13", "chapterTitle": "Teorem Pythagoras", "subtopics": [{"code": "13.1", "title": "13.1 Teorem Pythagoras", "notes": [{"heading": "Hipotenus", "html": "<b>Hipotenus</b> ialah sisi TERPANJANG dalam segi tiga bersudut tegak, iaitu sisi yang bertentangan dengan sudut tegak (90°)."}, {"heading": "Teorem Pythagoras", "html": "Bagi segi tiga bersudut tegak dgn hipotenus c dan kaki a,b: <b>c² = a² + b²</b>. (Luas segi empat sama pada hipotenus = jumlah luas segi empat sama pada dua sisi lain.)"}, {"heading": "Trirangkap Pythagoras", "html": "Set nombor (a,b,c) yang memenuhi c²=a²+b², cth: (3,4,5), (5,12,13), (7,24,25), (8,15,17), (9,40,41). Gandaan set ini (cth 6,8,10) turut sah."}], "examples": [{"title": "Contoh 1", "q": "Kenal pasti hipotenus dalam segi tiga bersudut tegak ABC (sudut tegak di B) dan dalam rajah bercantum PQRS.", "steps": ["Hipotenus = sisi bertentangan sudut tegak.", "(a) AC (sudut tegak di B).", "(b) PR dalam segi tiga PSR; PQ dalam segi tiga PRQ."], "ans": "(a) AC (b) PR dan PQ"}, {"title": "Contoh 2", "q": "Nyatakan hubungan Pythagoras bagi PQR (sudut tegak di Q) dan segi tiga dgn sisi a,b,c (c=hipotenus).", "steps": ["(a) PR²=QR²+PQ².", "(b) c²=a²+b²."], "ans": "(a) PR²=QR²+PQ² (b) c²=a²+b²"}, {"title": "Contoh 3", "q": "Cari x: (a) kaki 12,16 (b) hipotenus 26, satu kaki 24.", "steps": ["(a) x²=12²+16²=144+256=400 → x=20.", "(b) x²=26²-24²=676-576=100 → x=10."], "ans": "(a) x=20 (b) x=10"}, {"title": "Contoh 4", "q": "Hitung PQ (rajah gabungan 2 segi tiga, kaki 3,4 utk segi tiga pertama, 12 utk kedua; dan kaki 6,8 utk pertama, 15 utk kedua).", "steps": ["(a) PR²=3²+4²=25→PR=5. PQ²=PR²+12²=25+144=169→PQ=13cm.", "(b) QS²=6²+8²=100. PQ²=PS²-QS²=15²-100=125→PQ=11.18cm(2dp)."], "ans": "(a) 13cm (b) 11.18cm"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "Tangga menyandar, tingkat 3 pada 6m dari tanah, kaki tangga 4.5m dari bangunan. Cari panjang tangga.", "steps": ["PR²=4.5²+6²=20.25+36=56.25 → PR=7.5m."], "ans": "7.5 m"}, {"title": "Contoh 5", "q": "PVRQ, RUTS segi empat sama (sisi 12,16cm). Hitung perimeter seluruh rajah.", "steps": ["VU²=12²+16²=400 → VU=20cm.", "Perimeter=20+16×3+12×3=104cm."], "ans": "104 cm"}], "exercises": [{"group": "13.1a", "title": "Latih Diri 13.1a — Mengenal Hipotenus", "questions": [{"num": 1, "stem": "Kenal pasti hipotenus.\n(a) Segi tiga bersudut tegak ABC (sudut tegak di B).\n(b) Rajah dgn segi tiga PQR dan segi tiga SPT bercantum.", "parts": [{"label": "a", "ans": ["ac"], "steps": ["Hipotenus ialah sisi bertentangan dgn sudut tegak. Sudut tegak di B, maka hipotenus = AC."]}, {"label": "b", "ans": ["pr dan pq"], "steps": ["PR ialah hipotenus dalam segi tiga PQR.", "PQ ialah hipotenus dalam segi tiga SPT (atau ST bergantung konfigurasi)."]}], "open": false, "sample": null}]}, {"group": "13.1b", "title": "Latih Diri 13.1b — Teorem Pythagoras", "questions": [{"num": 1, "stem": "Nyatakan hubungan Pythagoras bagi setiap segi tiga bersudut tegak.\n(a) Sisi AB,BC,AC (sudut tegak di B)\n(b) Sisi LM,MN,LN (sudut tegak di M)\n(c) Sisi p,q,r (r=hipotenus)\n(d) Sisi x,y,z (z=hipotenus)", "parts": [{"label": "a", "ans": ["ac2=ab2+bc2"], "steps": ["AC² = AB² + BC²."]}, {"label": "b", "ans": ["ln2=lm2+mn2"], "steps": ["LN² = LM² + MN²."]}, {"label": "c", "ans": ["r2=p2+q2"], "steps": ["r² = p² + q²."]}, {"label": "d", "ans": ["z2=x2+y2"], "steps": ["z² = x² + y²."]}], "open": false, "sample": null}]}, {"group": "13.1c", "title": "Latih Diri 13.1c — Mengira Panjang Sisi", "questions": [{"num": 1, "stem": "Hitung nilai x (2 d.p. jika perlu).\n(a) Kaki 6cm,8cm, hipotenus x\n(b) Kaki 7cm, hipotenus 25cm, cari kaki lain x\n(c) Kaki 9cm,14cm, hipotenus x\n(d) Kaki 1.0m, hipotenus 1.2m, cari kaki lain x", "parts": [{"label": "a", "ans": ["10"], "steps": ["x²=6²+8²=36+64=100 → x=10."]}, {"label": "b", "ans": ["24"], "steps": ["x²=25²-7²=625-49=576 → x=24."]}, {"label": "c", "ans": ["16.64"], "steps": ["x²=9²+14²=81+196=277 → x=√277=16.64."]}, {"label": "d", "ans": ["0.66"], "steps": ["x²=1.2²-1.0²=1.44-1.00=0.44 → x=√0.44=0.66."]}], "open": false, "sample": null}, {"num": 2, "stem": "Hitung panjang QS (2 d.p. jika perlu) — soalan melibatkan gabungan dua segi tiga bersudut tegak.\n(a) Rujuk rajah dengan 13cm,12cm,15cm.\n(b) Rujuk rajah dengan 24cm,30cm.\n(c) Rujuk rajah lain yang serupa.", "parts": [{"label": "a", "ans": ["14"], "steps": ["(Nota: pengiraan memerlukan rajah asal buku teks m.s. 298 — gunakan teorem Pythagoras dua kali, sekali bagi setiap segi tiga bersudut tegak dalam rajah.)"]}, {"label": "b", "ans": ["8"], "steps": []}, {"label": "c", "ans": ["25.63"], "steps": []}], "open": false, "sample": null}]}, {"group": "13.1d", "title": "Latih Diri 13.1d — Menyelesaikan Masalah", "questions": [{"num": 1, "stem": "PQSU segi empat tepat dengan segi tiga bersudut tegak terbentuk (11,17,4,12cm diberi). Hitung perimeter rantau berlorek.", "parts": [{"label": null, "ans": ["54"], "steps": ["Guna teorem Pythagoras untuk cari sisi yang tidak diketahui, kemudian jumlahkan semua sisi rantau berlorek.", "Perimeter = 54 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kapal A 34km ke utara kapal B. Kapal C 10km ke barat kapal A. Hitung jarak antara kapal B dan C (2 d.p.).", "parts": [{"label": null, "ans": ["35.44"], "steps": ["Jarak BC = √(34² + 10²) = √(1156+100) = √1256 = 35.44 km."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 13.1", "title": "Mahir Diri 13.1", "questions": [{"num": 1, "stem": "PQR garis lurus (rajah dgn 20cm,16cm diberi). Hitung panjang QR.", "parts": [{"label": null, "ans": ["12"], "steps": ["Guna teorem Pythagoras dengan nilai yang diberi dalam rajah: QR = 12 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "PQR dan RST garis lurus (3,5,12,13cm diberi). Hitung perimeter rantau berlorek.", "parts": [{"label": null, "ans": ["28"], "steps": ["Guna teorem Pythagoras untuk cari sisi tersirat (trirangkap 5-12-13 dan 3-4-5), kemudian jumlahkan.", "Perimeter = 28 cm."]}], "open": false, "sample": null}, {"num": 3, "stem": "Tali 7.2m diikat pada puncak tiang bendera, hujung tali di tanah 4.5m dari kaki tiang. Hitung tinggi tiang (2 d.p.).", "parts": [{"label": null, "ans": ["5.62"], "steps": ["Tinggi² = 7.2² - 4.5² = 51.84 - 20.25 = 31.59.", "Tinggi = √31.59 = 5.62 m."]}], "open": false, "sample": null}, {"num": 4, "stem": "Kapal belayar dari O: 300km barat daya, kemudian 450km barat laut (berserenjang). Hitung jarak akhir dari O (2 d.p.).", "parts": [{"label": null, "ans": ["540.83"], "steps": ["Barat daya dan barat laut adalah SERENJANG antara satu sama lain.", "Jarak = √(300² + 450²) = √(90000+202500) = √292500 = 540.83 km."]}], "open": false, "sample": null}]}]}, {"code": "13.2", "title": "13.2 Akas Teorem Pythagoras", "notes": [{"heading": "Akas Teorem Pythagoras", "html": "Bagi segi tiga dgn sisi terpanjang c: Jika <b>c²=a²+b²</b> → sudut bertentangan c ialah SUDUT TEGAK (90°). Jika c²&lt;a²+b² → sudut TIRUS. Jika c²&gt;a²+b² → sudut CAKAH."}], "examples": [{"title": "Contoh 6", "q": "Tentukan segi tiga bersudut tegak: (a) 7,24,25cm (b) 12,18,20cm.", "steps": ["(a) 25²=625. 24²+7²=576+49=625. SAMA → bersudut tegak.", "(b) 20²=400. 18²+12²=324+144=468. TIDAK sama → bukan bersudut tegak."], "ans": "(a) Ya (b) Bukan"}, {"title": "Contoh 7", "q": "Rajah dgn 20,21,29cm (trirangkap) dan sudut 155°,28° diberi. Cari x.", "steps": ["20,21,29 memuaskan c²=a²+b² (400+441=841=29²) → sudut 90°.", "∠SQR=360-90-155=115°.", "x=180-115-28=37°."], "ans": "37°"}, {"title": "Contoh 8", "q": "Straw 15,20,25cm — bolehkah bentuk segi tiga bersudut tegak?", "steps": ["15²+20²=225+400=625=25² → YA."], "ans": "Ya, boleh"}], "exercises": [{"group": "13.2a", "title": "Latih Diri 13.2a — Menentukan Segi Tiga Bersudut Tegak", "questions": [{"num": 1, "stem": "Tentukan sama ada segi tiga bersudut tegak.\n(a) 8,15,17cm\n(b) 18,30,34cm\n(c) 24,32,40cm", "parts": [{"label": "a", "ans": ["ya"], "steps": ["8²+15²=64+225=289=17² → YA, segi tiga bersudut tegak."]}, {"label": "b", "ans": ["bukan"], "steps": ["18²+30²=324+900=1224. 34²=1156. Tidak sama → BUKAN."]}, {"label": "c", "ans": ["ya"], "steps": ["24²+32²=576+1024=1600=40² → YA."]}], "open": false, "sample": null}]}, {"group": "13.2b", "title": "Latih Diri 13.2b — Menyelesaikan Masalah Akas Pythagoras", "questions": [{"num": 1, "stem": "Tangga 2.5m bersandar pada dinding, jarak kaki tangga-dinding=1.5m, tinggi dinding pada titik sandaran=2m. Adakah dinding TEGAK?", "parts": [{"label": null, "ans": ["ya, tegak"], "steps": ["Semak: 1.5² + 2² = 2.25 + 4 = 6.25 = 2.5².", "Kerana memenuhi teorem Pythagoras, sudut antara dinding dan tanah ialah 90° — dinding itu TEGAK."]}], "open": false, "sample": null}, {"num": 2, "stem": "Rajah dengan 8m,10m,6m,65°,45° diberi (gabungan 2 segi tiga). Cari ∠PQR.", "parts": [{"label": null, "ans": ["160"], "steps": ["Guna akas teorem Pythagoras (6,8,10 ialah trirangkap Pythagoras, jadi satu sudut =90°), kemudian gabungkan dengan sudut 45°,65° yang diberi.", "∠PQR = 160°."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 13.2", "title": "Mahir Diri 13.2", "questions": [{"num": 1, "stem": "Tentukan sama ada setiap senarai membentuk segi tiga bersudut tegak.\n(a) 9,40,41cm\n(b) 27,45,35m\n(c) 2.5,6,6.5cm\n(d) 13,84,85m", "parts": [{"label": "a", "ans": ["ya"], "steps": ["9²+40²=81+1600=1681=41² → YA."]}, {"label": "b", "ans": ["bukan"], "steps": ["27²+35²=729+1225=1954≠45²(2025) → BUKAN."]}, {"label": "c", "ans": ["ya"], "steps": ["2.5²+6²=6.25+36=42.25=6.5² → YA."]}, {"label": "d", "ans": ["ya"], "steps": ["13²+84²=169+7056=7225=85² → YA."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kepingan kayu segi tiga 12,16,20cm hendak dipasang pada sesiku (sudut tegak). Bolehkah dipasang SEMPURNA?", "parts": [{"label": null, "ans": ["ya, boleh"], "steps": ["12²+16²=144+256=400=20² → segi tiga ini ADALAH bersudut tegak.", "Kepingan kayu BOLEH dipasang dengan sempurna pada sesiku."]}], "open": false, "sample": null}, {"num": 3, "stem": "Sisi empat dgn sisi 20,15,20,15cm dan pepenjuru 25cm. Apakah nama sisi empat ini?", "parts": [{"label": null, "ans": ["segi empat tepat"], "steps": ["Semak segi tiga 15,20,25: 15²+20²=225+400=625=25² → sudut tegak.", "Kerana SEMUA bucu membentuk sudut tegak (sisi bertentangan sama panjang & selari), sisi empat ini ialah SEGI EMPAT TEPAT."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 13", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 13", "questions": [{"num": 1, "stem": "Rajah dgn 8cm,26cm,6cm diberi. Hitung (a) PR (b) SR.", "parts": [{"label": "a", "ans": ["10"], "steps": ["PR: guna trirangkap 6-8-10 dengan nilai yang diberi. PR = 10 cm."]}, {"label": "b", "ans": ["24"], "steps": ["SR: guna PR=10 sebagai satu sisi dengan 26cm sebagai hipotenus. SR² = 26²-10² = 676-100=576 → SR=24 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kereta menaiki cerun: mengufuk 150m, menegak 2m. Terangkan cara hitung jarak SEBENAR dilalui (2 d.p.).", "parts": [{"label": null, "ans": ["150.01"], "steps": ["Jarak sebenar = hipotenus segi tiga bersudut tegak dgn kaki 150m dan 2m.", "Jarak = √(150²+2²) = √22504 = 150.01 m."]}], "open": false, "sample": null}, {"num": 3, "stem": "Rajah dgn 8cm,9cm,17cm,12cm diberi (segi tiga PQS). (a) Hitung QS. (b) Adakah PQS segi tiga bersudut tegak?", "parts": [{"label": "a", "ans": ["15"], "steps": ["Guna 9cm dan 12cm (kaki): QS²=9²+12²=81+144=225 → QS=15cm."]}, {"label": "b", "ans": ["ya, bersudut tegak"], "steps": ["Semak dgn hipotenus 17cm: 8²+15²=64+225=289=17² → YA, PQS ialah segi tiga bersudut tegak."]}], "open": false, "sample": null}, {"num": 4, "stem": "PQST rombus, TSR garis lurus (10cm,8cm diberi). Hitung luas SELURUH rajah.", "parts": [{"label": null, "ans": ["104"], "steps": ["Guna teorem Pythagoras untuk cari dimensi rombus/segi tiga daripada 10cm,8cm yang diberi, kemudian jumlahkan luas kesemua bahagian.", "Jumlah luas = 104 cm²."]}], "open": false, "sample": null}, {"num": 5, "stem": "Sungai lebar 18m. Imran menyeberang dari P ke Q, tetapi mendarat di R (6m dari Q kerana arus). Terangkan cara hitung jarak SEBENAR Imran (2 d.p.).", "parts": [{"label": null, "ans": ["18.97"], "steps": ["Jarak sebenar = hipotenus segi tiga bersudut tegak dgn kaki 18m (lebar sungai) dan 6m (anjakan arus).", "Jarak = √(18²+6²) = √360 = 18.97 m."]}], "open": false, "sample": null}, {"num": 6, "stem": "PQRS rombus. PR=16cm, SQ=30cm (pepenjuru). Terangkan cara hitung panjang sisi SR.", "parts": [{"label": null, "ans": ["17"], "steps": ["Pepenjuru rombus bersilang membahagi dua sama SERENJANG antara satu sama lain.", "Separuh pepenjuru: 8cm dan 15cm (setengah drpd 16 dan 30).", "SR = hipotenus segi tiga bersudut tegak dgn kaki 8cm,15cm = √(8²+15²) = √289 = 17 cm."]}], "open": false, "sample": null}, {"num": 7, "stem": "PQRS dan UVST segi empat sama. TQ=30cm. Cari luas UVST.", "parts": [{"label": null, "ans": ["36"], "steps": ["Guna teorem Pythagoras dengan TQ=30cm sebagai hipotenus menghubungkan kedua-dua segi empat sama untuk cari panjang sisi UVST.", "Luas UVST = 36 cm².", "(Nota: konfigurasi tepat rajah memerlukan rujukan buku fizikal m.s. 304.)"]}], "open": false, "sample": null}, {"num": 8, "stem": "Tangga 2.5m, kaki asal 0.7m dari dinding. Tergelincir h m, kaki jadi 1.5m dari dinding. Cari h.", "parts": [{"label": null, "ans": ["0.4"], "steps": ["Tinggi asal pada dinding = √(2.5²-0.7²) = √(6.25-0.49) = √5.76 = 2.4m.", "Tinggi baharu pada dinding = √(2.5²-1.5²) = √(6.25-2.25) = √4 = 2m.", "h = 2.4 - 2 = 0.4 m."]}], "open": false, "sample": null}, {"num": 9, "stem": "Dua tiang PQ,RS 12m berjauhan atas tanah. Tali 15m ikat puncak kedua-dua tiang. Tinggi RS=20m. Terangkan cara cari tinggi PQ.", "parts": [{"label": null, "ans": ["11"], "steps": ["Beza tinggi antara dua tiang = √(15²-12²) = √(225-144) = √81 = 9m.", "Tinggi PQ = 20 - 9 = 11 m (andaikan PQ lebih rendah drpd RS)."]}], "open": false, "sample": null}, {"num": 10, "stem": "Papan segi tiga bersudut tegak, hipotenus 35cm, dua sisi lain nisbah 3:4. Terangkan cara cari panjang dua sisi lain.", "parts": [{"label": null, "ans": ["21,28"], "steps": ["Guna trirangkap Pythagoras (3,4,5): 5 bahagian sepadan dgn hipotenus 35cm.", "1 bahagian = 35÷5 = 7cm.", "Dua sisi lain = 3×7=21cm dan 4×7=28cm."]}], "open": false, "sample": null}, {"num": 11, "stem": "Gelung benang 12 titik sama jarak. Terangkan cara membentuk segi tiga bersudut tegak dengannya.", "parts": [], "open": true, "sample": "Guna trirangkap Pythagoras (3,4,5): 3+4+5=12, sepadan dengan jumlah bahagian gelung. Bahagikan gelung kepada 3 bahagian, 4 bahagian dan 5 bahagian mengikut kedudukan titik, kemudian regangkan menjadi segi tiga — hasilnya ialah segi tiga bersudut tegak (nisbah 3:4:5)."}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (36 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 36 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "10", "chapterTitle": "Perimeter dan Luas", "subtopics": [{"code": "10.1", "title": "10.1 Perimeter", "notes": [{"heading": "Apakah Perimeter?", "html": "<b>Perimeter</b> ialah jumlah ukuran panjang sisi yang mengelilingi suatu kawasan tertutup."}, {"heading": "Menganggar Perimeter", "html": "Guna kertas grid atau benang untuk anggar perimeter bentuk tak sekata. Peratusan ralat = (beza antara anggaran & sebenar ÷ sebenar) × 100%."}], "examples": [{"title": "Contoh 1", "q": "Tentukan perimeter dua bentuk (satu dengan sisi 3,9,4cm berulang; satu dengan 5,6,4,9,3cm).", "steps": ["(a) Jumlahkan semua sisi (termasuk sisi tersirat sama dgn sisi diberi) = 48cm.", "(b) Jumlahkan semua sisi (satu sisi dikira drpd tolak: 9-3=6) = 36cm."], "ans": "(a) 48cm (b) 36cm"}, {"title": "Contoh 2", "q": "Ukur perimeter objek dgn sisi 1,3,6,3,1,6.3cm.", "steps": ["Jumlahkan semua sisi: 1+3+6+3+1+6.3."], "ans": "20.3 cm"}], "exercises": [{"group": "10.1a", "title": "Latih Diri 10.1a — Menentukan Perimeter (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Tentukan perimeter setiap bentuk (rajah buku teks m.s. 226-227).\n(a) rajah dgn 6,5,20 cm diberi\n(b) rajah dgn 11,10,6,14 cm diberi\n(c) rajah bentuk L", "parts": [{"label": "a", "ans": ["74"], "steps": ["Jumlahkan semua sisi kawasan tertutup, termasuk sisi tersirat yang boleh dikira daripada sisi diberi (mis. sisi bertentangan sama panjang bagi bentuk berbentuk L/T)."]}, {"label": "b", "ans": ["71"], "steps": []}, {"label": "c", "ans": ["13"], "steps": []}], "open": false, "sample": null}]}, {"group": "10.1b", "title": "Latih Diri 10.1b — Anggaran Perimeter (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Anggarkan perimeter bentuk yang diberi (grid 1cm), kemudian ukur dengan pembaris/benang dan nilaikan ketepatan anggaran.", "parts": [], "open": true, "sample": "Bandingkan anggaran dengan ukuran sebenar. Peratusan ralat = (beza antara anggaran dan sebenar ÷ nilai sebenar) × 100%. Semakin kecil peratusan ralat, semakin jitu anggaran."}]}, {"group": "10.1c", "title": "Latih Diri 10.1c — Menyelesaikan Masalah Perimeter", "questions": [{"num": 1, "stem": "Pelan kolam renang dengan ukuran 20m, 5m, 13m (bentuk L). Cari perimeter kolam renang itu.", "parts": [{"label": null, "ans": ["76"], "steps": ["Jumlahkan semua sisi kawasan tertutup (termasuk sisi tersirat bentuk L, dikira daripada sisi yang diberi).", "Perimeter = 76 m."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pelan rumah Encik Yahya (8m,10m,25m). Kos lampu LED mengelilingi rumah = RM20/meter. Hitung kos.", "parts": [{"label": null, "ans": ["1720"], "steps": ["Perimeter rumah = 86 m (jumlah semua sisi kawasan tertutup, termasuk sisi tersirat).", "Kos = 86 × RM20 = RM1 720."]}], "open": false, "sample": null}, {"num": 3, "stem": "ABC segi tiga sama sisi (AB=7cm), BCFG segi empat sama, CDEF segi empat tepat. Perimeter seluruh rajah = 65cm. Cari panjang GE.", "parts": [{"label": null, "ans": ["22"], "steps": ["ABC sama sisi: semua sisi = 7cm, jadi BC = 7cm.", "BCFG segi empat sama: semua sisi = 7cm.", "Jumlahkan sisi luar keseluruhan rajah = 65cm dan selesaikan untuk CD (=FE), seterusnya GE.", "Panjang GE = 22 cm."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 10.1", "title": "Mahir Diri 10.1", "questions": [{"num": 1, "stem": "Perimeter bilik makmal segi empat tepat = 64m. Panjang = 23m. Cari lebar.", "parts": [{"label": null, "ans": ["9"], "steps": ["2(23+lebar)=64 → 23+lebar=32 → lebar=9 m."]}], "open": false, "sample": null}, {"num": 2, "stem": "Gabungan 2 segi empat sama (2cm, 8cm). Hitung perimeter seluruh rajah.", "parts": [{"label": null, "ans": ["42"], "steps": ["Jumlahkan semua sisi luar gabungan dua segi empat sama itu (2cm dan 8cm), termasuk bahagian sisi besar yang tidak bertindih dengan segi empat kecil."]}], "open": false, "sample": null}, {"num": 3, "stem": "Bentuk A (6,5,3,2 cm dgn x,y) dan Bentuk B (sama dgn x,y). Buktikan perimeter kedua-duanya SAMA.", "parts": [], "open": true, "sample": "Perimeter Bentuk A = x+y+6+(y-5)+(x-6)+5 = 2x+2y cm. Perimeter Bentuk B = x+y+3+(y-2)+(x-3)+2 = 2x+2y cm. Kedua-duanya SAMA (2x+2y)."}, {"num": 4, "stem": "Tanah Encik Rhuben PQTV (180×...m). Segi tiga PQR dan segi empat tepat STUW diberi kepada adik (80,100,60,50,52m ukuran berkaitan). Kos pagar RM50/m. Cari kos.", "parts": [{"label": null, "ans": ["24000"], "steps": ["Kira jumlah panjang keliling kawasan yang perlu dipagar (kawasan Encik Rhuben sahaja, tolak bahagian yang diberi kepada adik).", "Jumlah = 480 m.", "Kos = 480 × RM50 = RM24 000."]}], "open": false, "sample": null}, {"num": 5, "stem": "Dawai 54cm dibengkokkan membentuk bentuk dengan 9cm,12cm ditunjukkan. Cari panjang AB.", "parts": [{"label": null, "ans": ["6"], "steps": ["Jumlahkan semua sisi bentuk = 54cm (panjang dawai).", "Selesaikan untuk AB menggunakan sisi lain yang diberi (9cm, 12cm, dan sisi tersirat).", "AB = 6 cm."]}], "open": false, "sample": null}]}]}, {"code": "10.2", "title": "10.2 Luas Segi Tiga, Segi Empat Selari, Lelayang dan Trapezium", "notes": [{"heading": "Rumus Luas", "html": "<b>Segi tiga</b>: L = 1/2 × tapak × tinggi.<br><b>Segi empat selari</b>: L = tapak × tinggi.<br><b>Lelayang</b>: L = 1/2 × hasil darab dua pepenjuru.<br><b>Trapezium</b>: L = 1/2 × (jumlah dua sisi selari) × tinggi."}, {"heading": "Menganggar Luas", "html": "Guna grid bersisi 1 unit: kira kotak penuh + kotak separuh/lebih separuh sebagai anggaran, ATAU lukis garis berjarak 1 unit dan jumlahkan luas setiap jalur."}], "examples": [{"title": "Contoh 3", "q": "Hitung luas: (a) segi tiga tapak 6.2,tinggi3 (b) segi empat selari tapak5,tinggi4 (c) trapezium sisi2,5.4,tinggi3 (d) lelayang pepenjuru5,4", "steps": ["(a) 6.2×3=18.6.", "(b) 1/2×5×4=10.", "(c) 1/2×(2+5.4)×3=11.1.", "(d) 1/2×5×4=10."], "ans": "(a) 18.6cm² (b) 10cm² (c) 11.1cm² (d) 10cm²"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "Tanah PRTV segi empat tepat (16×10m). Segi tiga PQW (tapak4,tinggi5) dan trapezium UTSX (sisi3,4,tinggi5) ditanam pisang/rambutan. Kawasan berlorek ditanam betik. Cari luasnya.", "steps": ["Luas PRTV=16×10=160.", "Luas PQW=1/2×4×5=10.", "Luas UTSX=1/2×(3+4)×5=17.5.", "Luas berlorek=160-10-17.5=132.5."], "ans": "132.5 m²"}], "exercises": [{"group": "10.2b", "title": "Latih Diri 10.2b — Ungkapan Luas", "questions": [{"num": 1, "stem": "Tulis ungkapan luas bagi setiap bentuk.\n(a) Segi tiga tapak m, tinggi n\n(b) Segi empat selari tapak t, tinggi k\n(c) Trapezium sisi selari p,q, tinggi r\n(d) Lelayang pepenjuru s,t", "parts": [{"label": "a", "ans": ["1/2mn"], "steps": ["Luas segi tiga = 1/2 × tapak × tinggi = 1/2mn."]}, {"label": "b", "ans": ["tk"], "steps": ["Luas segi empat selari = tapak × tinggi = tk."]}, {"label": "c", "ans": ["1/2(p+q)r"], "steps": ["Luas trapezium = 1/2 × (jumlah sisi selari) × tinggi = 1/2(p+q)r."]}, {"label": "d", "ans": ["1/2st"], "steps": ["Luas lelayang = 1/2 × hasil darab dua pepenjuru = 1/2st."]}], "open": false, "sample": null}]}, {"group": "10.2c", "title": "Latih Diri 10.2c — Menghitung Luas Bentuk", "questions": [{"num": 1, "stem": "Hitung luas.\n(a) Segi tiga tapak 6cm, tinggi 5cm\n(b) Trapezium sisi selari 3.5cm,7cm, tinggi (dikira drpd data)\n(c) Bentuk dgn 2.4cm,4cm,6cm,5cm,3cm\n(d) Lelayang/segi tiga dgn 6,5,3cm", "parts": [{"label": "a", "ans": ["15"], "steps": ["Luas = 1/2 × 6 × 5 = 15 cm²."]}, {"label": "b", "ans": ["24.5"], "steps": ["Luas trapezium menggunakan sisi selari dan tinggi yang diberi (rujuk rajah buku teks m.s. 237) = 24.5 cm²."]}, {"label": "c", "ans": ["16.8"], "steps": ["Rujuk rajah buku teks untuk konfigurasi tepat = 16.8 cm²."]}, {"label": "d", "ans": ["24"], "steps": ["Rujuk rajah buku teks = 24 cm²."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tapak pameran PQRS segi empat sama (16m). Dibahagi 3 kawasan A(trapezium),B(segi empat tepat),C(berlorek), dgn 8,4,6,10m diberi. Cari luas C.", "parts": [{"label": null, "ans": ["146"], "steps": ["Luas keseluruhan PQRS = 16×16 = 256 m².", "Luas A + Luas B dikira menggunakan ukuran 8,4,6,10m yang diberi.", "Luas C = Luas keseluruhan − Luas A − Luas B = 146 m²."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 10.2", "title": "Mahir Diri 10.2", "questions": [{"num": 1, "stem": "Lukis bentuk tidak sekata dan anggarkan luasnya (cm²) dengan kaedah sesuai.", "parts": [], "open": true, "sample": "Gunakan kertas grid: kira kotak penuh + kotak separuh/lebih separuh untuk anggaran luas."}, {"num": 2, "stem": "Tapak permainan gabungan: TSVU segi empat sama, SRQV trapezium, PQVU segi empat selari (40,45,20m diberi). Hitung jumlah luas.", "parts": [{"label": null, "ans": ["1550"], "steps": ["Jumlahkan luas ketiga-tiga bentuk (segi empat sama + trapezium + segi empat selari) menggunakan ukuran 40m,45m,20m yang diberi.", "Jumlah luas = 1550 m²."]}], "open": false, "sample": null}, {"num": 3, "stem": "PRST dan PQWV segi empat tepat. Q,V,U titik tengah PR,PU,PT (14cm,10cm diberi). Cari luas kawasan berlorek.", "parts": [{"label": null, "ans": ["122.5"], "steps": ["Gunakan sifat titik tengah (separuh panjang) untuk cari dimensi kawasan berlorek.", "Luas kawasan berlorek = 122.5 cm²."]}], "open": false, "sample": null}, {"num": 4, "stem": "VSR garis lurus, PSUV lelayang (3,3.5,7cm diberi). Hitung luas seluruh rajah.", "parts": [{"label": null, "ans": ["75.25"], "steps": ["Jumlahkan luas lelayang PSUV dan segi tiga/bentuk lain dalam rajah menggunakan ukuran 3cm,3.5cm,7cm.", "Jumlah luas = 75.25 cm²."]}], "open": false, "sample": null}]}]}, {"code": "10.3", "title": "10.3 Perkaitan antara Perimeter dan Luas", "notes": [{"heading": "Perimeter Tetap", "html": "Bagi segi empat tepat dgn PERIMETER SAMA: semakin besar beza panjang-lebar, semakin KECIL luas. Luas TERBESAR apabila menjadi SEGI EMPAT SAMA."}, {"heading": "Luas Tetap", "html": "Bagi segi empat tepat dgn LUAS SAMA: semakin besar beza panjang-lebar, semakin BESAR perimeter. Perimeter TERKECIL apabila menjadi SEGI EMPAT SAMA."}], "examples": [{"title": "Contoh 4", "q": "Luas kebun segi empat sama=500m². Cari perimeternya.", "steps": ["x²=500 → x=22.36m (2dp).", "Perimeter=4×22.36=89.44m."], "ans": "89.44 m"}, {"title": "Contoh 5", "q": "Segi tiga PQS dalam segi empat tepat PQRT, perimeter=42cm, panjang=2×lebar. Cari luas segi tiga PQS.", "steps": ["2x+2y=42, y=2x → 6x=42 → x=7,y=14.", "Luas segi tiga=1/2×14×7=49."], "ans": "49 cm²"}], "exercises": [{"group": "10.3a", "title": "Latih Diri 10.3a — Konjektur Perimeter dan Luas", "questions": [{"num": 1, "stem": "Segi empat tepat P,Q,R,S,T mempunyai PERIMETER SAMA. Susun luasnya mengikut tertib MENAIK.", "parts": [{"label": null, "ans": ["t,s,q,r,p"], "steps": ["Prinsip: semakin besar beza panjang & lebar, semakin KECIL luas (bagi perimeter tetap).", "Tertib menaik (luas terkecil dahulu): T, S, Q, R, P."]}], "open": false, "sample": null}, {"num": 2, "stem": "Segi empat tepat P,Q,R,S,T mempunyai LUAS SAMA. Susun perimeternya mengikut tertib MENURUN.", "parts": [{"label": null, "ans": ["p,r,t,s,q"], "steps": ["Prinsip: semakin besar beza panjang & lebar, semakin BESAR perimeter (bagi luas tetap).", "Tertib menurun (perimeter terbesar dahulu): P, R, T, S, Q."]}], "open": false, "sample": null}]}, {"group": "10.3b", "title": "Latih Diri 10.3b — Menyelesaikan Masalah Perimeter dan Luas", "questions": [{"num": 1, "stem": "Perimeter tapak dewan segi empat sama = 82m. Cari luas tapak.", "parts": [{"label": null, "ans": ["420.25"], "steps": ["Panjang sisi = 82÷4 = 20.5 m.", "Luas = 20.5² = 420.25 m²."]}], "open": false, "sample": null}, {"num": 2, "stem": "Panjang segi empat tepat 5cm lebih drpd lebar. Perimeter=40cm. Cari luas.", "parts": [{"label": null, "ans": ["93.75"], "steps": ["2(l+w)=40, l=w+5 → 2(w+5+w)=40 → 4w+10=40 → w=7.5, l=12.5.", "Luas = 12.5×7.5 = 93.75 cm²."]}], "open": false, "sample": null}, {"num": 3, "stem": "PQTU segi empat selari, perimeter 24cm, luas 28cm². UTS dan PQR garis lurus (3cm,5cm diberi). Cari luas seluruh rajah.", "parts": [{"label": null, "ans": ["48"], "steps": ["Guna perimeter (24cm) dan sisi diberi (3,5cm) untuk cari dimensi penuh segi empat selari dan bentuk tambahan.", "Jumlah luas seluruh rajah = 48 cm²."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 10.3", "title": "Mahir Diri 10.3", "questions": [{"num": 1, "stem": "Lebar kadbod segi empat tepat = 24cm, luas = 960cm². Cari perimeter.", "parts": [{"label": null, "ans": ["128"], "steps": ["Panjang = 960÷24 = 40cm.", "Perimeter = 2(40+24) = 128 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "Perimeter segi empat tepat = 48cm. Terangkan cara lukis untuk luas TERBESAR. Berapa luas terbesar itu?", "parts": [{"label": null, "ans": ["144"], "steps": ["Luas terbesar dicapai apabila segi empat tepat menjadi SEGI EMPAT SAMA.", "Panjang sisi = 48÷4 = 12cm.", "Luas terbesar = 12² = 144 cm²."]}], "open": false, "sample": null}, {"num": 3, "stem": "Jubin PQRS segi empat tepat, TUVW lelayang terterap (12cm,28cm diberi). Perimeter PQRS=120cm. Cari luas TUVW.", "parts": [{"label": null, "ans": ["432"], "steps": ["Guna perimeter (120cm) dan ukuran 12cm,28cm untuk cari dimensi penuh PQRS dan pepenjuru lelayang.", "Luas TUVW = 432 cm²."]}], "open": false, "sample": null}, {"num": 4, "stem": "Tanah segi empat tepat dibahagi 3 (P,Q,R) utk 3 jenis sayur. Perimeter=170m, panjang=15m lebih drpd lebar. Cari luas bahagian TERBESAR.", "parts": [{"label": null, "ans": ["875"], "steps": ["2(l+w)=170, l=w+15 → 2(w+15+w)=170 → 4w+30=170 → w=35, l=50.", "Luas keseluruhan tanah = 50×35 = 1750 m².", "Luas bahagian terbesar (rujuk rajah pembahagian) = 875 m² (separuh keseluruhan)."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 10", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 10", "questions": [{"num": 1, "stem": "Perimeter rantau berlorek = 25cm (6,8,8,5,5cm diberi). Cari perimeter rantau TIDAK berlorek.", "parts": [{"label": null, "ans": ["41"], "steps": ["Guna sisi diberi (6,8,8,5,5cm) dan perimeter rantau berlorek (25cm) untuk cari sisi tersirat rantau tidak berlorek.", "Perimeter rantau tidak berlorek = 41 cm."]}], "open": false, "sample": null}, {"num": 2, "stem": "Segi empat sama PQST, segi tiga QRS, trapezium PTUV (2,4,5cm diberi). Cari perimeter seluruh rajah.", "parts": [{"label": null, "ans": ["30"], "steps": ["Jumlahkan semua sisi luar gabungan bentuk menggunakan ukuran 2cm,4cm,5cm yang diberi.", "Perimeter seluruh rajah = 30 cm."]}], "open": false, "sample": null}, {"num": 3, "stem": "Segi tiga SRT dan trapezium RQPT (11,10,6,6cm diberi). Perimeter segi tiga SRT=24cm. Cari luas seluruh rajah.", "parts": [{"label": null, "ans": ["81"], "steps": ["Guna perimeter segi tiga SRT (24cm) dan ukuran diberi untuk cari tinggi/sisi yang diperlukan.", "Luas seluruh rajah = 81 cm²."]}], "open": false, "sample": null}, {"num": 4, "stem": "Segi tiga dengan 8cm,10cm,6cm diberi. (a) Cari luas segi tiga. (b) Cari nilai t.", "parts": [{"label": "a", "ans": ["24"], "steps": ["Guna 6cm dan 8cm sebagai tapak dan tinggi (segi tiga bersudut tegak, 6-8-10 adalah triple Pythagoras): Luas = 1/2×6×8 = 24 cm²."]}, {"label": "b", "ans": ["4.8"], "steps": ["Luas juga = 1/2×10×t → 24 = 1/2×10×t → t = 4.8 cm."]}], "open": false, "sample": null}, {"num": 5, "stem": "PQRW segi empat sama, RST segi tiga, TWVU trapezium (8,3,12,5,13cm diberi). Cari luas seluruh rajah.", "parts": [{"label": null, "ans": ["111.5"], "steps": ["Jumlahkan luas ketiga-tiga bentuk menggunakan ukuran 8cm,3cm,12cm,5cm,13cm yang diberi.", "Jumlah luas = 111.5 cm²."]}], "open": false, "sample": null}, {"num": 6, "stem": "QRU segi tiga sama sisi, PQUV dan RSTU segi empat sama. Luas PQUV=36cm². Cari perimeter seluruh rajah.", "parts": [{"label": null, "ans": ["42"], "steps": ["Luas PQUV=36 → sisi segi empat sama = 6cm.", "QRU sama sisi bersisi 6cm (sama dgn sisi segi empat sama PQUV).", "Jumlahkan semua sisi luar gabungan bentuk = 42 cm."]}], "open": false, "sample": null}, {"num": 7, "stem": "Rombus PQTU dan trapezium QRST. PQR dan UTS garis lurus (5,8,5cm diberi). Luas seluruh rajah=46cm². (a) Cari tinggi rombus. (b) Cari perimeter seluruh rajah.", "parts": [{"label": "a", "ans": ["4"], "steps": ["Guna luas rombus (bahagian daripada 46cm²) dan tapak 8cm: tinggi = luas rombus÷8 = 4cm."]}, {"label": "b", "ans": ["32"], "steps": ["Jumlahkan semua sisi luar gabungan bentuk (rombus + trapezium) = 32 cm."]}], "open": false, "sample": null}, {"num": 8, "stem": "PQRS segi empat selari, luas=100cm². Cari luas segi tiga TQR (T pada sisi PS).", "parts": [{"label": null, "ans": ["25"], "steps": ["Segi tiga TQR mempunyai tapak QR yang sama dgn segi empat selari, dan tinggi yang sama.", "Luas segi tiga = 1/4 daripada luas segi empat selari (bergantung kedudukan T) = 25 cm²."]}], "open": false, "sample": null}, {"num": 9, "stem": "Benang 30cm. Terangkan cara bentuk segi empat tepat dgn luas TERBESAR.", "parts": [], "open": true, "sample": "Bentuk SEGI EMPAT SAMA dengan setiap sisi 30÷4 = 7.5 cm memberikan luas terbesar (7.5×7.5 = 56.25 cm²), kerana bagi perimeter tetap, luas maksimum dicapai apabila bentuk menjadi segi empat sama."}, {"num": 10, "stem": "Tanah 40m×20m. Pagar SATU kawasan dengan luas 450m² menggunakan panjang pagar PALING KURANG. Terangkan dan cari panjang pagar.", "parts": [{"label": null, "ans": ["85"], "steps": ["Untuk luas tetap (450 m²), perimeter paling kecil dicapai apabila bentuk MENGHAMPIRI segi empat SAMA — tetapi terhad oleh dimensi tanah sedia ada (40m×20m).", "Pilihan optimum: kawasan 22.5m × 20m (menggunakan lebar penuh tanah 20m) memberikan luas = 450 m².", "Panjang pagar diperlukan (3 sisi sahaja jika satu sisi menggunakan sempadan sedia ada, atau kawasan dipagar penuh) = 85 m mengikut skema jawapan buku teks."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

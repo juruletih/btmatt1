@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (29 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 29 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "12", "chapterTitle": "Pengendalian Data", "subtopics": [{"code": "12.1", "title": "12.1 Proses Pengumpulan, Pengorganisasian dan Perwakilan Data, serta Pentafsiran Perwakilan Data", "notes": [{"heading": "Soalan Statistik dan Kaedah Pengumpulan", "html": "<b>Soalan statistik</b> ialah soalan yang boleh dijawab dgn kumpul data dan ada KEBOLEHUBAHAN dalam jawapan. Kaedah kumpul data: temu bual, soal selidik, tinjauan, pemerhatian, eksperimen."}, {"heading": "Data Kategori vs Numerik", "html": "<b>Data kategori</b>: mengukur ciri, tak boleh diukur secara berangka (cth: jantina, warna). <b>Data numerik</b>: mengukur kuantiti dgn angka — terbahagi kepada <b>diskret</b> (unit keseluruhan, cth bilangan ahli keluarga) dan <b>selanjar</b> (skala berterusan, cth jisim badan)."}, {"heading": "Jenis Perwakilan Data", "html": "<b>Carta palang</b>: banding antara kategori.<br><b>Carta pai</b>: tunjuk bahagian drpd keseluruhan (%).<br><b>Graf garis</b>: perubahan data sepanjang MASA.<br><b>Plot titik</b>: taburan data pada garis nombor, kesan nilai ekstrem.<br><b>Plot batang-dan-daun</b>: taburan data BESAR, kekalkan nilai asal.<br><b>Histogram/Poligon kekerapan</b>: data terkumpul dalam selang kelas."}, {"heading": "Perwakilan Data Beretika", "html": "Skala mesti SERAGAM dan bermula drpd SIFAR. Data yang dipaparkan mesti TEPAT (jumlah peratusan carta pai = 100%, jumlah kekerapan carta palang = jumlah sampel sebenar)."}], "examples": [{"title": "Contoh 1", "q": "Klasifikasikan: (a) suhu badan (b) bilangan pokok ditanam (c) punca kemalangan.", "steps": ["(a) angka - numerik.", "(b) angka - numerik.", "(c) huraian - kategori."], "ans": "(a) Numerik (b) Numerik (c) Kategori"}, {"title": "Contoh 5", "q": "Bina carta pai bagi warna kereta: Merah=9,Kuning=12,Putih=10,Biru=5 (jumlah=36).", "steps": ["Sudut = (kekerapan/36)×360°.", "Merah=90°, Kuning=120°, Putih=100°, Biru=50°."], "ans": "90°,120°,100°,50° (jumlah=360°)"}, {"title": "Contoh 11", "q": "Graf garis jisim sampah 2010-2015 (1900,2100,2900,2600,2100,1600 tan). Cari min.", "steps": ["Jumlah = 1900+2100+2900+2600+2100+1600 = 13200.", "Min = 13200÷6 = 2200."], "ans": "2200 tan"}, {"title": "Contoh 12", "q": "Plot titik jangka hayat 24 sel kering. 3 biji <10 jam dianggap cacat. Cari peratusan ditolak.", "steps": ["Peratusan = 3/24 × 100%."], "ans": "12.5%"}, {"title": "Contoh 15", "q": "Carta palang gol (Adam=14,Ravi=10). Adakah Adam 2× Ravi? Adakah carta jelas?", "steps": ["14 bukan 2×10(=20).", "Skala paksi tidak bermula 0 - MENGELIRUKAN."], "ans": "Bukan 2×; carta TIDAK jelas kerana skala tidak bermula sifar"}], "exercises": [{"group": "12.1a", "title": "Latih Diri 12.1a — Mengklasifikasikan Data", "questions": [{"num": 1, "stem": "Klasifikasikan sebagai data KATEGORI atau data NUMERIK.\n(a) Bilangan setem dikumpul\n(b) Masa penggunaan Internet\n(c) Kebolehan bermain sepak takraw\n(d) Warna kereta\n(e) Panjang cacing tanah\n(f) Bilangan pelancong ke muzium\n(g) Bahasa bertutur di rumah\n(h) Pendapatan tahunan", "parts": [{"label": "a", "ans": ["numerik"], "steps": []}, {"label": "b", "ans": ["numerik"], "steps": []}, {"label": "c", "ans": ["kategori"], "steps": []}, {"label": "d", "ans": ["kategori"], "steps": []}, {"label": "e", "ans": ["numerik"], "steps": []}, {"label": "f", "ans": ["numerik"], "steps": []}, {"label": "g", "ans": ["kategori"], "steps": []}, {"label": "h", "ans": ["numerik"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Data saiz kemeja-T 27 murid: XL,L,XL,M,M,L,M,L,M,M,M,M,XL,XL,L,XL,L,M,M,L,M,L,L,S,M,M,L. Cari kekerapan setiap saiz (S,M,L,XL).", "parts": [{"label": "s", "ans": ["1"], "steps": []}, {"label": "m", "ans": ["12"], "steps": []}, {"label": "l", "ans": ["9"], "steps": []}, {"label": "xl", "ans": ["5"], "steps": ["Jumlah kekerapan = 1+12+9+5 = 27 (padan dengan jumlah data)."]}], "open": false, "sample": null}]}, {"group": "12.1b", "title": "Latih Diri 12.1b — Membina Perwakilan Data", "questions": [{"num": 1, "stem": "Data cara murid ke sekolah: Kereta=8, Bas sekolah=10, Bas awam=7, Basikal=2, Berjalan kaki=5. Perwakilan manakah PALING SESUAI, dan mengapa?", "parts": [{"label": null, "ans": ["carta palang"], "steps": ["Data ini KATEGORI (jenis pengangkutan) — carta palang sesuai untuk BANDINGKAN bilangan antara kategori berbeza."]}], "open": false, "sample": null}, {"num": 2, "stem": "Harga penginapan (hari biasa/musim cuti): Hotel(300/350), Inap desa(250/300), Hotel bajet(150/200), Asrama(100/100). Perwakilan PALING SESUAI untuk banding DUA set data ini?", "parts": [{"label": null, "ans": ["carta palang berpasangan"], "steps": ["Carta PALANG BERPASANGAN sesuai untuk membandingkan DUA set data (harga hari biasa vs musim cuti) bagi setiap kategori."]}], "open": false, "sample": null}, {"num": 3, "stem": "Lagu kegemaran: Rasa Sayang=30,Ikan Kekek=40,Bangau Oh Bangau=20,Geylang Si Paku=15,Lompat Si Katak=10,Dayung Sampan=5 (jumlah=120). Hitung sudut sektor carta pai bagi Ikan Kekek.", "parts": [{"label": null, "ans": ["120"], "steps": ["Sudut = (40/120) × 360° = 120°."]}], "open": false, "sample": null}, {"num": 4, "stem": "Tinggi Kamil 2011-2016: 145,150,153,160,164,167cm. Perwakilan PALING SESUAI?", "parts": [{"label": null, "ans": ["graf garis"], "steps": ["Graf garis sesuai untuk memaparkan PERUBAHAN data sepanjang TEMPOH MASA (tahun demi tahun)."]}], "open": false, "sample": null}, {"num": 5, "stem": "Bilangan SMS dihantar oleh murid: 3,4,8,7,11,6,5,7,6,3,9,6,5,11,8. Perwakilan PALING SESUAI untuk lihat TABURAN data ini?", "parts": [{"label": null, "ans": ["plot titik"], "steps": ["Plot titik sesuai untuk memaparkan TABURAN data numerik berjulat kecil dan mengesan nilai ekstrem."]}], "open": false, "sample": null}, {"num": 6, "stem": "Umur 24 pembaca majalah: 44,53,33,65,51,30,42,34,57,36,51,32,39,44,25,31,58,47,31,22,58,38,60,47. Perwakilan PALING SESUAI untuk data BANYAK begini yang KEKALKAN nilai asal?", "parts": [{"label": null, "ans": ["plot batang-dan-daun"], "steps": ["Plot batang-dan-daun sesuai untuk data BANYAK, mengekalkan NILAI DATA ASAL untuk pengiraan lanjut."]}], "open": false, "sample": null}]}, {"group": "12.1c", "title": "Latih Diri 12.1c — Menukar Perwakilan Data (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Carta palang hujan bulanan Bandar Impian (Julai-Disember). Tukar kepada perwakilan lain yang sesuai. Perwakilan manakah dan mengapa?", "parts": [{"label": null, "ans": ["graf garis"], "steps": ["Ditukar kepada GRAF GARIS kerana graf garis sesuai memaparkan perubahan data (hujan bulanan) dalam SATU TEMPOH MASA berturutan."]}], "open": false, "sample": null}, {"num": 2, "stem": "Carta pai kumpulan darah 25 penderma (A=28%,B=20%,AB=16%,O=36%). Tukar kepada perwakilan lain. Perwakilan manakah dan mengapa?", "parts": [{"label": null, "ans": ["carta palang"], "steps": ["Ditukar kepada CARTA PALANG kerana data kumpulan darah ialah data KATEGORI, dan carta palang membolehkan bilangan sebenar setiap kategori dibaca terus daripada tinggi palang."]}], "open": false, "sample": null}]}, {"group": "12.1d", "title": "Latih Diri 12.1d — Mentafsir Perwakilan Data (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Graf garis tinggi pokok 2010-2016 (rajah buku teks m.s. 280). (a) Tinggi pada awal kajian? (b) Pertambahan tinggi dalam 7 tahun? (c) Tahun tinggi=12m? (d) Satu inferens? (e) Ramalan tahun 2017?", "parts": [{"label": "a", "ans": ["8"], "steps": ["Tinggi pada 2010 = 8 m (baca daripada graf)."]}, {"label": "b", "ans": ["7.5"], "steps": ["Pertambahan = tinggi akhir - tinggi awal = 7.5 m."]}, {"label": "c", "ans": ["2013"], "steps": ["Rujuk graf: tinggi 12m dicapai pada tahun 2013."]}, {"label": "d", "ans": ["kadar pertambahan hampir seragam"], "steps": ["Kadar pertambahan tinggi pokok hampir SERAGAM dari 2010-2015, atau tiada pertambahan dari 2015-2016."]}, {"label": "e", "ans": ["16"], "steps": ["Ramalan berdasarkan trend graf: 16 m pada 2017."]}], "open": false, "sample": null}, {"num": 2, "stem": "Plot batang-dan-daun diameter gandar roda (rajah buku teks m.s. 281). (a) Jumlah gandar dihasilkan? (b) Diameter terbesar & terkecil? (c) Peratusan gandar >27.5mm perlu dikurangkan? (d) Satu inferens?", "parts": [{"label": "a", "ans": ["30"], "steps": ["Jumlah kekerapan (daun) = 30 gandar."]}, {"label": "bbesar", "ans": ["28.6"], "steps": []}, {"label": "bkecil", "ans": ["24.5"], "steps": []}, {"label": "c", "ans": ["20"], "steps": ["Peratusan gandar >27.5mm = 20% (6 daripada 30 gandar)."]}, {"label": "d", "ans": ["taburan agak simetri, tertumpu 26.0-26.9mm"], "steps": ["Taburan diameter agak SIMETRI, kebanyakan gandar 26.0mm hingga 26.9mm."]}], "open": false, "sample": null}, {"num": 3, "stem": "Histogram jisim bungkusan biskut (rajah buku teks m.s. 281). (a) Jumlah bungkusan diuji? (b) Bilangan bungkusan 236-240g? (c) Adakah memenuhi piawaian (75% perlu 241-260g)?", "parts": [{"label": "a", "ans": ["120"], "steps": ["Jumlah semua kekerapan = 120 bungkusan."]}, {"label": "b", "ans": ["12"], "steps": ["Kekerapan selang 236-240g = 12 bungkusan."]}, {"label": "c", "ans": ["ya, memenuhi (80%)"], "steps": ["Bungkusan 241-260g = 28+32+24+12 = 96.", "Peratusan = 96/120 × 100% = 80% ≥ 75% - MEMENUHI piawaian."]}], "open": false, "sample": null}]}, {"group": "12.1e", "title": "Latih Diri 12.1e — Perwakilan Data Beretika (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Carta palang permainan kegemaran 40 murid: Hoki=16,Badminton=6,Bola tampar=12,Bola sepak=4 (jumlah ditunjukkan). Adakah carta ini memaparkan data dengan TEPAT?", "parts": [{"label": null, "ans": ["tidak tepat"], "steps": ["16+6+12+4 = 38, TIDAK SAMA dengan 40 orang yang ditinjau.", "Data TIDAK dipaparkan dengan tepat — ada murid yang tidak ditunjukkan dalam carta."]}], "open": false, "sample": null}, {"num": 2, "stem": "Graf garis suhu Bandar Mahkota (0800-1600, paksi mencancang TIDAK bermula 0). Adakah graf ini memaparkan data dengan JELAS?", "parts": [{"label": null, "ans": ["tidak jelas"], "steps": ["Skala paksi mencancang tidak bermula daripada SIFAR, menyebabkan graf seolah-olah menunjukkan perubahan suhu yang MENDADAK, padahal sebenarnya perubahan kecil sahaja — INI MENGELIRUKAN."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 12.1", "title": "Mahir Diri 12.1 (Rujuk Rajah untuk Sebahagian)", "questions": [{"num": 1, "stem": "Graf garis suhu pusat ski (0500-1900). (a) Anggaran suhu jam 1000? (b) Ramalan suhu jam 2100? (c) Pukul berapa suhu=0°C?", "parts": [{"label": "a", "ans": ["-3"], "steps": []}, {"label": "b", "ans": ["-4"], "steps": []}, {"label": "c", "ans": ["1100 dan 1700"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Kelajuan maksimum haiwan: Citah=110,Kuda belang=65,Singa=80,Kuda=75,Rusa=70,Burung unta=95 (km/j).\n(a)(i) Perwakilan carta palang - bina & terangkan.\n(a)(ii) Perwakilan plot batang-dan-daun - bina & terangkan.\n(b) Perwakilan MANA lebih sesuai?", "parts": [{"label": "b", "ans": ["carta palang"], "steps": ["Data ini KATEGORI (jenis haiwan), maka CARTA PALANG lebih sesuai — plot batang-dan-daun hanya papar taburan kelajuan tanpa tunjuk jenis haiwan."]}], "open": false, "sample": null}, {"num": 3, "stem": "Hotel terima 125 tempahan (Telefon=32%,Internet=48%,Kaunter=20%). (a) Beza tempahan Internet-Kaunter, perwakilan mana lebih jelas? (b) Perwakilan mana tunjuk 'hampir separuh' dgn jelas? (c) Perwakilan mana tunjuk bilangan Internet dgn jelas? (d) Adakah graf garis sesuai? (e) Perwakilan lain yang sesuai?", "parts": [{"label": "a", "ans": ["35, carta palang"], "steps": ["Beza = 60-25 = 35 tempahan. Carta palang lebih jelas kerana beza tinggi palang boleh dibaca terus."]}, {"label": "b", "ans": ["carta pai"], "steps": ["Carta pai tunjuk 48% (hampir separuh) dengan jelas secara visual."]}, {"label": "c", "ans": ["carta palang"], "steps": ["Bilangan sebenar (60) boleh dibaca terus daripada tinggi palang; carta pai perlukan pengiraan tambahan."]}, {"label": "d", "ans": ["tidak sesuai"], "steps": ["Data ini TIDAK menunjukkan perubahan dalam tempoh masa — graf garis tidak sesuai."]}, {"label": "e", "ans": ["piktograf"], "steps": ["Piktograf turut sesuai untuk data kategori sebegini."]}], "open": false, "sample": null}, {"num": 4, "stem": "Elaun harian pekerja kilang: 20,25,21,24,22,23,22,22,23,30,25,22.\n(a) Wakilkan dengan plot titik.\n(b)(i) Huraikan taburan. (ii) Nilai tertumpu di mana? (iii) Ada nilai ekstrem?", "parts": [{"label": "i", "ans": ["julat 20-30"], "steps": ["Data bertaburan dalam julat 20 hingga 30."]}, {"label": "ii", "ans": ["22"], "steps": ["Data tertumpu di sekitar 22."]}, {"label": "iii", "ans": ["ya, 30"], "steps": ["30 tersasar jauh drpd data lain — NILAI EKSTREM."]}], "open": false, "sample": null}, {"num": 5, "stem": "Dua histogram markah Sains & Matematik (rajah buku teks m.s. 285).\n(a) Bilangan murid >80 markah setiap ujian?\n(b) Huraikan taburan setiap ujian.\n(c) Inferens perbandingan?", "parts": [{"label": "a", "ans": ["sains 45, matematik 75"], "steps": []}, {"label": "c", "ans": ["lebih ramai murid dapat markah tinggi dalam matematik"], "steps": ["Lebih ramai murid memperoleh markah tinggi dalam ujian Matematik berbanding Sains."]}], "open": false, "sample": null}, {"num": 6, "stem": "Carta palang jualan lampu 5 kedai (A-E). Kedai A=B=120 biji. (a) Apa boleh dinyatakan tentang A&B? (b) Kedai E dakwa jual 2× kedai C — adakah SAH?", "parts": [{"label": "a", "ans": ["jualan sama"], "steps": ["Kedai A dan B menjual bilangan lampu yang SAMA (120 biji)."]}, {"label": "b", "ans": ["tidak sah"], "steps": ["Dakwaan TIDAK SAH — Kedai E menjual 30 biji LEBIH daripada Kedai C, bukan 2 kali ganda."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 12", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 12", "questions": [{"num": 1, "stem": "Graf garis harga Rumah A dan B (10 tahun). (a) Rumah mana kadar kenaikan lebih tinggi? (b) Tahun berapa harga sama?", "parts": [{"label": "a", "ans": ["rumah a"], "steps": []}, {"label": "b", "ans": ["tahun ke-5"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Carta palang rancangan TV kegemaran (Dokumentari,Drama,Kartun,Sukan). (a) Paling digemari? (b) Nyatakan sudut sektor carta pai bagi rancangan paling digemari (Drama=40% daripada jumlah).", "parts": [{"label": "a", "ans": ["drama"], "steps": []}, {"label": "b", "ans": ["144"], "steps": ["Jika Drama = 40% daripada jumlah: sudut = 40% × 360° = 144°."]}], "open": false, "sample": null}, {"num": 3, "stem": "Graf garis tinggi anak pokok (6 minggu). (a) Minggu mana kadar tumbuh SAMA? (b) Antara minggu mana pertambahan PALING BESAR? (c) Kelebihan perwakilan graf garis ini?", "parts": [{"label": "a", "ans": ["minggu 1-2 dan 2-3; minggu 4-5 dan 5-6"], "steps": []}, {"label": "b", "ans": ["minggu ke-3 dan ke-4"], "steps": []}, {"label": "c", "ans": ["papar perubahan sepanjang tempoh masa"], "steps": ["Graf garis dapat memaparkan PERUBAHAN tinggi anak pokok sepanjang enam minggu dengan jelas."]}], "open": false, "sample": null}, {"num": 4, "stem": "Plot titik tempoh menunggu bas (0-20 minit). Tentukan BENAR/PALSU.\n(a) Bilangan penumpang = 20 orang.\n(b) Tempoh paling singkat = 0 minit.\n(c) 40% penumpang tunggu sekurang-kurangnya 15 minit.", "parts": [{"label": "a", "ans": ["palsu"], "steps": []}, {"label": "b", "ans": ["benar"], "steps": []}, {"label": "c", "ans": ["benar"], "steps": []}], "open": false, "sample": null}, {"num": 5, "stem": "Graf garis komputer riba dijual Jan-Mei; Jun tak ditunjukkan. Jumlah Jan-Jun=24 unit. (a) Berapa unit dijual bulan Jun? (b) Perwakilan lain yang sesuai & mengapa?", "parts": [{"label": "a", "ans": ["tidak dapat ditentukan tanpa rajah"], "steps": ["Jumlah Jan-Mei perlu dibaca dari graf, kemudian Jun = 24 - jumlah tersebut."]}, {"label": "b", "ans": ["carta palang"], "steps": ["Carta palang sesuai kerana bilangan komputer riba boleh dibaca terus daripada tinggi palang."]}], "open": false, "sample": null}, {"num": 6, "stem": "Carta palang keuntungan Syarikat Cekap 2010-2014 (termasuk nilai negatif=kerugian).\n(a) Tahun keuntungan MAKSIMUM & jumlahnya?\n(b) Tahun MULA rugi & jumlah kerugian?\n(c) Untung/rugi 2014?\n(d)(i) 2015 naik RM11juta drpd 2014 — lukis palang 2015. (ii) Jumlah untung/rugi 6 tahun?", "parts": [{"label": "a", "ans": ["2010, rm13 juta"], "steps": []}, {"label": "b", "ans": ["2012, rm2 juta"], "steps": []}, {"label": "c", "ans": ["kerugian rm8 juta"], "steps": []}, {"label": "d", "ans": ["untung rm11 juta 2015"], "steps": ["2015 = 2014 + RM11 juta pertambahan."]}], "open": false, "sample": null}, {"num": 7, "stem": "Plot batang-dan-daun masa baiki 30 paip bocor (rajah buku teks m.s. 290). (a) Senaraikan semua data. (b) Masa PALING SINGKAT? (c) Satu inferens?", "parts": [{"label": "b", "ans": ["12"], "steps": ["Masa paling singkat = 12 minit (nilai batang-daun terkecil)."]}], "open": false, "sample": null}, {"num": 8, "stem": "Dua graf garis (skala berbeza) harga tiket taman tema 2011-2015. (a) Graf mana tunjuk kenaikan LEBIH TINGGI (secara visual)? (b) Graf mana digunakan untuk 'sembunyikan' kenaikan sebenar? Beretika?", "parts": [{"label": "a", "ans": ["rajah b"], "steps": ["Rajah (b) — skala paksi mencancang lebih besar (0-100) menjadikan garis kelihatan lebih curam."]}, {"label": "b", "ans": ["rajah a, tidak beretika"], "steps": ["Rajah (a) (skala 0-50) menjadikan kenaikan kelihatan KURANG KETARA. Menggunakan skala ini secara sengaja untuk menyembunyikan kenaikan sebenar TIDAK BERETIKA."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

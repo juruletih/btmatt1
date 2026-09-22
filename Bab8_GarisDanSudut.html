@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (46 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 46 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "8", "chapterTitle": "Garis dan Sudut", "subtopics": [{"code": "8.1", "title": "8.1 Garis dan Sudut", "notes": [{"heading": "Kekongruenan", "html": "<b>Tembereng garis kongruen</b>: panjang SAMA. <b>Sudut kongruen</b>: saiz SAMA."}, {"heading": "Sudut Garis Lurus, Refleks, Putaran Lengkap", "html": "Sudut pada GARIS LURUS = 180 darjah. Sudut REFLEKS: antara 180 dan 360 darjah. Sudut PUTARAN LENGKAP = 360 darjah."}, {"heading": "Sudut Pelengkap, Penggenap, Konjugat", "html": "Pelengkap: jumlah=90. Penggenap: jumlah=180. Konjugat: jumlah=360 darjah."}, {"heading": "Pembinaan Geometri", "html": "Menggunakan jangka lukis dan pembaris sahaja: tembereng garis, pembahagi dua sama serenjang, garis serenjang, garis selari, sudut 60 darjah, dan pembahagi dua sama sudut."}], "examples": [{"title": "Contoh 1", "q": "p dan 54 darjah sudut pelengkap. p dan q sudut penggenap. Konjugat bagi r ialah 260 darjah. Cari p,q,r,s (5 sudut pada satu titik).", "steps": ["p+54=90 - p=36.", "p+q=180 - q=144.", "r+260=360 - r=100.", "s+r+q+p+54=360 - s=26."], "ans": "p=36, q=144, r=100, s=26 (darjah)"}, {"title": "Contoh 2-6 (Pembinaan)", "q": "Bina tembereng garis, pembahagi dua sama serenjang, garis serenjang, dan garis selari.", "steps": ["Rujuk langkah pembinaan dalam buku teks (m.s. 176-180)."], "ans": "Rujuk rajah buku teks"}, {"title": "Contoh 7-8 (Pembinaan Sudut)", "q": "Bina sudut 60 darjah dan pembahagi dua sama sudut.", "steps": ["60 darjah: 2 lengkok sama jarak, sambungkan.", "Pembahagi dua sama sudut: lengkok memotong kedua-dua lengan."], "ans": "Rujuk rajah buku teks"}], "exercises": [{"group": "8.1a", "title": "Latih Diri 8.1a — Kekongruenan (Rujuk Rajah Buku Teks m.s. 171)", "questions": [{"num": 1, "stem": "Tentukan sama ada tembereng garis PQ dan RS kongruen.\n(a) PQ=3 cm, RS=3 cm\n(b) PQ=3.2 cm, RS=3.3 cm\n(c) PQ=4.2 cm, RS=4.2 cm", "parts": [{"label": "a", "ans": ["kongruen"], "steps": ["PQ=RS=3cm - panjang SAMA - KONGRUEN."]}, {"label": "b", "ans": ["tidak kongruen"], "steps": ["PQ tidak sama RS (3.2 lawan 3.3) - TIDAK KONGRUEN."]}, {"label": "c", "ans": ["kongruen"], "steps": ["PQ=RS=4.2cm - KONGRUEN."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan sama ada sudut PQR dan sudut ABC kongruen.\n(a) sudut PQR=32 darjah, sudut ABC=32 darjah\n(b) sudut PQR=138 darjah, sudut ABC=136 darjah\n(c) sudut PQR=256 darjah, sudut ABC=256 darjah", "parts": [{"label": "a", "ans": ["kongruen"], "steps": ["Saiz sudut SAMA - KONGRUEN."]}, {"label": "b", "ans": ["tidak kongruen"], "steps": ["Saiz sudut BERBEZA - TIDAK KONGRUEN."]}, {"label": "c", "ans": ["kongruen"], "steps": ["Saiz sudut SAMA - KONGRUEN."]}], "open": false, "sample": null}]}, {"group": "8.1b", "title": "Latih Diri 8.1b — Anggaran dan Pengukuran (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Anggarkan dan ukur saiz tembereng garis dan sudut yang ditunjukkan dalam buku teks m.s. 172.", "parts": [], "open": true, "sample": "Latihan ini memerlukan pembaris dan protraktor sebenar pada rajah buku teks."}]}, {"group": "8.1c", "title": "Latih Diri 8.1c — Sudut Garis Lurus, Refleks, Putaran Lengkap", "questions": [{"num": 1, "stem": "Nyatakan konsep: (a) Sudut yang jumlahnya 180 darjah pada satu garis dipanggil? (b) Sudut antara 180 dan 360 darjah dipanggil? (c) Sudut genap satu pusingan penuh (360 darjah) dipanggil?", "parts": [{"label": "a", "ans": ["sudut pada garis lurus"], "steps": ["Hasil tambah sudut-sudut pada garis lurus ialah 180 darjah."]}, {"label": "b", "ans": ["sudut refleks"], "steps": ["Sudut refleks: lebih besar drpd 180, kurang drpd 360 darjah."]}, {"label": "c", "ans": ["sudut putaran lengkap"], "steps": ["Sudut putaran lengkap = 360 darjah."]}], "open": false, "sample": null}, {"num": 2, "stem": "Rajah tunjuk sudut 45,135,88 darjah pada satu titik. (i) yang mana membentuk garis lurus? (ii) apakah sudut refleks di sini? (iii) jumlah keseluruhan sudut pada titik itu?", "parts": [], "open": true, "sample": "(i) 135+45=180 darjah. (ii) Sudut refleks adalah bahagian lebih besar drpd 180 darjah pada titik itu. (iii) Jumlah keseluruhan = 360 darjah."}]}, {"group": "8.1d", "title": "Latih Diri 8.1d — Sudut Pelengkap, Penggenap, Konjugat (BENAR/PALSU)", "questions": [{"num": 1, "stem": "Tentukan BENAR atau PALSU.\n(a) 60 darjah ialah sudut pelengkap bagi 30 darjah.\n(b) 125 darjah ialah sudut penggenap bagi 45 darjah.\n(c) 300 darjah dan 60 darjah ialah sudut konjugat.\n(d) 142 darjah dan 38 darjah ialah sudut penggenap.\n(e) Jika A ialah sudut konjugat bagi B, maka A = 360 darjah - B.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Pelengkap: jumlah=90. 60+30=90 - BENAR."]}, {"label": "b", "ans": ["palsu"], "steps": ["Penggenap: jumlah=180. 125+45=170 - PALSU."]}, {"label": "c", "ans": ["benar"], "steps": ["Konjugat: jumlah=360. 300+60=360 - BENAR."]}, {"label": "d", "ans": ["benar"], "steps": ["142+38=180 - BENAR."]}, {"label": "e", "ans": ["benar"], "steps": ["Mengikut takrifan sudut konjugat - BENAR."]}], "open": false, "sample": null}]}, {"group": "8.1e", "title": "Latih Diri 8.1e — Menyelesaikan Masalah Sudut", "questions": [{"num": 1, "stem": "Pada satu titik ada 5 sudut: a, b, c, d dan 46 darjah. a dan 46 sudut pelengkap; a dan b sudut penggenap; konjugat bagi c ialah 283 darjah. Cari a, b, c, d.", "parts": [{"label": "a", "ans": ["44"], "steps": ["a+46=90 - a=44."]}, {"label": "b", "ans": ["136"], "steps": ["a+b=180 - b=136."]}, {"label": "c", "ans": ["77"], "steps": ["c=360-283=77."]}, {"label": "d", "ans": ["57"], "steps": ["44+136+77+d+46=360 - d=57."]}], "open": false, "sample": null}, {"num": 2, "stem": "p dan q sudut penggenap, p>q. Beza p dengan q ialah 52 darjah. Cari p dan q.", "parts": [{"label": "p", "ans": ["116"], "steps": ["p+q=180, p-q=52. 2p=232 - p=116."]}, {"label": "q", "ans": ["64"], "steps": ["q=180-116=64."]}], "open": false, "sample": null}]}, {"group": "8.1f", "title": "Latih Diri 8.1f — Pembinaan Geometri Asas (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Bina (a) AB=6cm (b) PQ=5.4cm (c) RS=7.3cm dengan jangka lukis dan pembaris. Bina juga pembahagi dua sama serenjang, garis serenjang, dan garis selari.", "parts": [], "open": true, "sample": "Gunakan jangka lukis dan pembaris mengikut Contoh 2-6 buku teks (m.s. 176-180)."}]}, {"group": "8.1g", "title": "Latih Diri 8.1g — Pembinaan Sudut (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Jelaskan cara membina sudut (a) 90 (b) 45 (c) 75 (d) 105 darjah, kemudian bina sudut tersebut.", "parts": [], "open": true, "sample": "(a) 90: bina garis serenjang. (b) 45: bahagi dua 90. (c) 75: 60+15. (d) 105: 60+45 atau 90+15."}]}, {"group": "Mahir Diri 8.1", "title": "Mahir Diri 8.1", "questions": [{"num": 1, "stem": "Tentukan BENAR atau PALSU.\n(a) Sudut refleks lebih besar drpd sudut garis lurus.\n(b) Hasil tambah sudut cakah dan sudut tirus memperoleh sudut refleks.\n(c) Dua sudut bersebelahan pada garis lurus ialah sudut penggenap.\n(d) Hasil tambah dua sudut konjugat ialah sudut putaran lengkap.\n(e) Jika m dan n sudut konjugat, maka m atau n ialah sudut refleks tetapi bukan kedua-duanya.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Refleks(>180) > garis lurus(=180) - BENAR."]}, {"label": "b", "ans": ["palsu"], "steps": ["Mengikut skema jawapan - PALSU."]}, {"label": "c", "ans": ["benar"], "steps": ["Bersebelahan pada garis lurus=180=penggenap - BENAR."]}, {"label": "d", "ans": ["benar"], "steps": ["Konjugat=360=putaran lengkap - BENAR."]}, {"label": "e", "ans": ["benar"], "steps": ["Mengikut skema jawapan - BENAR."]}], "open": false, "sample": null}, {"num": 2, "stem": "p dan q sudut kongruen DAN sudut pelengkap. Nyatakan nilai p dan q.", "parts": [{"label": null, "ans": ["45"], "steps": ["p=q, p+q=90 - p=q=45."]}], "open": false, "sample": null}, {"num": 3, "stem": "PQ=7cm. PQ dan RS tembereng garis kongruen. Nyatakan panjang RS.", "parts": [{"label": null, "ans": ["7"], "steps": ["Kongruen bermaksud panjang sama. RS=7cm."]}], "open": false, "sample": null}, {"num": 4, "stem": "p dan q sudut penggenap, beza 30 darjah, p>q. Cari p dan q.", "parts": [{"label": "p", "ans": ["105"], "steps": ["p+q=180, p-q=30. 2p=210 - p=105."]}, {"label": "q", "ans": ["75"], "steps": ["q=180-105=75."]}], "open": false, "sample": null}, {"num": 5, "stem": "p dan q sudut konjugat, q=4 kali p. Cari p dan q.", "parts": [{"label": "p", "ans": ["72"], "steps": ["p+4p=360 - p=72."]}, {"label": "q", "ans": ["288"], "steps": ["q=4(72)=288."]}], "open": false, "sample": null}]}]}, {"code": "8.2", "title": "8.2 Sudut yang Berkaitan dengan Garis Bersilang", "notes": [{"heading": "Sudut Bertentang Bucu dan Bersebelahan", "html": "Dua garis lurus bersilang: sudut BERTENTANG BUCU adalah SAMA; sudut BERSEBELAHAN berjumlah 180 darjah; jika garis berserenjang, SEMUA sudut = 90."}], "examples": [{"title": "Contoh 9", "q": "Kenal pasti sudut bertentang bucu dan bersebelahan (p,q,r).", "steps": ["p dan r bertentang bucu.", "p&q, q&r bersebelahan."], "ans": "Bertentang bucu: p,r. Bersebelahan: p&q, q&r"}, {"title": "Contoh 10", "q": "PSQ, RSTU, PTV garis lurus, 62 dan 135 darjah diberi. Cari x dan y.", "steps": ["x+135=180 - x=45.", "y=62 (bertentang bucu)."], "ans": "x=45, y=62 (darjah)"}, {"title": "Contoh 11", "q": "POR, TOQ garis lurus, 60 dan 72 darjah diberi. Cari x dan y.", "steps": ["x+60=72 - x=12.", "sudut TOR=180-72=108.", "2y=108 - y=54."], "ans": "x=12, y=54 (darjah)"}], "exercises": [{"group": "8.2a", "title": "Latih Diri 8.2a — Sudut Bertentang Bucu (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Kenal pasti sudut bertentang bucu dan bersebelahan pada rajah garis bersilang buku teks m.s. 186.", "parts": [], "open": true, "sample": "Sudut bertentang bucu terletak di seberang secara menyilang; sudut bersebelahan berkongsi satu lengan dan berjumlah 180 darjah."}]}, {"group": "8.2b", "title": "Latih Diri 8.2b — Menentukan Nilai Sudut pada Garis Bersilang", "questions": [{"num": 1, "stem": "PQ,RS,TU garis lurus, 140 dan 80 darjah diberi pada titik persilangan. Cari x dan y.", "parts": [{"label": "x", "ans": ["140"], "steps": ["x=140 (bertentang bucu)."]}, {"label": "y", "ans": ["100"], "steps": ["y+80=180 - y=100."]}], "open": false, "sample": null}, {"num": 2, "stem": "PQ,RS,TU garis lurus, 24 dan 32 darjah diberi. Cari x dan y.", "parts": [{"label": "x", "ans": ["24"], "steps": ["x=24 (bertentang bucu)."]}, {"label": "y", "ans": ["148"], "steps": ["y+32=180 - y=148."]}], "open": false, "sample": null}]}, {"group": "8.2c", "title": "Latih Diri 8.2c — Menyelesaikan Masalah (Rujuk Rajah)", "questions": [{"num": 1, "stem": "POR, QOT garis lurus, dengan 18,38,84 darjah diberi. Cari x dan y.", "parts": [{"label": "x", "ans": ["66"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 187 untuk konfigurasi penuh.)"]}, {"label": "y", "ans": ["58"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "QOS, ROU garis lurus, OT pembahagi dua sama sudut UOS, sudut POQ & QOR pelengkap, 40 darjah diberi. Cari x dan y.", "parts": [{"label": "x", "ans": ["90"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["25"], "steps": []}], "open": false, "sample": null}]}, {"group": "Mahir Diri 8.2", "title": "Mahir Diri 8.2 (Rujuk Rajah Buku Teks)", "questions": [{"num": 1, "stem": "Cari nilai x dan y (rajah garis bersilang, m.s. 188).", "parts": [{"label": "x", "ans": ["34"], "steps": []}, {"label": "y", "ans": ["62"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai sudut yang diminta.", "parts": [{"label": null, "ans": ["15"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai sudut yang diminta.", "parts": [{"label": null, "ans": ["28"], "steps": []}], "open": false, "sample": null}]}]}, {"code": "8.3", "title": "8.3 Sudut Garis Selari dan Garis Rentas Lintang", "notes": [{"heading": "Garis Selari dan Rentas Lintang", "html": "Garis selari: tidak bertemu walau dipanjangkan. Garis rentas lintang: garis yang bersilang dengan dua atau lebih garis lurus."}, {"heading": "Sudut Sepadan, Selang-seli, Pedalaman", "html": "Rentas lintang memotong dua garis selari: sudut SEPADAN sama; sudut SELANG-SELI sama; sudut PEDALAMAN berjumlah 180 darjah."}, {"heading": "Sudut Dongak dan Tunduk", "html": "Sudut dongak: ke objek lebih tinggi. Sudut tunduk: ke objek lebih rendah."}], "examples": [{"title": "Contoh 12", "q": "Tentukan sama ada PQ,RS selari: (a) sudut sepadan 48=48. (b) sudut pedalaman 42+128=170.", "steps": ["(a) sama - SELARI.", "(b) tidak 180 - TIDAK SELARI."], "ans": "(a) Selari (b) Tidak selari"}, {"title": "Contoh 13", "q": "PQ,RS,TU garis selari, 60 dan 118 darjah diberi. Cari a,b,c.", "steps": ["a=60 (selang-seli).", "b=118 (sepadan).", "b+c=180 - c=62."], "ans": "a=60, b=118, c=62 (darjah)"}, {"title": "Contoh 14", "q": "Lukis sudut dongak Umi dari Devi dan sudut tunduk Devi dari Umi.", "steps": ["Sudut dongak: dari Devi melihat Umi.", "Sudut tunduk: dari Umi melihat Devi."], "ans": "Rujuk rajah buku teks"}, {"title": "Contoh 15", "q": "POT,QOU,PQR,VOR garis lurus, 110,75,62 darjah diberi. (a) Cari x. (b) Sudut dongak P dari O.", "steps": ["sudut QOS=110. sudut QOR=62. x=110-62=48.", "sudut QOV=180-62=118. sudut POQ=118-75=43."], "ans": "(a) x=48 (b) sudut dongak=43 (darjah)"}], "exercises": [{"group": "8.3a", "title": "Latih Diri 8.3a — Garis Selari dan Rentas Lintang (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Tentukan sama ada garis PQ ialah garis rentas lintang atau bukan.", "parts": [{"label": "a", "ans": ["ya"], "steps": []}, {"label": "b", "ans": ["ya"], "steps": []}, {"label": "c", "ans": ["bukan"], "steps": []}], "open": false, "sample": null}]}, {"group": "8.3b", "title": "Latih Diri 8.3b — Sudut Sepadan, Selang-seli, Pedalaman (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Kenal pasti jenis sudut (sepadan/selang-seli/pedalaman) bagi setiap pasangan a,b dalam rajah buku teks m.s. 190.", "parts": [], "open": true, "sample": "(a) Pedalaman: a+b=180. (b) Sepadan: a=b. (c) Selang-seli: a=b. (d) Sepadan: a=b."}]}, {"group": "8.3c", "title": "Latih Diri 8.3c — Menentukan Garis Selari (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Tentukan sama ada PQ dan RS selari.\n(a) sudut sepadan kedua-duanya 132 darjah\n(b) sudut selang-seli kedua-duanya 85 darjah\n(c) sudut pedalaman 120 dan 124 darjah", "parts": [{"label": "a", "ans": ["selari"], "steps": ["Sudut sepadan sama - SELARI."]}, {"label": "b", "ans": ["selari"], "steps": ["Sudut selang-seli sama - SELARI."]}, {"label": "c", "ans": ["tidak selari"], "steps": ["120+124=244, tidak sama 180 - TIDAK SELARI."]}], "open": false, "sample": null}]}, {"group": "8.3d", "title": "Latih Diri 8.3d — Nilai Sudut Garis Selari (Rujuk Rajah)", "questions": [{"num": 1, "stem": "EF dan GH garis lurus, garis selari terlibat, 76 dan 110 darjah diberi. Cari a,b,c,d.", "parts": [{"label": "a", "ans": ["76"], "steps": []}, {"label": "b", "ans": ["70"], "steps": []}, {"label": "c", "ans": ["70"], "steps": []}, {"label": "d", "ans": ["70"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai a dan b (garis selari, 25 dan 42 darjah diberi).", "parts": [{"label": "a", "ans": ["67"], "steps": []}, {"label": "b", "ans": ["42"], "steps": []}], "open": false, "sample": null}]}, {"group": "8.3e", "title": "Latih Diri 8.3e — Sudut Dongak dan Tunduk (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Jasni di atas bukit memerhati kapal terbang (atas) dan batu (bawah). Lukis dan labelkan sudut dongak (a) dan sudut tunduk (b).", "parts": [], "open": true, "sample": "Sudut dongak a = sudut ke kapal terbang (atas). Sudut tunduk b = sudut ke batu (bawah)."}]}, {"group": "8.3f", "title": "Latih Diri 8.3f — Masalah Sudut Dongak/Tunduk (Rujuk Rajah)", "questions": [{"num": 1, "stem": "PQR dan QTU garis lurus (88,25 darjah diberi). (a) Cari x dan y. (b) Sudut dongak V dari T.", "parts": [{"label": "x", "ans": ["117"], "steps": []}, {"label": "y", "ans": ["88"], "steps": []}, {"label": "dongak", "ans": ["88"], "steps": ["Mengikut skema jawapan buku teks."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 8.3", "title": "Mahir Diri 8.3 (Rujuk Rajah Buku Teks)", "questions": [{"num": 1, "stem": "Cari nilai x dan y (garis lurus PQR, UTS; 135,42 darjah diberi).", "parts": [{"label": "x", "ans": ["45"], "steps": []}, {"label": "y", "ans": ["93"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai x dan y (garis lurus PQRS; 110,52,74 darjah diberi).", "parts": [{"label": "x", "ans": ["106"], "steps": []}, {"label": "y", "ans": ["58"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai x dan y (garis lurus QRST; 25,125 darjah diberi).", "parts": [{"label": "x", "ans": ["125"], "steps": []}, {"label": "y", "ans": ["100"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "Rangka heksagon PQRSTU. (a) Sudut dongak Q dari O. (b) Sudut tunduk T dari O.", "parts": [{"label": "a", "ans": ["sudut qor"], "steps": []}, {"label": "b", "ans": ["sudut tou"], "steps": []}], "open": false, "sample": null}, {"num": 5, "stem": "VUTS dan PQR garis lurus (70,62,40 darjah diberi). (a) Cari x,y. (b) Sudut refleks QWU. (c) Sudut tunduk R dari T.", "parts": [{"label": "x", "ans": ["70"], "steps": []}, {"label": "y", "ans": ["48"], "steps": []}, {"label": "refleks", "ans": ["250"], "steps": []}, {"label": "tunduk", "ans": ["70"], "steps": []}], "open": false, "sample": null}, {"num": 6, "stem": "Kamal, Cindy, Adila, David. Sudut dongak Cindy dari David=15, Adila dari Cindy=18, sudut tunduk Adila dari Kamal=40. Cari x dan y.", "parts": [{"label": "x", "ans": ["33"], "steps": []}, {"label": "y", "ans": ["58"], "steps": []}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 8", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 8", "questions": [{"num": 1, "stem": "x dan 25 darjah sudut pelengkap (60,92 darjah turut diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["65"], "steps": ["x+25=90 - x=65."]}, {"label": "y", "ans": ["118"], "steps": ["(Nota: bergantung konfigurasi penuh rajah asal.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "Garis lurus POR (20,100,96 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["60"], "steps": []}, {"label": "y", "ans": ["84"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Bina tembereng garis AB=8cm, titik C dengan sudut ABC=60, BC=5cm, dan garis serenjang dari C ke AB.", "parts": [], "open": true, "sample": "Bina AB=8cm, bina sudut 60 darjah di B, tandakan C sejauh 5cm, bina garis serenjang dari C ke AB."}, {"num": 4, "stem": "TSR garis lurus (135,86 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["139"], "steps": []}, {"label": "y", "ans": ["94"], "steps": []}], "open": false, "sample": null}, {"num": 5, "stem": "x dan y sudut penggenap, nisbah x:y=2:3. Cari x dan y.", "parts": [{"label": "x", "ans": ["72"], "steps": ["5 bahagian=180 - 1 bahagian=36. x=72."]}, {"label": "y", "ans": ["108"], "steps": ["y=108."]}], "open": false, "sample": null}, {"num": 6, "stem": "(a) Cari x,y (105,120 darjah diberi). (b) Bina trapezium PQRS, PQ=4cm, PS=6cm.", "parts": [{"label": "x", "ans": ["75"], "steps": []}, {"label": "y", "ans": ["45"], "steps": []}], "open": false, "sample": null}, {"num": 7, "stem": "PS dan QT garis lurus (20,3y,2x darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["64"], "steps": []}, {"label": "y", "ans": ["32"], "steps": []}], "open": false, "sample": null}, {"num": 8, "stem": "UTS dan PQR garis lurus (132,108 darjah diberi). Cari x,y,z.", "parts": [{"label": "x", "ans": ["72"], "steps": []}, {"label": "y", "ans": ["120"], "steps": []}, {"label": "z", "ans": ["60"], "steps": []}], "open": false, "sample": null}, {"num": 9, "stem": "Dua garis lurus WOS dan ROV (142,128 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["90"], "steps": []}, {"label": "y", "ans": ["52"], "steps": []}], "open": false, "sample": null}, {"num": 10, "stem": "Hui Li, Kamala, Rizal. Sudut tunduk Kamala dari Hui Li=78 (32,88 darjah turut diberi). Cari (a) sudut tunduk Rizal dari Hui Li (b) sudut dongak Rizal dari Kamala.", "parts": [{"label": "a", "ans": ["46"], "steps": []}, {"label": "b", "ans": ["42"], "steps": []}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

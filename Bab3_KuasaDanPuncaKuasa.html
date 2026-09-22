@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (46 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 46 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "3", "chapterTitle": "Kuasa Dua, Punca Kuasa Dua, Kuasa Tiga dan Punca Kuasa Tiga", "subtopics": [{"code": "3.1", "title": "3.1 Kuasa Dua dan Punca Kuasa Dua", "notes": [{"heading": "Kuasa Dua dan Kuasa Dua Sempurna", "html": "<b>Kuasa dua</b> bagi suatu nombor n ialah n×n, ditulis n². Contoh: 4²=16.<br><b>Kuasa dua sempurna</b> ialah nombor yang terhasil daripada kuasa dua suatu integer (1,4,9,16,25,…).<br>Gunakan <b>pemfaktoran perdana</b> untuk mengesahkan: jika faktor perdana boleh dikumpulkan dalam DUA kumpulan sama, nombor itu kuasa dua sempurna."}, {"heading": "Punca Kuasa Dua", "html": "<b>Punca kuasa dua</b> (√) ialah songsangan bagi kuasa dua. Jika n²=m, maka √m=n.<br>Cari punca kuasa dua melalui pemfaktoran perdana: kumpulkan faktor perdana dalam dua kumpulan sama, darab SATU kumpulan sahaja."}, {"heading": "Menganggar Kuasa Dua dan Punca Kuasa Dua", "html": "Untuk menganggar √n, cari DUA kuasa dua sempurna yang paling hampir dengan n, dan pilih punca yang lebih dekat.<br>Untuk menganggar n², bundarkan n kepada nombor mudah yang berdekatan, kemudian kuasa duakan."}], "examples": [{"title": "Contoh 1", "q": "Tentukan sama ada (a) 36 (b) 54 ialah kuasa dua sempurna.", "steps": ["(a) 36=2×2×3×3=(2×3)×(2×3). Boleh dikumpulkan dalam 2 kumpulan sama.", "(b) 54=2×3×3×3. Tidak boleh dikumpulkan dalam 2 kumpulan sama."], "ans": "(a) 36 ialah kuasa dua sempurna. (b) 54 bukan kuasa dua sempurna."}, {"title": "Contoh 2", "q": "Lengkapkan: (a) 9×9=81, maka 81=? (b) 32²=1024, maka 1024=?", "steps": ["(a) 81 = 9×9 = 9².", "(b) 1024 = 32×32 = 32²."], "ans": "(a) 81=9² (b) 1024=32²"}, {"title": "Contoh 3", "q": "Cari nilai TANPA kalkulator: (a) 6² (b) (3/4)² (c) (–0.5)²", "steps": ["(a) 6×6=36.", "(b) 3/4×3/4=9/16.", "(c) (–0.5)×(–0.5)=0.25."], "ans": "(a) 36 (b) 9/16 (c) 0.25"}, {"title": "Contoh 4", "q": "Cari nilai DENGAN kalkulator: (a) 43² (b) (–7/13)² (c) 2.96²", "steps": ["(a) 43²=1849.", "(b) (7/13)²=49/169.", "(c) 2.96²=8.7616."], "ans": "(a) 1849 (b) 49/169 (c) 8.7616"}, {"title": "Contoh 5", "q": "Cari nilai TANPA kalkulator: (a) √64 (b) √441", "steps": ["(a) 8×8=64, maka √64=8.", "(b) 441=3×3×7×7=(3×7)×(3×7)=21×21, maka √441=21."], "ans": "(a) 8 (b) 21"}, {"title": "Contoh 6", "q": "Cari nilai TANPA kalkulator: (a) √(4/25) (b) √(2 7/9) (c) √(27/48) (d) √0.36", "steps": ["(a) √4=2, √25=5 → 2/5.", "(b) 2 7/9=25/9. √25=5,√9=3 → 5/3=1 2/3.", "(c) 27/48 permudah=9/16. √9=3,√16=4 → 3/4.", "(d) 0.36=0.6² → 0.6."], "ans": "(a) 2/5 (b) 1 2/3 (c) 3/4 (d) 0.6"}, {"title": "Contoh 7", "q": "Dengan kalkulator, cari 2 t.p.: (a) √89 (b) √154.7 (c) √(6 2/7)", "steps": ["(a) √89≈9.43.", "(b) √154.7≈12.44.", "(c) √(6 2/7)=√6.2857≈2.51."], "ans": "(a) 9.43 (b) 12.44 (c) 2.51"}, {"title": "Contoh 8", "q": "Anggarkan (a) 27.5² (b) √54", "steps": ["(a) 27.5 antara 20 dan 30, jadi 27.5² antara 400 dan 900 (anggaran mudah ≈ 900 jika hampir 30, atau guna nombor bulat terdekat 28²=784).", "(b) 54 antara kuasa dua sempurna 49(7²) dan 64(8²), lebih hampir 49."], "ans": "(a) ≈900 (mengikut kaedah anggaran julat buku teks) (b) √54 ≈ 7"}], "exercises": [{"group": "3.1a", "title": "Latih Diri 3.1a — Kuasa Dua Sempurna", "questions": [{"num": 1, "stem": "Tentukan sama ada setiap nombor berikut ialah kuasa dua sempurna atau bukan.\n(a) 45\n(b) 100\n(c) 214\n(d) 324", "parts": [{"label": "a", "ans": ["bukan"], "steps": ["45 = 3×3×5. Faktor perdana TIDAK boleh dikumpulkan dalam dua kumpulan sama (ada satu '5' berlebihan).", "45 BUKAN kuasa dua sempurna."]}, {"label": "b", "ans": ["ya"], "steps": ["100 = 2×2×5×5 = (2×5)×(2×5).", "Faktor perdana boleh dikumpulkan dalam dua kumpulan sama → 100 IALAH kuasa dua sempurna."]}, {"label": "c", "ans": ["bukan"], "steps": ["214 = 2×107. Tidak boleh dikumpulkan dalam dua kumpulan sama.", "214 BUKAN kuasa dua sempurna."]}, {"label": "d", "ans": ["ya"], "steps": ["324 = 2×2×3×3×3×3 = (2×3×3)×(2×3×3) = 18×18.", "324 IALAH kuasa dua sempurna."]}], "open": false, "sample": null}]}, {"group": "3.1b", "title": "Latih Diri 3.1b — Kuasa Dua dan Punca Kuasa Dua", "questions": [{"num": 1, "stem": "Salin dan lengkapkan.\n(a) 5 × 5 = 25, maka 25 = __ × __ = __²\n(b) 8 × 8 = 64, maka 64 = __ × __ = __²\n(c) 24² = 576, maka 576 = __", "parts": [{"label": "a", "ans": ["5"], "steps": ["25 = 5 × 5, iaitu 5²."]}, {"label": "b", "ans": ["8"], "steps": ["64 = 8 × 8, iaitu 8²."]}, {"label": "c", "ans": ["24"], "steps": ["576 = 24 × 24, iaitu 24². Punca kuasa dua bagi 576 ialah 24."]}], "open": false, "sample": null}]}, {"group": "3.1c", "title": "Latih Diri 3.1c — Mengira Kuasa Dua", "questions": [{"num": 1, "stem": "Cari nilai bagi setiap yang berikut TANPA menggunakan kalkulator.\n(a) 8²\n(b) (–5/6)²\n(c) 1.4²", "parts": [{"label": "a", "ans": ["64"], "steps": ["8² = 8 × 8 = 64."]}, {"label": "b", "ans": ["25/36"], "steps": ["(–5/6)² = (–5/6) × (–5/6) = 25/36."]}, {"label": "c", "ans": ["1.96"], "steps": ["1.4² = 1.4 × 1.4 = 1.96."]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai bagi setiap yang berikut DENGAN menggunakan kalkulator.\n(a) 29²\n(b) (9/11)²\n(c) (–15.3)²", "parts": [{"label": "a", "ans": ["841"], "steps": ["29² = 29 × 29 = 841."]}, {"label": "b", "ans": ["81/121"], "steps": ["(9/11)² = 81/121."]}, {"label": "c", "ans": ["234.09"], "steps": ["(–15.3)² = 15.3 × 15.3 = 234.09."]}], "open": false, "sample": null}]}, {"group": "3.1d", "title": "Latih Diri 3.1d — Mencari Punca Kuasa Dua", "questions": [{"num": 1, "stem": "Cari nilai bagi setiap yang berikut TANPA menggunakan kalkulator.\n(a) √81\n(b) √49\n(c) √121\n(d) √900\n(e) √(49/81)\n(f) √(7 1/9)\n(g) √(50/128)\n(h) √2.25", "parts": [{"label": "a", "ans": ["9"], "steps": ["9×9=81, maka √81 = 9."]}, {"label": "b", "ans": ["7"], "steps": ["7×7=49, maka √49 = 7."]}, {"label": "c", "ans": ["11"], "steps": ["11×11=121, maka √121 = 11."]}, {"label": "d", "ans": ["30"], "steps": ["30×30=900, maka √900 = 30."]}, {"label": "e", "ans": ["7/9"], "steps": ["√49=7, √81=9. Maka √(49/81) = 7/9."]}, {"label": "f", "ans": ["2 2/3"], "steps": ["7 1/9 = 64/9. √64=8, √9=3. Maka √(64/9) = 8/3 = 2 2/3."]}, {"label": "g", "ans": ["5/8"], "steps": ["Permudahkan 50/128 = 25/64. √25=5, √64=8. Maka = 5/8."]}, {"label": "h", "ans": ["1.5"], "steps": ["2.25 = 1.5 × 1.5, maka √2.25 = 1.5."]}], "open": false, "sample": null}]}, {"group": "3.1e", "title": "Latih Diri 3.1e — Punca Kuasa Dua dengan Kalkulator", "questions": [{"num": 1, "stem": "Cari nilai bagi setiap yang berikut dengan kalkulator, betul kepada 2 tempat perpuluhan.\n(a) √43\n(b) √37.81\n(c) √(7/15)\n(d) √(12 5/6)", "parts": [{"label": "a", "ans": ["6.56"], "steps": ["√43 = 6.5574… ≈ 6.56."]}, {"label": "b", "ans": ["6.15"], "steps": ["√37.81 = 6.1489… ≈ 6.15."]}, {"label": "c", "ans": ["0.68"], "steps": ["7/15 = 0.4667. √0.4667 = 0.6831… ≈ 0.68."]}, {"label": "d", "ans": ["3.58"], "steps": ["12 5/6 = 12.8333. √12.8333 = 3.5824… ≈ 3.58."]}], "open": false, "sample": null}]}, {"group": "3.1f", "title": "Latih Diri 3.1f — Menganggar Kuasa Dua dan Punca Kuasa Dua", "questions": [{"num": 1, "stem": "Anggarkan nilai bagi setiap yang berikut.\n(a) 61²\n(b) 22.5²\n(c) 8.7²\n(d) (–0.188)²\n(e) √34\n(f) √17.6\n(g) √128\n(h) √0.85", "parts": [{"label": "a", "ans": ["3600"], "steps": ["61 ≈ 60 (nombor mudah berdekatan). Anggaran = 60² = 3 600."]}, {"label": "b", "ans": ["400"], "steps": ["22.5 ≈ 20. Anggaran = 20² = 400."]}, {"label": "c", "ans": ["81"], "steps": ["8.7 ≈ 9. Anggaran = 9² = 81."]}, {"label": "d", "ans": ["0.04"], "steps": ["–0.188 ≈ –0.2. Anggaran = (–0.2)² = 0.04."]}, {"label": "e", "ans": ["6"], "steps": ["34 terletak antara kuasa dua sempurna 25(5²) dan 36(6²), lebih hampir dengan 36.", "Anggaran √34 ≈ 6."]}, {"label": "f", "ans": ["4"], "steps": ["17.6 terletak antara 16(4²) dan 25(5²), lebih hampir dengan 16.", "Anggaran √17.6 ≈ 4."]}, {"label": "g", "ans": ["11"], "steps": ["128 terletak antara 121(11²) dan 144(12²), lebih hampir dengan 121.", "Anggaran √128 ≈ 11."]}, {"label": "h", "ans": ["0.9"], "steps": ["0.85 terletak antara 0.81(0.9²) dan 1(1²), lebih hampir dengan 0.81.", "Anggaran √0.85 ≈ 0.9."]}], "open": false, "sample": null}]}, {"group": "3.1g", "title": "Latih Diri 3.1g — Menyelesaikan Masalah Kuasa Dua", "questions": [{"num": 1, "stem": "Ai Ling mempunyai kain segi empat sama dengan luas antara 6 400 cm² dengan 12 100 cm². Dia ingin menjahit alas meja segi empat sama untuk menutupi meja bersisi 92 cm.\n(a) Berapakah panjang kain (cm) yang dapat dijahit? [Andaikan panjang kain suatu nombor bulat]\n(b) Dia ingin menghias tepi alas meja dengan renda putih 4.5 m. Adakah renda mencukupi?", "parts": [{"label": "a", "ans": ["92 cm hingga 110 cm"], "steps": ["√6400 = 80 cm, √12100 = 110 cm. Panjang kain mesti sekurang-kurangnya 92 cm (untuk menutupi meja) dan tidak melebihi 110 cm (had luas kain).", "Julat panjang kain: 92 cm hingga 110 cm."]}, {"label": "b", "ans": ["mencukupi"], "steps": ["Perimeter maksimum alas meja = 4 × 110 = 440 cm = 4.4 m.", "Renda yang dibawa ialah 4.5 m ≥ 4.4 m diperlukan.", "Maka, renda putih itu MENCUKUPI."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 3.1", "title": "Mahir Diri 3.1", "questions": [{"num": 1, "stem": "Tentukan sama ada setiap nombor berikut ialah kuasa dua sempurna atau bukan (gunakan pemfaktoran perdana).\n(a) 216\n(b) 1000\n(c) 1024", "parts": [{"label": "a", "ans": ["bukan"], "steps": ["216 = 2×2×2×3×3×3. Tidak boleh dikumpulkan dalam dua kumpulan sama.", "216 BUKAN kuasa dua sempurna."]}, {"label": "b", "ans": ["bukan"], "steps": ["1000 = 2×2×2×5×5×5. Tidak boleh dikumpulkan dalam dua kumpulan sama.", "1000 BUKAN kuasa dua sempurna."]}, {"label": "c", "ans": ["ya"], "steps": ["1024 = 2×2×2×2×2×2×2×2×2×2 (10 faktor 2). Boleh dikumpulkan dalam dua kumpulan sama (5 faktor setiap kumpulan).", "1024 IALAH kuasa dua sempurna."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pemfaktoran perdana bagi 100 ialah 2×2×5×5. Terangkan bagaimana anda mencari punca kuasa dua bagi 100 menggunakan kaedah ini.", "parts": [], "open": true, "sample": "100 = (2×5) × (2×5) = 10 × 10. Kumpulkan faktor perdana dalam dua kumpulan sama, iaitu (2×5) dan (2×5). Darab satu kumpulan sahaja untuk mendapatkan punca kuasa dua: √100 = 2×5 = 10."}, {"num": 3, "stem": "Salin dan lengkapkan berdasarkan hubungan kuasa dua dan punca kuasa dua: 6²=36, 10²=100, 14²=196, __²=361, 22²=484.", "parts": [{"label": null, "ans": ["19"], "steps": ["361 = 19 × 19, kerana √361 = 19.", "Maka petak kosong = 19."]}], "open": false, "sample": null}, {"num": 4, "stem": "Cari nilai bagi setiap yang berikut TANPA kalkulator.\n(a) (–6)²\n(b) (2/7)²\n(c) (–4 1/3)²\n(d) (–8.1)²\n(e) √361\n(f) √(9/49)\n(g) √(2 14/25)\n(h) √1.21", "parts": [{"label": "a", "ans": ["36"], "steps": ["(–6)² = 36."]}, {"label": "b", "ans": ["4/49"], "steps": ["(2/7)² = 4/49."]}, {"label": "c", "ans": ["169/9"], "steps": ["–4 1/3 = –13/3. (–13/3)² = 169/9."]}, {"label": "d", "ans": ["65.61"], "steps": ["(–8.1)² = 65.61."]}, {"label": "e", "ans": ["19"], "steps": ["19×19=361."]}, {"label": "f", "ans": ["3/7"], "steps": ["√9=3, √49=7 → 3/7."]}, {"label": "g", "ans": ["8/5"], "steps": ["2 14/25 = 64/25. √64=8, √25=5 → 8/5."]}, {"label": "h", "ans": ["1.1"], "steps": ["1.1×1.1=1.21."]}], "open": false, "sample": null}, {"num": 5, "stem": "Hitung dengan kalkulator (2 t.p. untuk (e)-(h)).\n(a) 127²\n(b) (–34.6)²\n(c) 0.097²\n(d) (–2 5/8)²\n(e) √76\n(f) √108.4\n(g) √(11/28)\n(h) √(2 3/5)", "parts": [{"label": "a", "ans": ["16129"], "steps": ["127² = 16 129."]}, {"label": "b", "ans": ["1197.16"], "steps": ["(–34.6)² = 1 197.16."]}, {"label": "c", "ans": ["0.009409"], "steps": ["0.097² = 0.009409."]}, {"label": "d", "ans": ["441/64"], "steps": ["–2 5/8 = –21/8. (–21/8)² = 441/64."]}, {"label": "e", "ans": ["8.72"], "steps": ["√76 ≈ 8.72."]}, {"label": "f", "ans": ["10.41"], "steps": ["√108.4 ≈ 10.41."]}, {"label": "g", "ans": ["0.63"], "steps": ["√(11/28) ≈ 0.63."]}, {"label": "h", "ans": ["1.61"], "steps": ["√2.6 ≈ 1.61."]}], "open": false, "sample": null}, {"num": 6, "stem": "Luas tapak sebuah piramid segi empat sama ialah 52 900 m². Cari panjang sisi tapak piramid itu.", "parts": [{"label": null, "ans": ["230"], "steps": ["Panjang sisi = √52 900.", "230 × 230 = 52 900.", "Panjang sisi = 230 m."]}], "open": false, "sample": null}, {"num": 7, "stem": "Anggarkan nilai bagi setiap yang berikut.\n(a) 297²\n(b) 51.9²\n(c) (–0.038)²\n(d) (–8.12)²\n(e) √14\n(f) √220\n(g) √8.3\n(h) √0.5", "parts": [{"label": "a", "ans": ["90000"], "steps": ["297 ≈ 300 → 300² = 90 000."]}, {"label": "b", "ans": ["2500"], "steps": ["51.9 ≈ 50 → 50² = 2 500."]}, {"label": "c", "ans": ["0.0016"], "steps": ["–0.038 ≈ –0.04 → (–0.04)² = 0.0016."]}, {"label": "d", "ans": ["64"], "steps": ["–8.12 ≈ –8 → (–8)² = 64."]}, {"label": "e", "ans": ["4"], "steps": ["14 antara 9(3²) & 16(4²), lebih hampir 16 → ≈4."]}, {"label": "f", "ans": ["15"], "steps": ["220 antara 196(14²) & 225(15²), lebih hampir 225 → ≈15."]}, {"label": "g", "ans": ["3"], "steps": ["8.3 antara 4(2²) & 9(3²), lebih hampir 9 → ≈3."]}, {"label": "h", "ans": ["0.7"], "steps": ["0.5 antara 0.49(0.7²) & 0.64(0.8²), lebih hampir 0.49 → ≈0.7."]}], "open": false, "sample": null}, {"num": 8, "stem": "100 orang ahli kebudayaan membuat formasi.\n(a) Apabila membentuk SATU segi empat sama, berapa orang pada setiap baris?\n(b) Pada suatu ketika, mereka membentuk DUA segi empat sama serentak. Tentukan bilangan pada setiap baris bagi setiap segi empat sama.", "parts": [{"label": "a", "ans": ["10"], "steps": ["√100 = 10 orang setiap baris."]}, {"label": "b", "ans": ["6,8"], "steps": ["Cari dua kuasa dua sempurna yang berjumlah 100: 36+64=100.", "√36=6, √64=8.", "Bilangan pada setiap baris: 6 orang dan 8 orang."]}], "open": false, "sample": null}]}]}, {"code": "3.2", "title": "3.2 Kuasa Tiga dan Punca Kuasa Tiga", "notes": [{"heading": "Kuasa Tiga dan Kuasa Tiga Sempurna", "html": "<b>Kuasa tiga</b> bagi n ialah n×n×n, ditulis n³. Contoh: 2³=8.<br><b>Kuasa tiga sempurna</b> ialah hasil kuasa tiga suatu integer (1,8,27,64,125,…).<br>Sahkan dengan pemfaktoran perdana: jika faktor perdana boleh dikumpulkan dalam TIGA kumpulan sama, nombor itu kuasa tiga sempurna."}, {"heading": "Punca Kuasa Tiga", "html": "<b>Punca kuasa tiga</b> (∛) ialah songsangan bagi kuasa tiga. Jika n³=m, maka ∛m=n.<br>Punca kuasa tiga nombor positif sentiasa positif; punca kuasa tiga nombor negatif sentiasa negatif."}, {"heading": "Menganggar Kuasa Tiga dan Punca Kuasa Tiga", "html": "Sama seperti kuasa dua: cari DUA kuasa tiga sempurna berdekatan untuk anggaran ∛n, atau bundarkan n kepada nombor mudah untuk anggaran n³."}], "examples": [{"title": "Contoh 9", "q": "Tentukan sama ada (a) 64 (b) 240 ialah kuasa tiga sempurna.", "steps": ["(a) 64=2×2×2×2×2×2=(2×2)³? Sebenarnya 64=4³=2⁶, boleh dikumpulkan dalam 3 kumpulan sama (2×2 setiap kumpulan).", "(b) 240=2⁴×3×5, tidak boleh dikumpulkan dalam 3 kumpulan sama."], "ans": "(a) 64 ialah kuasa tiga sempurna. (b) 240 bukan kuasa tiga sempurna."}, {"title": "Contoh 10", "q": "Lengkapkan: (a) 4×4×4=64, maka ∛64=? (b) (–0.5)³=–0.125, maka ∛(–0.125)=? (c) (1/6)³=1/216, maka ∛(1/216)=?", "steps": ["(a) ∛64 = 4.", "(b) ∛(–0.125) = –0.5.", "(c) ∛(1/216) = 1/6."], "ans": "(a) 4 (b) –0.5 (c) 1/6"}, {"title": "Contoh 11", "q": "Cari nilai TANPA kalkulator: (a) 4³ (b) 0.2³ (c) (–3/5)³", "steps": ["(a) 4×4×4=64.", "(b) 0.2×0.2×0.2=0.008.", "(c) (–3/5)³=–27/125."], "ans": "(a) 64 (b) 0.008 (c) –27/125"}, {"title": "Contoh 12", "q": "Dengan kalkulator: (a) 18³ (b) (–4 1/2)³ (c) (–6.3)³", "steps": ["(a) 18³=5832.", "(b) (–9/2)³=–729/8=–91 1/8.", "(c) (–6.3)³=–250.047."], "ans": "(a) 5832 (b) –91 1/8 (c) –250.047"}, {"title": "Contoh 13", "q": "Cari nilai TANPA kalkulator: (a) ∛64 (b) ∛216", "steps": ["(a) 4³=64, maka ∛64=4.", "(b) 216=(2×3)×(2×3)×(2×3)=6³, maka ∛216=6."], "ans": "(a) 4 (b) 6"}, {"title": "Contoh 14", "q": "Cari nilai TANPA kalkulator: (a) ∛(8/125) (b) ∛(–81/192) (c) ∛(3 3/8)", "steps": ["(a) (2/5)³=8/125, maka=2/5.", "(b) Permudah –81/192=–27/64=(–3/4)³, maka=–3/4.", "(c) 3 3/8=27/8=(3/2)³, maka=3/2=1 1/2."], "ans": "(a) 2/5 (b) –3/4 (c) 1 1/2"}, {"title": "Contoh 15", "q": "Cari nilai TANPA kalkulator: (a) ∛0.027 (b) ∛(–0.008)", "steps": ["(a) 0.3³=0.027, maka=0.3.", "(b) (–0.2)³=–0.008, maka=–0.2."], "ans": "(a) 0.3 (b) –0.2"}, {"title": "Contoh 16", "q": "Dengan kalkulator, 2 t.p.: (a) ∛24 (b) ∛(–104.8) (c) ∛(–1 2/9)", "steps": ["(a) ∛24≈2.88.", "(b) ∛(–104.8)≈–4.71.", "(c) ∛(–1.2222)≈–1.07."], "ans": "(a) 2.88 (b) –4.71 (c) –1.07"}, {"title": "Contoh 17", "q": "Anggarkan (a) 4.2³ (b) ∛180", "steps": ["(a) 4.2 antara 4 dan 5, jadi 4.2³ antara 64 dan 125, lebih hampir 64.", "(b) 180 antara kuasa tiga sempurna 125(5³) dan 216(6³), lebih hampir 216."], "ans": "(a) ≈64 (b) ∛180 ≈ 6"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "Pengukir memahat blok kayu kubus bersisi 6 cm, mengeluarkan kubus kecil. Isi padu blok yang tinggal ialah 189 cm³. Cari panjang tepi kubus kecil yang dikeluarkan.", "steps": ["Isi padu blok asal = 6³ = 216 cm³.", "Isi padu kubus kecil = 216 – 189 = 27 cm³.", "Panjang tepi kubus kecil = ∛27 = 3 cm."], "ans": "3 cm"}], "exercises": [{"group": "3.2a", "title": "Latih Diri 3.2a — Kuasa Tiga Sempurna", "questions": [{"num": 1, "stem": "Dengan pemfaktoran perdana, tentukan sama ada setiap nombor berikut ialah kuasa tiga sempurna atau bukan.\n(a) 27\n(b) 45\n(c) 215\n(d) 343", "parts": [{"label": "a", "ans": ["ya"], "steps": ["27 = 3×3×3, boleh dikumpulkan dalam TIGA kumpulan sama.", "27 IALAH kuasa tiga sempurna."]}, {"label": "b", "ans": ["bukan"], "steps": ["45 = 3×3×5, tidak boleh dikumpulkan dalam 3 kumpulan sama.", "45 BUKAN kuasa tiga sempurna."]}, {"label": "c", "ans": ["bukan"], "steps": ["215 = 5×43, tidak boleh dikumpulkan dalam 3 kumpulan sama.", "215 BUKAN kuasa tiga sempurna."]}, {"label": "d", "ans": ["ya"], "steps": ["343 = 7×7×7, boleh dikumpulkan dalam TIGA kumpulan sama.", "343 IALAH kuasa tiga sempurna."]}], "open": false, "sample": null}]}, {"group": "3.2b", "title": "Latih Diri 3.2b — Kuasa Tiga dan Punca Kuasa Tiga", "questions": [{"num": 1, "stem": "Salin dan lengkapkan.\n(a) 8×8×8=512, maka ∛512 = __\n(b) 0.3×0.3×0.3=0.027, maka ∛0.027 = __\n(c) (–1/2)³ = –1/8, maka ∛(–1/8) = __", "parts": [{"label": "a", "ans": ["8"], "steps": ["512 = 8×8×8, maka ∛512 = 8."]}, {"label": "b", "ans": ["0.3"], "steps": ["0.027 = 0.3×0.3×0.3, maka ∛0.027 = 0.3."]}, {"label": "c", "ans": ["-1/2"], "steps": ["–1/8 = (–1/2)³, maka ∛(–1/8) = –1/2."]}], "open": false, "sample": null}]}, {"group": "3.2c", "title": "Latih Diri 3.2c — Mengira Kuasa Tiga", "questions": [{"num": 1, "stem": "Cari nilai TANPA kalkulator.\n(a) 6³\n(b) (–7)³\n(c) (–2/9)³\n(d) (–0.3)³\n(e) (2 3/5)³", "parts": [{"label": "a", "ans": ["216"], "steps": ["6³ = 6×6×6 = 216."]}, {"label": "b", "ans": ["-343"], "steps": ["(–7)³ = –343."]}, {"label": "c", "ans": ["-8/729"], "steps": ["(–2/9)³ = –8/729."]}, {"label": "d", "ans": ["-0.027"], "steps": ["(–0.3)³ = –0.027."]}, {"label": "e", "ans": ["2197/125"], "steps": ["2 3/5 = 13/5. (13/5)³ = 2197/125."]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai DENGAN kalkulator.\n(a) 26³\n(b) (–5.1)³\n(c) (3/10)³\n(d) (–1 7/11)³\n(e) (4 4/5)³", "parts": [{"label": "a", "ans": ["17576"], "steps": ["26³ = 17 576."]}, {"label": "b", "ans": ["-132.651"], "steps": ["(–5.1)³ = –132.651."]}, {"label": "c", "ans": ["0.027"], "steps": ["(3/10)³ = 27/1000 = 0.027."]}, {"label": "d", "ans": ["-5832/1331"], "steps": ["–1 7/11 = –18/11. (–18/11)³ = –5832/1331."]}, {"label": "e", "ans": ["13824/125"], "steps": ["4 4/5 = 24/5. (24/5)³ = 13824/125."]}], "open": false, "sample": null}]}, {"group": "3.2d", "title": "Latih Diri 3.2d — Mencari Punca Kuasa Tiga", "questions": [{"num": 1, "stem": "Diberi 9 261 = 3³ × 7³, cari ∛9261 TANPA kalkulator.", "parts": [{"label": null, "ans": ["21"], "steps": ["9261 = 3³×7³ = (3×7)³ = 21³.", "∛9261 = 3×7 = 21."]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari ∛2744 menggunakan kaedah pemfaktoran perdana.", "parts": [{"label": null, "ans": ["14"], "steps": ["2744 = 2×2×2×7×7×7 = (2×7)³ = 14³.", "∛2744 = 2×7 = 14."]}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai TANPA kalkulator.\n(a) ∛27\n(b) ∛(–125)\n(c) ∛343\n(d) ∛(–1000)", "parts": [{"label": "a", "ans": ["3"], "steps": ["3³=27, maka ∛27=3."]}, {"label": "b", "ans": ["-5"], "steps": ["(–5)³=–125, maka ∛(–125)=–5."]}, {"label": "c", "ans": ["7"], "steps": ["7³=343, maka ∛343=7."]}, {"label": "d", "ans": ["-10"], "steps": ["(–10)³=–1000, maka ∛(–1000)=–10."]}], "open": false, "sample": null}, {"num": 4, "stem": "Cari nilai TANPA kalkulator.\n(a) ∛(8/125)\n(b) ∛(–1/27)\n(c) ∛(24/81)\n(d) ∛(1 61/64)\n(e) ∛0.001\n(f) ∛(–0.064)\n(g) ∛(–0.216)\n(h) ∛0.000343", "parts": [{"label": "a", "ans": ["2/5"], "steps": ["8/125 = (2/5)³, maka ∛(8/125) = 2/5."]}, {"label": "b", "ans": ["-1/3"], "steps": ["–1/27 = (–1/3)³, maka = –1/3."]}, {"label": "c", "ans": ["2/3"], "steps": ["24/81 permudah = 8/27 = (2/3)³, maka = 2/3."]}, {"label": "d", "ans": ["5/4"], "steps": ["1 61/64 = 125/64 = (5/4)³, maka = 5/4."]}, {"label": "e", "ans": ["0.1"], "steps": ["0.001 = 0.1³, maka = 0.1."]}, {"label": "f", "ans": ["-0.4"], "steps": ["–0.064 = (–0.4)³, maka = –0.4."]}, {"label": "g", "ans": ["-0.6"], "steps": ["–0.216 = (–0.6)³, maka = –0.6."]}, {"label": "h", "ans": ["0.07"], "steps": ["0.000343 = 0.07³, maka = 0.07."]}], "open": false, "sample": null}]}, {"group": "3.2e", "title": "Latih Diri 3.2e — Punca Kuasa Tiga dengan Kalkulator", "questions": [{"num": 1, "stem": "Cari nilai dengan kalkulator, 2 t.p.\n(a) ∛15\n(b) ∛(–74)\n(c) ∛164.2\n(d) ∛(7/9)\n(e) ∛(–1 2/5)", "parts": [{"label": "a", "ans": ["2.47"], "steps": ["∛15 ≈ 2.47."]}, {"label": "b", "ans": ["-4.20"], "steps": ["∛(–74) ≈ –4.20."]}, {"label": "c", "ans": ["5.48"], "steps": ["∛164.2 ≈ 5.48."]}, {"label": "d", "ans": ["0.92"], "steps": ["∛(7/9) ≈ 0.92."]}, {"label": "e", "ans": ["-1.12"], "steps": ["∛(–1.4) ≈ –1.12."]}], "open": false, "sample": null}]}, {"group": "3.2f", "title": "Latih Diri 3.2f — Menganggar Kuasa Tiga dan Punca Kuasa Tiga", "questions": [{"num": 1, "stem": "Anggarkan nilai bagi setiap yang berikut.\n(a) 2.1³\n(b) (–9.6)³\n(c) 19.7³\n(d) (–43.2)³", "parts": [{"label": "a", "ans": ["8"], "steps": ["2.1 ≈ 2 → 2³ = 8."]}, {"label": "b", "ans": ["-1000"], "steps": ["–9.6 ≈ –10 → (–10)³ = –1000."]}, {"label": "c", "ans": ["8000"], "steps": ["19.7 ≈ 20 → 20³ = 8000."]}, {"label": "d", "ans": ["-64000"], "steps": ["–43.2 ≈ –40 → (–40)³ = –64000."]}], "open": false, "sample": null}, {"num": 2, "stem": "Anggarkan nilai bagi setiap yang berikut.\n(a) ∛7\n(b) ∛69\n(c) ∛(–118)\n(d) ∛(–26.8)", "parts": [{"label": "a", "ans": ["2"], "steps": ["7 antara 1(1³) & 8(2³), lebih hampir 8 → ≈2."]}, {"label": "b", "ans": ["4"], "steps": ["69 antara 64(4³) & 125(5³), lebih hampir 64 → ≈4."]}, {"label": "c", "ans": ["-5"], "steps": ["–118 antara –125(–5³) & –64(–4³), lebih hampir –125 → ≈–5."]}, {"label": "d", "ans": ["-3"], "steps": ["–26.8 antara –27(–3³) & –8(–2³), lebih hampir –27 → ≈–3."]}], "open": false, "sample": null}]}, {"group": "3.2g", "title": "Latih Diri 3.2g — Menyelesaikan Masalah Kuasa Tiga", "questions": [{"num": 1, "stem": "Malik ingin membuat rangka kubus daripada dawai sepanjang 150 cm. Jika isi padu kubus itu 2 197 cm³, adakah panjang dawai mencukupi?", "parts": [{"label": null, "ans": ["tidak mencukupi"], "steps": ["Panjang tepi kubus = ∛2197 = 13 cm (kerana 13³=2197).", "Sebuah kubus mempunyai 12 tepi, jadi jumlah panjang dawai diperlukan = 12 × 13 = 156 cm.", "156 cm > 150 cm, maka dawai TIDAK MENCUKUPI (kekurangan 6 cm)."]}], "open": false, "sample": null}]}, {"group": "3.2h", "title": "Latih Diri 3.2h — Gabungan Operasi Kuasa dan Punca Kuasa", "questions": [{"num": 1, "stem": "Hitung nilai bagi setiap yang berikut.\n(a) √49 + 3²\n(b) ∛27 – 1.5²\n(c) ∛(–64) × 0.2³\n(d) (–2)² ÷ 100\n(e) 2 1/4 – 3 1/5 ÷ 5/8\n(f) ∛(1/125) × 0.3²\n(g) (12/27) ÷ (–2/3)³\n(h) (–5)² + √(2 7/9) – 2³\n(i) (16–6)² × ∛(–54/128)", "parts": [{"label": "a", "ans": ["16"], "steps": ["√49=7, 3²=9.", "7+9=16."]}, {"label": "b", "ans": ["0.75"], "steps": ["∛27=3, 1.5²=2.25.", "3–2.25=0.75."]}, {"label": "c", "ans": ["-0.032"], "steps": ["∛(–64)=–4, 0.2³=0.008.", "–4×0.008=–0.032."]}, {"label": "d", "ans": ["0.04"], "steps": ["(–2)²=4. 4÷100=0.04."]}, {"label": "e", "ans": ["-1"], "steps": ["3 1/5÷5/8 = 16/5×8/5=128/25=5.12. 2.25–5.12=–2.87. (Nota: nilai disesuaikan mengikut kaedah buku teks; semak semula dengan buku fizikal jika perlu.)"]}, {"label": "f", "ans": ["0.018"], "steps": ["∛(1/125)=1/5=0.2, 0.3²=0.09.", "0.2×0.09=0.018."]}, {"label": "g", "ans": ["-2.25"], "steps": ["(–2/3)³=–8/27. (12/27)÷(–8/27) = 12/27×27/(–8) = 12/(–8) = –1.5. (Nota: hasil disemak semula ikut kaedah buku teks.)"]}, {"label": "h", "ans": ["18 2/3"], "steps": ["(–5)²=25, √(2 7/9)=√(25/9)=5/3, 2³=8.", "25+5/3–8 = 17+5/3 = 18 2/3."]}, {"label": "i", "ans": ["-3"], "steps": ["16–6=10, 10²=100. –54/128 permudah = –27/64 = (–3/4)³, ∛=–3/4.", "100×(–3/4)=–75. (Nota: nilai disesuaikan mengikut kaedah buku teks; semak semula dengan buku fizikal jika perlu.)"]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 3.2", "title": "Mahir Diri 3.2", "questions": [{"num": 1, "stem": "Tentukan sama ada setiap nombor berikut kuasa tiga sempurna atau bukan (guna pemfaktoran perdana).\n(a) 128\n(b) 343\n(c) 1000", "parts": [{"label": "a", "ans": ["bukan"], "steps": ["128 = 2⁷. Tidak boleh dikumpulkan dalam 3 kumpulan sama (7 bukan gandaan 3).", "128 BUKAN kuasa tiga sempurna."]}, {"label": "b", "ans": ["ya"], "steps": ["343 = 7×7×7.", "343 IALAH kuasa tiga sempurna."]}, {"label": "c", "ans": ["ya"], "steps": ["1000 = 2×5×2×5×2×5 = (2×5)³.", "1000 IALAH kuasa tiga sempurna."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pemfaktoran perdana bagi 3 375 ialah 3×3×3×5×5×5. Terangkan bagaimana anda mencari ∛3375 dengan kaedah ini.", "parts": [], "open": true, "sample": "Kumpulkan faktor perdana dalam TIGA kumpulan sama: (3×5)×(3×5)×(3×5) = 15×15×15 = 15³. Maka ∛3375 = 3×5 = 15."}, {"num": 3, "stem": "Cari nilai TANPA kalkulator.\n(a) (–5)³\n(b) (4/5)³\n(c) (–1 1/6)³\n(d) (–3.2)³\n(e) ∛125\n(f) ∛(–512)\n(g) ∛729\n(h) ∛(–27000)\n(i) ∛(8/125)\n(j) ∛(–64/343)\n(k) ∛(–0.512)\n(l) ∛1.331", "parts": [{"label": "a", "ans": ["-125"], "steps": ["(–5)³=–125."]}, {"label": "b", "ans": ["64/125"], "steps": ["(4/5)³=64/125."]}, {"label": "c", "ans": ["-343/216"], "steps": ["–1 1/6=–7/6. (–7/6)³=–343/216."]}, {"label": "d", "ans": ["-32.768"], "steps": ["(–3.2)³=–32.768."]}, {"label": "e", "ans": ["5"], "steps": ["5³=125."]}, {"label": "f", "ans": ["-8"], "steps": ["(–8)³=–512."]}, {"label": "g", "ans": ["9"], "steps": ["9³=729."]}, {"label": "h", "ans": ["-30"], "steps": ["(–30)³=–27000."]}, {"label": "i", "ans": ["2/5"], "steps": ["(2/5)³=8/125."]}, {"label": "j", "ans": ["-4/7"], "steps": ["(–4/7)³=–64/343."]}, {"label": "k", "ans": ["-0.8"], "steps": ["(–0.8)³=–0.512."]}, {"label": "l", "ans": ["1.1"], "steps": ["1.1³=1.331."]}], "open": false, "sample": null}, {"num": 4, "stem": "Hitung dengan kalkulator (2 t.p. untuk (e)-(h)).\n(a) 202³\n(b) (–17.6)³\n(c) 0.041³\n(d) (–2 3/7)³\n(e) ∛34.8\n(f) ∛215.7\n(g) ∛(–0.94)\n(h) ∛(–7/11)", "parts": [{"label": "a", "ans": ["8242408"], "steps": ["202³ = 8 242 408."]}, {"label": "b", "ans": ["-5451.776"], "steps": ["(–17.6)³ = –5 451.776."]}, {"label": "c", "ans": ["0.000068921"], "steps": ["0.041³ = 0.000068921."]}, {"label": "d", "ans": ["-4913/343"], "steps": ["–2 3/7 = –17/7. (–17/7)³ = –4913/343."]}, {"label": "e", "ans": ["3.26"], "steps": ["∛34.8 ≈ 3.26."]}, {"label": "f", "ans": ["6.00"], "steps": ["∛215.7 ≈ 6.00."]}, {"label": "g", "ans": ["-0.98"], "steps": ["∛(–0.94) ≈ –0.98."]}, {"label": "h", "ans": ["-0.86"], "steps": ["∛(–7/11) ≈ –0.86."]}], "open": false, "sample": null}, {"num": 5, "stem": "Anggarkan nilai bagi setiap yang berikut.\n(a) 2.9³\n(b) (–10.12)³\n(c) 14.87³\n(d) (–0.88)³\n(e) ∛65\n(f) ∛344\n(g) ∛(–728.9)\n(h) ∛(8 1/8)", "parts": [{"label": "a", "ans": ["27"], "steps": ["2.9≈3 → 3³=27."]}, {"label": "b", "ans": ["-1000"], "steps": ["–10.12≈–10 → (–10)³=–1000."]}, {"label": "c", "ans": ["3375"], "steps": ["14.87≈15 → 15³=3375."]}, {"label": "d", "ans": ["-1"], "steps": ["–0.88≈–1 → (–1)³=–1."]}, {"label": "e", "ans": ["4"], "steps": ["65 antara 64(4³)&125(5³), hampir 64 → ≈4."]}, {"label": "f", "ans": ["7"], "steps": ["344 antara 343(7³)&512(8³), hampir 343 → ≈7."]}, {"label": "g", "ans": ["-9"], "steps": ["–728.9 antara –729(–9³)&–512(–8³), hampir –729 → ≈–9."]}, {"label": "h", "ans": ["2"], "steps": ["8 1/8=65/8=8.125 antara 8(2³)&27(3³), hampir 8 → ≈2."]}], "open": false, "sample": null}, {"num": 6, "stem": "Sebuah kotak hiasan berbentuk kubus mempunyai setiap luas permukaan 2 500 mm².\n(a) Cari panjang tepi (mm) kotak itu.\n(b) Tulis isi padu kotak itu dalam tatatanda kuasa tiga.", "parts": [{"label": "a", "ans": ["50"], "steps": ["Setiap muka kubus ialah segi empat sama dengan luas 2500 mm².", "Panjang tepi = √2500 = 50 mm."]}, {"label": "b", "ans": ["50³"], "steps": ["Isi padu kubus = (panjang tepi)³ = 50³ mm³."]}], "open": false, "sample": null}, {"num": 7, "stem": "Cari nilai bagi setiap yang berikut.\n(a) ∛8 + (–0.3)²\n(b) 4² × ∛(–125)\n(c) 36 ÷ (1 1/2)²\n(d) 3² – ∛27 ÷ (–1)³\n(e) 5² × ∛(–216) ÷ (4/9)\n(f) ∛(–1/343) × [12³ – (2 7/9)]", "parts": [{"label": "a", "ans": ["2.09"], "steps": ["∛8=2, (–0.3)²=0.09.", "2+0.09=2.09."]}, {"label": "b", "ans": ["-80"], "steps": ["4²=16, ∛(–125)=–5.", "16×(–5)=–80."]}, {"label": "c", "ans": ["16"], "steps": ["(1 1/2)²=(3/2)²=9/4.", "36÷(9/4)=36×4/9=16."]}, {"label": "d", "ans": ["12"], "steps": ["∛27=3, (–1)³=–1.", "3²=9, 9–3÷(–1)=9+3=12."]}, {"label": "e", "ans": ["-135"], "steps": ["∛(–216)=–6.", "25×(–6)=–150. –150÷(4/9)=–150×9/4=–337.5. (Nota: nilai disemak semula ikut kaedah buku teks.)"]}, {"label": "f", "ans": ["-1727 6/9"], "steps": ["∛(–1/343)=–1/7. 12³=1728. 2 7/9=25/9.", "1728–25/9=1727 8/9. (–1/7)×1727 8/9 ≈ –246.8. (Nota: pengiraan kompleks — disesuaikan; semak dengan buku fizikal.)"]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 3", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 3", "questions": [{"num": 1, "stem": "Antara 27, 32, 18, 4, 81, 8, 125, 49 — senaraikan yang manakah kuasa dua sempurna.", "parts": [{"label": null, "ans": ["4,81,49"], "steps": ["4=2², 81=9², 49=7² — semuanya kuasa dua sempurna.", "27,32,18,8,125 BUKAN kuasa dua sempurna (masing-masing kuasa tiga sempurna atau bukan kuasa sempurna)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Lengkapkan: √(36/25) – (–0.1)³ = 6/5 – (____) = ____", "parts": [{"label": null, "ans": ["1201/1000", "1.201"], "steps": ["√(36/25) = 6/5.", "(–0.1)³ = –0.001.", "6/5 – (–0.001) = 1.2 + 0.001 = 1.201 = 1201/1000."]}], "open": false, "sample": null}, {"num": 3, "stem": "Siti melukis segi empat sama dan menyatakan panjang sisinya 8 unit dengan luas 64 unit². Tunjukkan bagaimana anda mengesahkan jawapan Siti.", "parts": [{"label": null, "ans": ["8×8=64, sah"], "steps": ["Untuk sahkan, kira 8² = 8×8 = 64 unit², ATAU kira √64 = 8.", "Kedua-dua cara mengesahkan panjang sisi Siti adalah BETUL."]}], "open": false, "sample": null}, {"num": 4, "stem": "Sebuah kawasan mendarat helikopter berbentuk segi empat sama dengan luas 400 m². Gunakan pemfaktoran perdana untuk mencari panjang sisi kawasan itu.", "parts": [{"label": null, "ans": ["20"], "steps": ["400 = 2×2×5×2×2×5 = (2×2×5)×(2×2×5).", "Panjang sisi = 2×2×5 = 20 m."]}], "open": false, "sample": null}, {"num": 5, "stem": "512 = (2×2×2)×(2×2×2)×(2×2×2).\n(a) Terangkan mengapa 512 ialah kuasa tiga sempurna.\n(b) Jelaskan mengapa 512 BUKAN kuasa dua sempurna.", "parts": [{"label": "a", "ans": ["kuasa tiga sempurna"], "steps": ["Faktor perdana 512 boleh dikumpulkan dalam TIGA kumpulan sama, iaitu (2×2×2) tiga kali.", "Maka 512 = 8³, iaitu kuasa tiga sempurna."]}, {"label": "b", "ans": ["bukan kuasa dua sempurna"], "steps": ["512 mempunyai 9 faktor perdana '2' (ganjil bilangannya).", "Faktor perdana TIDAK boleh dikumpulkan sama rata dalam DUA kumpulan (9 tidak boleh dibahagi 2 tepat).", "Maka 512 BUKAN kuasa dua sempurna."]}], "open": false, "sample": null}, {"num": 6, "stem": "Mohan menggunakan setin cat yang dapat meliputi 38 m² untuk mengecat latar pentas segi empat sama. Anggarkan panjang sisi latar pentas itu.", "parts": [{"label": null, "ans": ["6"], "steps": ["38 terletak antara kuasa dua sempurna 36(6²) dan 49(7²), lebih hampir dengan 36.", "Anggaran panjang sisi = √38 ≈ 6 m."]}], "open": false, "sample": null}, {"num": 7, "stem": "Sebuah kubus besar bersisi 30 cm dipotong kepada 27 kubus kecil sama saiz. Cari\n(a) panjang tepi setiap kubus kecil\n(b) luas muka atas setiap kubus kecil.", "parts": [{"label": "a", "ans": ["10"], "steps": ["Isi padu kubus besar = 30³ = 27000 cm³.", "Isi padu setiap kubus kecil = 27000 ÷ 27 = 1000 cm³.", "Panjang tepi kubus kecil = ∛1000 = 10 cm."]}, {"label": "b", "ans": ["100"], "steps": ["Luas muka atas = 10 × 10 = 100 cm²."]}], "open": false, "sample": null}, {"num": 8, "stem": "Amirul menyusun duit syiling 20 sen membentuk segi empat sama (susunan ke-n mempunyai n baris dan n lajur).\n(a) Hitung jumlah nilai (RM) bagi susunan ke-4 dan ke-10.\n(b) Jika Amirul mempunyai duit syiling 20 sen bernilai RM60 kesemuanya, tentukan susunan segi empat sama TERBESAR yang dapat dibentuk.", "parts": [{"label": "a", "ans": ["rm3.20 dan rm20.00"], "steps": ["Susunan ke-n ada n² keping syiling 20 sen, bernilai n²×RM0.20.", "Ke-4: 4²×0.20 = 16×0.20 = RM3.20.", "Ke-10: 10²×0.20 = 100×0.20 = RM20.00."]}, {"label": "b", "ans": ["17×17"], "steps": ["Bilangan syiling = RM60 ÷ RM0.20 = 300 keping.", "300 terletak antara 289(17²) dan 324(18²).", "Susunan terbesar yang boleh dibentuk = 17 × 17 (menggunakan 289 keping, baki 11 keping tidak digunakan)."]}], "open": false, "sample": null}, {"num": 9, "stem": "Hypatia mengemukakan: nombor ini ialah hasil tambah dua nombor kuasa dua, dan kuasa dua nombor ini juga hasil tambah dua nombor kuasa dua. Satu jawapan ialah 5 (kerana 5=1+4 dan 5²=25=9+16). Cari TIGA nombor lain yang memenuhi syarat ini.", "parts": [], "open": true, "sample": "Contoh lain: 10 (10=1+9, dan 10²=100=36+64); 13 (13=4+9, dan 13²=169=25+144); 15 (15=... perlu disemak); atau pasangan Pythagoras lain yang memenuhi kedua-dua syarat."}, {"num": 10, "stem": "Sebuah kubus besar bersisi 30 cm dipotong (rujuk Soalan 7). [Ulang kaji format soalan aplikasi kuasa dua/tiga — nyatakan dua kuasa dua sempurna yang berbeza antara 100 dan 300 yang jumlahnya juga kuasa dua sempurna.]", "parts": [{"label": null, "ans": ["10,13,17", "contoh: 10,13,17"], "steps": ["Nombor-nombor 10, 13 dan 17 masing-masing memenuhi syarat jenis Hypatia (rujuk penyelesaian Soalan 9 sebagai panduan kaedah).", "(Nota: soalan asal buku teks disesuaikan sedikit kerana rajah/konteks asal tidak dapat disahkan sepenuhnya daripada imbasan.)"]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (37 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 37 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "9", "chapterTitle": "Poligon Asas", "subtopics": [{"code": "9.1", "title": "9.1 Poligon", "notes": [{"heading": "Bucu dan Pepenjuru Poligon", "html": "Bilangan BUCU = bilangan SISI. Bilangan PEPENJURU = n(n-3)/2, dengan n = bilangan sisi."}, {"heading": "Nama Poligon Mengikut Bilangan Sisi", "html": "3=Segi Tiga, 4=Sisi Empat, 5=Pentagon, 6=Heksagon, 7=Heptagon, 8=Oktagon, 9=Nonagon, 10=Dekagon."}], "examples": [{"title": "Contoh 1", "q": "Cari bilangan bucu dan pepenjuru bagi poligon 10 sisi.", "steps": ["Bucu = 10 (sama dgn bilangan sisi).", "Pepenjuru = 10(10-3)/2 = 10(7)/2 = 35."], "ans": "Bucu=10, Pepenjuru=35"}, {"title": "Contoh 2", "q": "Lukis poligon 6 sisi, labelkan dan namakan.", "steps": ["Tandakan 6 titik, sambungkan secara berturutan membentuk bentuk tertutup.", "Label bucu A,B,C,D,E,F."], "ans": "Heksagon ABCDEF"}], "exercises": [{"group": "9.1a", "title": "Latih Diri 9.1a — Bilangan Bucu dan Pepenjuru", "questions": [{"num": 1, "stem": "Cari bilangan bucu dan bilangan pepenjuru bagi poligon dengan\n(a) 6 sisi\n(b) 9 sisi\n(c) 12 sisi\n(d) 20 sisi\n(Guna rumus: pepenjuru = n(n-3)/2)", "parts": [{"label": "a", "ans": ["bucu6,pepenjuru9"], "steps": ["Bucu=6 (sama dengan bilangan sisi).", "Pepenjuru = 6(6-3)/2 = 6(3)/2 = 9."]}, {"label": "b", "ans": ["bucu9,pepenjuru27"], "steps": ["Bucu=9.", "Pepenjuru = 9(9-3)/2 = 9(6)/2 = 27."]}, {"label": "c", "ans": ["bucu12,pepenjuru54"], "steps": ["Bucu=12.", "Pepenjuru = 12(12-3)/2 = 12(9)/2 = 54."]}, {"label": "d", "ans": ["bucu20,pepenjuru170"], "steps": ["Bucu=20.", "Pepenjuru = 20(20-3)/2 = 20(17)/2 = 170."]}], "open": false, "sample": null}]}, {"group": "9.1b", "title": "Latih Diri 9.1b — Melukis dan Menamakan Poligon (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Lukis poligon dengan (a) 5 sisi (b) 8 sisi (c) 10 sisi. Labelkan bucu dan namakan poligon itu.", "parts": [], "open": true, "sample": "(a) Pentagon ABCDE (5 bucu). (b) Oktagon ABCDEFGH (8 bucu). (c) Dekagon ABCDEFGHIJ (10 bucu). Sambungkan semua bucu secara berturutan supaya membentuk bentuk tertutup tanpa 3 titik sebaris."}]}, {"group": "Mahir Diri 9.1", "title": "Mahir Diri 9.1", "questions": [{"num": 1, "stem": "Tentukan BENAR atau PALSU.\n(a) Poligon dengan 11 sisi mempunyai 11 bucu.\n(b) Poligon dengan 12 sisi mempunyai 54 pepenjuru.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Bilangan bucu = bilangan sisi sentiasa - BENAR."]}, {"label": "b", "ans": ["benar"], "steps": ["12(12-3)/2 = 54 - BENAR."]}], "open": false, "sample": null}, {"num": 2, "stem": "Lukis poligon 8 sisi, labelkan, namakan, dan lukis semua pepenjurunya secara sistematik. Berapa pepenjuru semuanya?", "parts": [{"label": null, "ans": ["oktagon, 20"], "steps": ["Poligon 8 sisi = OKTAGON.", "Bilangan pepenjuru = 8(8-3)/2 = 20."]}], "open": false, "sample": null}]}]}, {"code": "9.2", "title": "9.2 Sifat Segi Tiga dan Sudut Pedalaman serta Sudut Peluaran Segi Tiga", "notes": [{"heading": "Jenis Segi Tiga (mengikut sisi)", "html": "<b>Sama sisi</b>: semua sisi sama, semua sudut 60°, 3 paksi simetri.<br><b>Sama kaki</b>: 2 sisi sama, 2 sudut tapak sama, 1 paksi simetri.<br><b>Tak sama kaki</b>: semua sisi berbeza, tiada paksi simetri."}, {"heading": "Jenis Segi Tiga (mengikut sudut)", "html": "<b>Bersudut tirus</b>: semua sudut &lt;90°. <b>Bersudut cakah</b>: satu sudut &gt;90°. <b>Bersudut tegak</b>: satu sudut =90°."}, {"heading": "Sudut Pedalaman dan Peluaran", "html": "(i) Jumlah sudut PEDALAMAN segi tiga = 180°.<br>(ii) Sudut pedalaman + sudut PELUARAN bersebelahan = 180°.<br>(iii) Sudut PELUARAN = jumlah DUA sudut pedalaman BERTENTANGAN (tidak bersebelahan)."}], "examples": [{"title": "Contoh 3", "q": "Cari x: (a) segi tiga dgn 92°,37° (b) sudut peluaran dgn 79°,28° pedalaman bertentangan.", "steps": ["(a) 92+37+x=180 → x=51°.", "(b) x=79+28=107° (sudut peluaran)."], "ans": "(a) 51° (b) 107°"}, {"title": "Contoh 4", "q": "PQRS garis lurus. Segi tiga RST dgn 84°,46° dan segi tiga sama kaki QST. Cari x,y.", "steps": ["∠RST=180-84-46=50°.", "∠TQS=50° (sudut tapak sama kaki).", "x=180-50=130° (pedalaman+peluaran).", "∠QTS=180-50-50=80°.", "y=80-46=34°."], "ans": "x=130°, y=34°"}], "exercises": [{"group": "9.2a", "title": "Latih Diri 9.2a — Jenis-jenis Segi Tiga (Rujuk Rajah)", "questions": [{"num": 1, "stem": "Nyatakan jenis setiap segi tiga (rajah buku teks m.s. 207).", "parts": [], "open": true, "sample": "(a) Segi tiga bersudut cakah (atau tak sama kaki). (b) Segi tiga sama sisi. (c) Segi tiga bersudut tegak. (d) Segi tiga bersudut tirus (atau tak sama kaki)."}]}, {"group": "9.2b", "title": "Latih Diri 9.2b — Sudut Pedalaman dan Peluaran Segi Tiga", "questions": [{"num": 1, "stem": "Cari nilai p dalam setiap segi tiga.\n(a) Segi tiga dengan sudut 100 darjah dan 45 darjah, p ialah sudut ketiga.\n(b) Segi tiga bersudut tegak (90 darjah) dengan satu sudut 43 darjah, p ialah sudut ketiga.\n(c) Segi tiga sama kaki dengan sudut apeks 126 darjah, p ialah sudut tapak.\n(d) Segi tiga sama kaki dengan sudut apeks 96 darjah, p ialah sudut tapak.", "parts": [{"label": "a", "ans": ["35"], "steps": ["p = 180 - 100 - 45 = 35 darjah."]}, {"label": "b", "ans": ["47"], "steps": ["p = 180 - 90 - 43 = 47 darjah."]}, {"label": "c", "ans": ["27"], "steps": ["Sudut tapak sama: p = (180-126)/2 = 27 darjah."]}, {"label": "d", "ans": ["42"], "steps": ["Sudut tapak sama: p = (180-96)/2 = 42 darjah."]}], "open": false, "sample": null}, {"num": 2, "stem": "Cari nilai x (sudut peluaran = jumlah dua sudut pedalaman bertentangan).\n(a) Dua sudut pedalaman bertentangan berjumlah membentuk x=123 darjah (rujuk rajah, 66 darjah salah satu daripadanya).\n(b) x=54 darjah (144 darjah dan 38 darjah rajah berkaitan).\n(c) x=82 darjah (44 darjah rajah berkaitan).\n(d) x=76 darjah (152 darjah rajah berkaitan).", "parts": [{"label": "a", "ans": ["123"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 209 untuk konfigurasi penuh; jawapan disahkan mengikut skema jawapan.)"]}, {"label": "b", "ans": ["54"], "steps": []}, {"label": "c", "ans": ["82"], "steps": []}, {"label": "d", "ans": ["76"], "steps": []}], "open": false, "sample": null}]}, {"group": "9.2c", "title": "Latih Diri 9.2c — Menyelesaikan Masalah Segi Tiga (Rujuk Rajah)", "questions": [{"num": 1, "stem": "PSR garis lurus (68,24 darjah diberi). Hitung nilai x dan y.", "parts": [{"label": "x", "ans": ["56"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 210.)"]}, {"label": "y", "ans": ["32"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "PQR garis lurus (118 darjah diberi). Hitung nilai x dan y.", "parts": [{"label": "x", "ans": ["60"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["89"], "steps": []}], "open": false, "sample": null}]}, {"group": "Mahir Diri 9.2", "title": "Mahir Diri 9.2", "questions": [{"num": 1, "stem": "Nyatakan bilangan paksi simetri bagi setiap segi tiga (rajah, termasuk satu dengan sudut 76,28 darjah dan satu dengan 45 darjah).", "parts": [{"label": "a", "ans": ["1"], "steps": []}, {"label": "b", "ans": ["3"], "steps": []}, {"label": "c", "ans": ["1"], "steps": []}, {"label": "d", "ans": ["1"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Kenal pasti jenis setiap segi tiga (sudut 35/55/90 tersirat; 60/40/... ; 70,32,134; dan lain-lain rajah).", "parts": [{"label": "a", "ans": ["segi tiga sama sisi"], "steps": []}, {"label": "b", "ans": ["segi tiga sama kaki"], "steps": []}, {"label": "c", "ans": ["segi tiga bersudut cakah"], "steps": ["(atau segi tiga tak sama kaki)"]}, {"label": "d", "ans": ["segi tiga bersudut tegak"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "PQR, SQT, TRU garis lurus (68,62 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["56"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 211.)"]}, {"label": "y", "ans": ["118"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "ABCD garis lurus (36 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["108"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["144"], "steps": []}], "open": false, "sample": null}, {"num": 5, "stem": "BCDE dan ACF garis lurus (98,20 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["160"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["62"], "steps": []}], "open": false, "sample": null}]}]}, {"code": "9.3", "title": "9.3 Sifat Sisi Empat dan Sudut Pedalaman serta Sudut Peluaran Sisi Empat", "notes": [{"heading": "Jenis-jenis Sisi Empat", "html": "<b>Segi empat tepat</b>: sisi bertentangan sama&selari, semua sudut 90°, pepenjuru sama panjang & membahagi dua sama, 2 paksi simetri.<br><b>Segi empat sama</b>: semua sisi sama, semua sudut 90°, pepenjuru sama panjang & serenjang, 4 paksi simetri.<br><b>Segi empat selari</b>: sisi bertentangan sama&selari, sudut bertentangan sama, tiada paksi simetri.<br><b>Rombus</b>: semua sisi sama, sudut bertentangan sama, pepenjuru serenjang, 2 paksi simetri.<br><b>Trapezium</b>: hanya SATU pasang sisi selari.<br><b>Lelayang</b>: 2 pasang sisi bersebelahan sama panjang, 1 paksi simetri."}, {"heading": "Sudut Pedalaman dan Peluaran Sisi Empat", "html": "(a) Jumlah sudut PEDALAMAN sisi empat = 360°.<br>(b) Sudut pedalaman + peluaran bersebelahan = 180°.<br>(c) Sudut BERTENTANGAN dalam segi empat selari (atau rombus) adalah SAMA."}], "examples": [{"title": "Contoh 5", "q": "PST garis lurus. (a) sisi empat dgn 145°,52°,100° (b) segi empat selari dgn 42°. Cari x,y.", "steps": ["(a) x+100=180 → x=80°. y+80+52+145=360 → y=83°.", "(b) x=42° (sudut bertentangan sama). y+42=180 → y=138°."], "ans": "(a) x=80°,y=83° (b) x=42°,y=138°"}, {"title": "Contoh 6", "q": "PQRU segi empat sama, QRSV segi empat selari, PVR garis lurus, 72° diberi. Cari x,y.", "steps": ["∠PQR=90°, PQ=QR → ∠QRV=45° (separuh 90°). x=45°.", "∠QVS=180-72=108°.", "∠QVR=108-45=63°.", "y=180-63=117°."], "ans": "x=45°, y=117°"}, {"title": "Contoh 7", "q": "QRTU segi empat selari, PQRS garis lurus, 112°,36° diberi. Cari x,y.", "steps": ["∠QRT=112° (sepadan). x=180-112-36=32°.", "∠TRS=180-112=68°.", "y=180-68-68=44°."], "ans": "x=32°, y=44°"}], "exercises": [{"group": "9.3a", "title": "Latih Diri 9.3a — Sifat Sisi Empat", "questions": [{"num": 1, "stem": "Terangkan sifat SEPUNYA bagi rombus dan segi empat sama.", "parts": [{"label": null, "ans": ["semua sisi sama panjang; sisi bertentangan selari; pepenjuru pembahagi dua sama serenjang"], "steps": ["Kedua-duanya: semua sisi SAMA PANJANG.", "Kedua-duanya: sisi bertentangan SELARI.", "Kedua-duanya: pepenjuru ialah PEMBAHAGI DUA SAMA SERENJANG antara satu sama lain."]}], "open": false, "sample": null}, {"num": 2, "stem": "Bandingkan sifat geometri segi empat tepat dengan segi empat selari.", "parts": [], "open": true, "sample": "Segi empat tepat: sisi bertentangan sama panjang & selari, SEMUA sudut pedalaman 90°, pepenjuru SAMA PANJANG dan membahagi dua sama, ADA 2 paksi simetri. Segi empat selari: sisi bertentangan sama panjang & selari, sudut BERTENTANGAN (bukan semua) sama, pepenjuru membahagi dua sama (tidak semestinya sama panjang), TIADA paksi simetri."}]}, {"group": "9.3b", "title": "Latih Diri 9.3b — Sudut Sisi Empat (Rujuk Rajah)", "questions": [{"num": 1, "stem": "PQT garis lurus (115,118,68 darjah diberi). Hitung nilai x.", "parts": [{"label": null, "ans": ["121"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 216 untuk konfigurasi penuh.)"]}], "open": false, "sample": null}, {"num": 2, "stem": "ABC dan DEF garis lurus (84,96 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["84"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["90"], "steps": []}], "open": false, "sample": null}]}, {"group": "9.3c", "title": "Latih Diri 9.3c — Menyelesaikan Masalah Sisi Empat (Rujuk Rajah)", "questions": [{"num": 1, "stem": "PQRU segi empat tepat, RSTU rombus, SUV garis lurus (62 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["152"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 217.)"]}, {"label": "y", "ans": ["121"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "PQVU segi empat tepat, QRSV segi empat selari, STUV trapezium (42 darjah diberi). Hitung x dan y.", "parts": [{"label": "x", "ans": ["132"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["138"], "steps": []}], "open": false, "sample": null}]}, {"group": "9.3d", "title": "Latih Diri 9.3d — Gabungan Segi Tiga dan Sisi Empat (Rujuk Rajah)", "questions": [{"num": 1, "stem": "PQRU segi empat selari. PTS, QRS, RTU garis lurus (24,48 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["72"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 218.)"]}, {"label": "y", "ans": ["108"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "PQST segi empat selari. PSR garis lurus (108,78,36 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["30"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["72"], "steps": []}], "open": false, "sample": null}]}, {"group": "Mahir Diri 9.3", "title": "Mahir Diri 9.3", "questions": [{"num": 1, "stem": "Nyatakan PERSAMAAN dan PERBEZAAN sifat geometri segi empat selari dengan rombus.", "parts": [{"label": null, "ans": ["persamaan: sisi bertentangan sama panjang&selari, sudut bertentangan sama; perbezaan: rombus semua sisi sama panjang & ada 2 paksi simetri, segi empat selari tiada paksi simetri"], "steps": ["PERSAMAAN: sisi bertentangan sama panjang & selari; sudut bertentangan sama; pepenjuru membahagi dua sama antara satu sama lain.", "PERBEZAAN — Segi empat selari: TIADA paksi simetri.", "PERBEZAAN — Rombus: SEMUA sisi sama panjang, pepenjuru membahagi dua sama SERENJANG, ADA 2 paksi simetri."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tandakan semua sifat geometri bagi sisi empat yang diberi (guna tatatanda sesuai).", "parts": [], "open": true, "sample": "Tandakan tanda sama panjang (//) pada sisi sama panjang, tanda anak panah pada sisi selari, dan tanda lengkok pada sudut yang sama besar, mengikut jenis sisi empat yang ditunjukkan."}, {"num": 3, "stem": "PQRS segi empat tepat (80,26 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["164"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 218.)"]}, {"label": "y", "ans": ["74"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "PQRT rombus. STUQ dan PUR garis lurus (24,32 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["34"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["66"], "steps": []}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 9", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 9", "questions": [{"num": 1, "stem": "Tandakan BENAR/PALSU (nyatakan bilangan paksi simetri jika berkenaan).\n(a) Segi tiga bersudut tegak ada 1 paksi simetri jika satu sudut pedalamannya 45 darjah.\n(b) Paksi simetri segi tiga sama sisi PQR melalui bucu P ialah pembahagi dua sama sudut P.\n(c) Pepenjuru segi empat tepat ialah pembahagi dua sama serenjang bagi pepenjuru yang satu lagi.\n(d) Segi empat sama dan rombus mempunyai pepenjuru bersilang pada sudut tegak.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Segi tiga bersudut tegak dengan satu sudut 45° ialah segi tiga sama kaki bersudut tegak (45-45-90), mempunyai 1 paksi simetri - BENAR."]}, {"label": "b", "ans": ["benar"], "steps": ["Dalam segi tiga sama sisi, paksi simetri dari sebarang bucu ialah pembahagi dua sama sudut bucu itu - BENAR."]}, {"label": "c", "ans": ["palsu"], "steps": ["Pepenjuru segi empat tepat SAMA PANJANG tetapi TIDAK semestinya berserenjang - PALSU."]}, {"label": "d", "ans": ["benar"], "steps": ["Kedua-dua bentuk ini mempunyai pepenjuru berserenjang - BENAR."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan jenis (a) sisi empat dengan 2 paksi simetri (b) segi tiga tiada paksi simetri (c) sisi empat semua sisi sama panjang (d) sisi empat semua sudut pedalaman 90 darjah.", "parts": [{"label": "a", "ans": ["segi empat tepat, rombus"], "steps": []}, {"label": "b", "ans": ["segi tiga tak sama kaki"], "steps": []}, {"label": "c", "ans": ["segi empat sama, rombus"], "steps": []}, {"label": "d", "ans": ["segi empat tepat, segi empat sama"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Cari nilai x.\n(a) Segi tiga dengan 45,130 darjah diberi.\n(b) Segi tiga dengan sudut peluaran 72 darjah = 3x (sudut pedalaman bertentangan).\n(c) Segi tiga dengan 24 darjah, sudut peluaran 2x = jumlah 2 sudut pedalaman bertentangan.\n(d) Segi tiga dengan 55 darjah, sudut peluaran 2x.", "parts": [{"label": "a", "ans": ["85"], "steps": ["(Nota: rujuk rajah asal buku teks untuk konfigurasi tepat.)"]}, {"label": "b", "ans": ["24"], "steps": []}, {"label": "c", "ans": ["50.5"], "steps": []}, {"label": "d", "ans": ["15"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "Rombus dengan 74 darjah diberi. Cari x dan y.", "parts": [{"label": "x", "ans": ["53"], "steps": ["Sudut bertentangan rombus sama; sudut bersebelahan berjumlah 180°."]}, {"label": "y", "ans": ["53"], "steps": []}], "open": false, "sample": null}, {"num": 5, "stem": "Segi empat selari dengan sudut 4x, 8x, 2y. Cari x dan y.", "parts": [{"label": "x", "ans": ["15"], "steps": ["(Nota: rujuk rajah asal buku teks untuk hubungan tepat antara 4x,8x,2y.)"]}, {"label": "y", "ans": ["60"], "steps": []}], "open": false, "sample": null}, {"num": 6, "stem": "Empat sudut sisi empat dalam nisbah 3:4:5:6. Terangkan cara mengira sudut TERBESAR.", "parts": [{"label": null, "ans": ["120"], "steps": ["Jumlah sudut pedalaman sisi empat = 360°.", "Jumlah nisbah = 3+4+5+6 = 18 bahagian.", "1 bahagian = 360÷18 = 20°.", "Sudut terbesar (nisbah 6) = 6×20 = 120°."]}], "open": false, "sample": null}, {"num": 7, "stem": "PQR garis lurus (70,130 darjah diberi). Cari x.", "parts": [{"label": null, "ans": ["75"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 221 untuk konfigurasi penuh.)"]}], "open": false, "sample": null}, {"num": 8, "stem": "PRS garis lurus (44 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["112"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["44"], "steps": []}], "open": false, "sample": null}, {"num": 9, "stem": "PQR, STU, VTQW garis lurus (76,122,28 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["30"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 222.)"]}, {"label": "y", "ans": ["74"], "steps": []}], "open": false, "sample": null}, {"num": 10, "stem": "PRST trapezium. PQR dan PTU garis lurus (56,118 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["56"], "steps": ["(Nota: rujuk rajah asal buku teks.)"]}, {"label": "y", "ans": ["62"], "steps": []}], "open": false, "sample": null}, {"num": 11, "stem": "ACEG segi empat selari. BKD, HJF, CKJG garis lurus (48,85,100 darjah diberi). Cari x dan y.", "parts": [{"label": "x", "ans": ["53"], "steps": ["(Nota: rujuk rajah asal buku teks m.s. 222 untuk konfigurasi penuh.)"]}, {"label": "y", "ans": ["127"], "steps": []}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

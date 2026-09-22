@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (60 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 60 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "4", "chapterTitle": "Nisbah, Kadar dan Kadaran", "subtopics": [{"code": "4.1", "title": "4.1 Nisbah", "notes": [{"heading": "Nisbah Dua dan Tiga Kuantiti", "html": "<b>Nisbah</b> membandingkan dua atau lebih kuantiti jenis SAMA dalam unit yang SAMA, ditulis a:b atau a:b:c. Nisbah TIDAK mempunyai unit.<br>Jika unit berbeza, tukar kepada unit sama dahulu sebelum menulis nisbah."}, {"heading": "Nisbah Setara", "html": "<b>Nisbah setara</b> diperoleh dengan mendarab atau membahagi SETIAP bahagian nisbah dengan nombor bulat yang sama. Contoh: 1:2 = 2:4 = 6:12."}, {"heading": "Bentuk Termudah", "html": "Nisbah a:b dalam <b>bentuk termudah</b> apabila a dan b tiada faktor sepunya kecuali 1. Bahagikan dengan FSTB, atau darabkan dengan GSTK jika melibatkan pecahan/perpuluhan."}], "examples": [{"title": "Contoh 1", "q": "Wakilkan nisbah 0.02 m kepada 3 cm kepada 4.6 cm dalam bentuk a:b:c.", "steps": ["Tukar kepada cm: 2 cm, 3 cm, 4.6 cm.", "Darab dengan 10 (buang perpuluhan): 20:30:46.", "Bahagi dengan FSTB=2: 10:15:23."], "ans": "10 : 15 : 23"}, {"title": "Contoh 2", "q": "Antara 9:15, 5:3, 54:90, 1/2:5/6 — manakah setara dengan 27:45?", "steps": ["27:45 ÷3 = 9:15 (setara).", "27:45 ÷9 = 3:5 (BUKAN 5:3, jadi 5:3 tidak setara).", "27:45 ×2 = 54:90 (setara).", "27:45 ÷54 = 1/2:5/6 (setara)."], "ans": "9:15, 54:90, dan 1/2:5/6 setara dengan 27:45 (5:3 bukan)"}, {"title": "Contoh 3", "q": "Puan Habibah campur 4 cawan cuka dengan 8 cawan air. Tentukan DUA nisbah setara.", "steps": ["4:8 ×2 = 8:16.", "4:8 ÷2 = 2:4."], "ans": "8:16 dan 2:4"}, {"title": "Contoh 4", "q": "Ungkapkan dalam bentuk termudah: (a) 800g:1.8kg (b) 32:24:20 (c) 3/5:7/10 (d) 0.04:0.12:0.56", "steps": ["(a) 800g:1800g ÷200 = 4:9.", "(b) ÷FSTB(4) = 8:6:5.", "(c) ×GSTK(10) = 6:7.", "(d) ×100=4:12:56, ÷FSTB(4)=1:3:14."], "ans": "(a) 4:9 (b) 8:6:5 (c) 6:7 (d) 1:3:14"}], "exercises": [{"group": "4.1a", "title": "Latih Diri 4.1a — Nisbah Tiga Kuantiti", "questions": [{"num": 1, "stem": "Wakilkan hubungan antara tiga kuantiti berikut dalam bentuk a : b : c.\n(a) 2 minggu kepada 16 hari kepada 1 minggu\n(b) 0.1 kg kepada 50 g kepada 0.25 kg\n(c) 4 minit kepada 120 saat kepada 1.6 jam\n(d) 3 1/5 m kepada 480 cm kepada 6400 mm", "parts": [{"label": "a", "ans": ["14:16:7"], "steps": ["Tukar kepada unit sama (hari): 2 minggu=14 hari, 16 hari, 1 minggu=7 hari.", "Nisbah = 14 : 16 : 7."]}, {"label": "b", "ans": ["2:1:5"], "steps": ["Tukar kepada g: 100 g, 50 g, 250 g.", "Bahagi dengan FSTB=50: 2 : 1 : 5."]}, {"label": "c", "ans": ["2:1:48"], "steps": ["Tukar kepada saat: 240 s, 120 s, 5760 s (1.6 jam = 1.6×3600).", "Bahagi dengan FSTB=120: 2 : 1 : 48."]}, {"label": "d", "ans": ["2:3:4"], "steps": ["Tukar kepada mm: 3200 mm, 4800 mm, 6400 mm.", "Bahagi dengan FSTB=1600: 2 : 3 : 4."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tahir membayar RM5.60 untuk nasi beriani, RM1.20 untuk teh dan 30 sen untuk kuih. Wakilkan hubungan harga dalam bentuk a : b : c.", "parts": [{"label": null, "ans": ["56:12:3"], "steps": ["Tukar kepada sen: 560 sen, 120 sen, 30 sen.", "Bahagi dengan FSTB=10: 56 : 12 : 3."]}], "open": false, "sample": null}]}, {"group": "4.1b", "title": "Latih Diri 4.1b — Nisbah Setara", "questions": [{"num": 1, "stem": "Antara berikut, kenal pasti nisbah yang SETARA dengan 18 : 24 : 45.\n3 : 4 : 9   36 : 48 : 90   0.6 : 0.8 : 1.5   2/5 : 8/15 : 1", "parts": [{"label": null, "ans": ["36:48:90, 0.6:0.8:1.5, 2/5:8/15:1"], "steps": ["Bahagi 18:24:45 dengan 3: 6:8:15. Darab 3:4:9 dengan 3: 9:12:27 — TIDAK setara.", "18:24:45 × 2 = 36:48:90 — SETARA.", "18:24:45 ÷ 30 = 0.6:0.8:1.5 — SETARA.", "18:24:45 ÷ 45 = 2/5:8/15:1 — SETARA.", "Maka nisbah setara: 36:48:90, 0.6:0.8:1.5, dan 2/5:8/15:1."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kenal pasti dan tentukan DUA nisbah setara bagi 3 : 9.", "parts": [{"label": null, "ans": ["1:3,6:18"], "steps": ["3:9 ÷ 3 = 1:3.", "3:9 × 2 = 6:18.", "Dua nisbah setara: 1:3 dan 6:18 (atau jawapan sah lain)."]}], "open": false, "sample": null}, {"num": 3, "stem": "Seorang pekerja membancuh konkrit dengan 10 bahagian simen, 20 bahagian pasir dan 30 bahagian batu kelikir. Kenal pasti DUA nisbah setara yang mungkin.", "parts": [{"label": null, "ans": ["1:2:3,2:4:6"], "steps": ["10:20:30 ÷ 10 = 1:2:3.", "10:20:30 ÷ 5 = 2:4:6.", "Dua nisbah setara: 1:2:3 dan 2:4:6 (atau jawapan sah lain)."]}], "open": false, "sample": null}]}, {"group": "4.1c", "title": "Latih Diri 4.1c — Bentuk Termudah Nisbah", "questions": [{"num": 1, "stem": "Ungkapkan setiap nisbah berikut dalam bentuk termudah.\n(a) 240 g : 1.6 kg\n(b) 30 : 42 : 48\n(c) 2/5 : 8/9\n(d) 0.09 : 0.12 : 0.24", "parts": [{"label": "a", "ans": ["3:20"], "steps": ["Tukar unit: 240 g : 1600 g.", "Bahagi dengan FSTB=80: 3 : 20."]}, {"label": "b", "ans": ["5:7:8"], "steps": ["Bahagi dengan FSTB=6: 5 : 7 : 8."]}, {"label": "c", "ans": ["9:20"], "steps": ["Darab dengan GSTK(5,9)=45: 18 : 40.", "Bahagi dengan FSTB=2: 9 : 20."]}, {"label": "d", "ans": ["3:4:8"], "steps": ["Darab dengan 100: 9 : 12 : 24.", "Bahagi dengan FSTB=3: 3 : 4 : 8."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 4.1", "title": "Mahir Diri 4.1", "questions": [{"num": 1, "stem": "Tiga segi empat sama A, B, C bersisi 2 cm, 3 cm, 4 cm.\n(a)(i) Nisbah panjang sisi A:B:C\n(a)(ii) Nisbah perimeter A:B:C\n(a)(iii) Nisbah luas A:B:C\n(b) Tulis satu nisbah setara berdasarkan (a)(iii).\n(c) Apakah hubungan antara nombor dalam nisbah luas dengan nisbah panjang sisi?", "parts": [{"label": "i", "ans": ["2:3:4"], "steps": ["Panjang sisi terus dibandingkan: 2:3:4."]}, {"label": "ii", "ans": ["8:12:16"], "steps": ["Perimeter = 4×sisi setiap satu: 8:12:16 (nisbah sama dengan 2:3:4 ×4)."]}, {"label": "iii", "ans": ["4:9:16"], "steps": ["Luas = sisi² setiap satu: 4:9:16."]}, {"label": "b", "ans": ["8:18:32"], "steps": ["4:9:16 × 2 = 8:18:32 (atau gandaan lain yang sah)."]}, {"label": "c", "ans": ["kuasa dua"], "steps": ["Nombor dalam nisbah luas ialah KUASA DUA nombor sepadan dalam nisbah panjang sisi (2²=4, 3²=9, 4²=16)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Mekanik menggunakan bicu berdaya 120 paun untuk mengangkat kereta berjisim 1350 kg. Nyatakan nisbah jisim kereta kepada daya, dalam bentuk termudah. (1 paun = 0.45 kg)", "parts": [{"label": null, "ans": ["25:1"], "steps": ["Daya = 120 paun = 120×0.45 = 54 kg.", "Nisbah = 1350 : 54.", "Bahagi dengan FSTB=54: 25 : 1."]}], "open": false, "sample": null}, {"num": 3, "stem": "Jadual murid: Kelas 1 Amanah (12L,16P), 1 Bestari (9L,20P), 1 Cekap (9L,12P).\n(a) Kelas manakah mempunyai nisbah perempuan:lelaki SAMA?\n(b) Tulis nisbah perempuan Amanah:Bestari:Cekap.\n(c) Jika Amanah & Bestari digabung semasa PJPK, cari nisbah perempuan:lelaki gabungan (bentuk termudah).", "parts": [{"label": "a", "ans": ["amanah dan cekap"], "steps": ["Amanah: 16:12=4:3. Bestari: 20:9 (tak dapat dipermudah ke 4:3). Cekap: 12:9=4:3.", "Kelas 1 Amanah dan 1 Cekap mempunyai nisbah SAMA (4:3)."]}, {"label": "b", "ans": ["16:20:12"], "steps": ["Terus bandingkan bilangan perempuan setiap kelas: 16:20:12."]}, {"label": "c", "ans": ["12:7"], "steps": ["Gabungan: perempuan=16+20=36, lelaki=12+9=21.", "36:21 ÷ 3 = 12:7."]}], "open": false, "sample": null}, {"num": 4, "stem": "Kenal pasti nisbah setara bagi 1 : 5.", "parts": [], "open": true, "sample": "Contoh nisbah setara bagi 1:5 ialah 2:10, 3:15, atau sebarang gandaan k:5k dengan k>0."}, {"num": 5, "stem": "Kenal pasti DUA nisbah setara bagi setiap pecahan bahagian berlorek dalam suatu rajah, jika nisbah asasnya (a) 5:9 (b) 5:12.", "parts": [{"label": "a", "ans": ["15:27"], "steps": ["5:9 × 3 = 15:27."]}, {"label": "b", "ans": ["10:24,15:36"], "steps": ["5:12 × 2 = 10:24.", "5:12 × 3 = 15:36."]}], "open": false, "sample": null}, {"num": 6, "stem": "Pekebun sediakan medium semaian dengan 3 bahagian tanah loam, 2 bahagian tanah organik, 1 bahagian pasir sungai. Kenal pasti DUA nisbah setara yang mungkin.", "parts": [{"label": null, "ans": ["6:4:2,18:12:6"], "steps": ["3:2:1 × 2 = 6:4:2.", "3:2:1 × 6 = 18:12:6.", "(atau jawapan sah lain)"]}], "open": false, "sample": null}]}]}, {"code": "4.2", "title": "4.2 Kadar", "notes": [{"heading": "Apakah Kadar?", "html": "<b>Kadar</b> ialah kes khas nisbah yang membandingkan DUA kuantiti dengan UNIT BERBEZA. Contoh: 285 km/3 jam (jarak & masa)."}, {"heading": "Menukar Unit Kadar", "html": "Untuk banding kadar, tukar kepada unit SAMA dahulu (cth: kg/m³ ke g/cm³, atau m/s ke km/j) sebelum membuat perbandingan."}], "examples": [{"title": "Contoh 5", "q": "Nyatakan kadar dan kuantiti terlibat: (a) Fatin beli 2kg mangga RM10 (b) Kereta guna 1 liter petrol untuk 12km.", "steps": ["(a) Kadar=RM10/2kg. Kuantiti: jisim(kg), wang(RM).", "(b) Kadar=12km/1liter. Kuantiti: jarak(km), isipadu(liter)."], "ans": "(a) RM10/2kg (b) 12km/1liter"}, {"title": "Contoh 6", "q": "(a) Tukar 5 m/s kepada km/j. (b) Tukar ketumpatan 2700 kg/m³ kepada g/cm³.", "steps": ["(a) 5m/s = 5÷1000 km ÷ (1/3600) jam = 5×3600/1000 = 18 km/j.", "(b) 2700kg/m³ = 2700×1000g ÷ (100×100×100)cm³ = 2.7 g/cm³."], "ans": "(a) 18 km/j (b) 2.7 g/cm³"}], "exercises": [{"group": "4.2a", "title": "Latih Diri 4.2a — Mengenal Kadar", "questions": [{"num": 1, "stem": "Nyatakan kadar dan DUA kuantiti (termasuk unit) yang terlibat.\n(a) Tambang kereta api 2 penumpang dewasa JB-KL ialah RM154.\n(b) 20 liter air mengalir keluar setiap kali dipam.\n(c) Yuran tuisyen Haruiri RM240 untuk 4 mata pelajaran.\n(d) Baja untuk kebun 10 hektar ialah RM500.\n(e) Gandar enjin berputar 600 putaran dalam 3 saat.", "parts": [{"label": "a", "ans": ["rm154/2 penumpang; wang(rm) dan bilangan penumpang"], "steps": ["Kadar = RM154/2 orang penumpang.", "Kuantiti: jumlah wang (RM) dan bilangan penumpang (orang)."]}, {"label": "b", "ans": ["20 liter/1 kali; isipadu(liter) dan bilangan kali"], "steps": ["Kadar = 20 liter/1 kali pam.", "Kuantiti: isi padu (liter) dan bilangan kali pam."]}, {"label": "c", "ans": ["rm240/4 matapelajaran; wang(rm) dan bilangan matapelajaran"], "steps": ["Kadar = RM240/4 mata pelajaran.", "Kuantiti: jumlah wang (RM) dan bilangan mata pelajaran."]}, {"label": "d", "ans": ["rm500/10 hektar; wang(rm) dan luas(hektar)"], "steps": ["Kadar = RM500/10 hektar.", "Kuantiti: jumlah wang (RM) dan luas (hektar)."]}, {"label": "e", "ans": ["600 putaran/3 saat; bilangan putaran dan masa(saat)"], "steps": ["Kadar = 600 putaran/3 saat.", "Kuantiti: bilangan putaran dan masa (saat)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Objek A bergerak 25 m per saat manakala Objek B bergerak 8 km per jam. Tukarkan unit untuk menentukan objek yang lebih laju.", "parts": [{"label": null, "ans": ["objek a"], "steps": ["Tukar A ke km/j: 25 m/s = 25×3600/1000 = 90 km/j.", "B = 8 km/j.", "90 km/j > 8 km/j, maka OBJEK A lebih laju."]}], "open": false, "sample": null}, {"num": 3, "stem": "Jisim per unit luas sejenis kepingan logam ialah 3 kg per m². Nyatakan kadar itu dalam g per 100 cm².", "parts": [{"label": null, "ans": ["30"], "steps": ["1 m² = 10 000 cm². 3 kg = 3000 g.", "Kadar = 3000 g ÷ 10 000 cm² = 0.3 g per cm² = 30 g per 100 cm²."]}], "open": false, "sample": null}, {"num": 4, "stem": "Sebuah ladang kelapa sawit guna baja pada kadar 350 kg per hektar. Nyatakan dalam g per m². [1 hektar = 10 000 m²]", "parts": [{"label": null, "ans": ["35"], "steps": ["350 kg = 350 000 g.", "Kadar = 350 000 g ÷ 10 000 m² = 35 g per m²."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 4.2", "title": "Mahir Diri 4.2", "questions": [{"num": 1, "stem": "Seketul aluminium berisi padu 5 cm³ mempunyai jisim 13.5 g. Cari ketumpatan aluminium itu dalam g per cm³.", "parts": [{"label": null, "ans": ["2.7"], "steps": ["Ketumpatan = jisim ÷ isi padu = 13.5 ÷ 5 = 2.7 g/cm³."]}], "open": false, "sample": null}, {"num": 2, "stem": "Jadual jisim orang utan: Borneo (lahir 0.3 kg, 60 hari 6.3 kg), Sumatera (lahir 0.7 kg, 60 hari 7.7 kg).\n(a)(i) Nisbah jisim lahir:60hari bagi kedua-dua spesies.\n(a)(ii) Kadar pertumbuhan kedua-dua spesies (kg per 60 hari).\n(b) Nyatakan dua kuantiti yang terlibat dalam kadar (a)(ii).", "parts": [{"label": "i", "ans": ["borneo 1:21, sumatera 1:11"], "steps": ["Borneo: 0.3:6.3 ÷0.3 = 1:21.", "Sumatera: 0.7:7.7 ÷0.7 = 1:11."]}, {"label": "ii", "ans": ["borneo 6kg/60hari, sumatera 7kg/60hari"], "steps": ["Pertambahan Borneo = 6.3–0.3 = 6 kg dalam 60 hari.", "Pertambahan Sumatera = 7.7–0.7 = 7 kg dalam 60 hari."]}, {"label": "b", "ans": ["jisim(kg) dan masa(hari)"], "steps": ["Dua kuantiti: jisim (kg) dan masa (hari)."]}], "open": false, "sample": null}, {"num": 3, "stem": "Susu kotak: 250 ml @RM2.25, 500 ml @RM4.00, 1 liter @RM7.50.\n(a) Tulis kadar harga setiap susu.\n(b) Harga per liter bagi susu 500 ml.\n(c) Susu manakah paling menjimatkan? Justifikasikan.", "parts": [{"label": "a", "ans": ["rm2.25/250ml, rm4.00/500ml, rm7.50/1000ml"], "steps": ["Kadar harga: RM2.25/250ml, RM4.00/500ml, RM7.50/1000ml (terus daripada data)."]}, {"label": "b", "ans": ["8.00"], "steps": ["RM4.00/500ml × 2 = RM8.00 per liter."]}, {"label": "c", "ans": ["susu kotak 1 liter"], "steps": ["250ml: RM2.25×4=RM9.00/liter. 500ml: RM8.00/liter (dari (b)). 1 liter: RM7.50/liter.", "Susu kotak 1 liter PALING MENJIMATKAN kerana harga per liternya paling rendah."]}], "open": false, "sample": null}]}]}, {"code": "4.3", "title": "4.3 Kadaran", "notes": [{"heading": "Apakah Kadaran?", "html": "<b>Kadaran</b> ialah hubungan yang menyatakan KESAMAAN antara dua nisbah atau dua kadar, ditulis dalam bentuk pecahan: a/b = c/d."}, {"heading": "Mencari Nilai Tidak Diketahui", "html": "3 kaedah utama: (1) <b>Kaedah unitari</b> — cari nilai bagi SATU unit dahulu. (2) <b>Kaedah kadaran</b> — darab/bahagi kedua-dua bahagian dengan faktor sama. (3) <b>Kaedah pendaraban silang</b> — jika a/b=c/d, maka a×d=b×c."}], "examples": [{"title": "Contoh 7", "q": "Tulis kadaran: (a) 10 kacang 17g, 30 kacang 51g. (b) 1cm peta mewakili 50km, 23.6cm mewakili 1180km.", "steps": ["(a) 17g/10biji = 51g/30biji.", "(b) 50km/1cm = 1180km/23.6cm."], "ans": "(a) 17/10=51/30 (b) 50/1=1180/23.6"}, {"title": "Contoh 8", "q": "Kos elektrik 43.6 sen bagi 2 kWj. Kos untuk 30 kWj?", "steps": ["Kaedah unitari: 1 kWj = 43.6÷2 = 21.8 sen. 30 kWj = 30×21.8 = 654 sen.", "Kaedah pendaraban silang: 43.6/2 = x/30 → x = 43.6×30÷2 = 654."], "ans": "654 sen = RM6.54"}], "exercises": [{"group": "4.3a", "title": "Latih Diri 4.3a — Menulis Kadaran", "questions": [{"num": 1, "stem": "Tulis satu kadaran bagi setiap situasi berikut.\n(a) 3 biji bola RM5, maka 12 biji bola RM20.\n(b) 4 blok kayu tinggi 24 cm, 13 blok tinggi 78 cm.\n(c) 13 murid lelaki:15 murid perempuan setiap kelas; 65 lelaki maka 75 perempuan.", "parts": [{"label": "a", "ans": ["rm5/3biji=rm20/12biji"], "steps": ["Kadaran: RM5/3 biji = RM20/12 biji."]}, {"label": "b", "ans": ["24cm/4blok=78cm/13blok"], "steps": ["Kadaran: 24 cm/4 blok = 78 cm/13 blok."]}, {"label": "c", "ans": ["13lelaki/15perempuan=65lelaki/75perempuan"], "steps": ["Kadaran: 13 lelaki/15 perempuan = 65 lelaki/75 perempuan."]}], "open": false, "sample": null}]}, {"group": "4.3b", "title": "Latih Diri 4.3b — Nilai Tidak Diketahui dalam Kadaran", "questions": [{"num": 1, "stem": "200 pemain dalam 8 pasukan ragbi (sama rata). Tentukan bilangan pemain dalam 2 pasukan.", "parts": [{"label": null, "ans": ["50"], "steps": ["Kaedah unitari: 1 pasukan = 200÷8 = 25 pemain.", "2 pasukan = 2×25 = 50 pemain."]}], "open": false, "sample": null}, {"num": 2, "stem": "Amir buat 60 tekan tubi dalam 3 minit. Berapa kali dalam 5 minit (kadar sama)?", "parts": [{"label": null, "ans": ["100"], "steps": ["Kadar = 60÷3 = 20 kali/minit.", "Dalam 5 minit = 5×20 = 100 kali."]}], "open": false, "sample": null}, {"num": 3, "stem": "Peladang tanam 3 pokok cili per 0.5 m². Berapa pokok cili dalam kawasan 85 m²?", "parts": [{"label": null, "ans": ["510"], "steps": ["Kadar = 3÷0.5 = 6 pokok/m².", "85 m² × 6 = 510 pokok cili."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 4.3", "title": "Mahir Diri 4.3", "questions": [{"num": 1, "stem": "Gear besar berputar 4 kali apabila gear kecil berputar 18 kali. Berapa kali gear besar berputar jika gear kecil berputar 54 kali?", "parts": [{"label": null, "ans": ["12"], "steps": ["Kadaran: 4/18 = x/54.", "x = 4×54÷18 = 12 kali."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tukang kebun ambil 0.5 jam memotong rumput kawasan 20m×15m, upah RM30/jam. Berapa upah untuk kawasan 40m×30m?", "parts": [{"label": null, "ans": ["60"], "steps": ["Luas asal = 300 m². Luas baharu = 1200 m² (4× lebih besar).", "Masa baharu = 0.5×4 = 2 jam.", "Upah = 2×RM30 = RM60."]}], "open": false, "sample": null}, {"num": 3, "stem": "Jika 175 ml minyak zaitun perlukan 50 ml cuka, berapa ml cuka perlu bagi 300 ml minyak zaitun (kadar sama)?", "parts": [{"label": null, "ans": ["85.71", "600/7"], "steps": ["Kadaran: 175/50 = 300/x.", "x = 300×50÷175 = 85.71 ml (2 d.p.)."]}], "open": false, "sample": null}]}]}, {"code": "4.4", "title": "4.4 Nisbah, Kadar dan Kadaran", "notes": [{"heading": "Menggabungkan Nisbah", "html": "Untuk cari p:q:r apabila diberi p:q dan q:r berasingan, SAMAKAN nilai q dahulu (guna GSTK jika perlu), kemudian gabungkan."}, {"heading": "Menyelesaikan Masalah Anggaran (Tangkap-Tanda-Lepas)", "html": "Kaedah anggaran populasi: (bilangan bertanda ditangkap semula) / (jumlah ditangkap semula) = (jumlah ditanda asal) / (populasi keseluruhan)."}], "examples": [{"title": "Contoh 9", "q": "Jika p:q=7:3 dan q:r=3:5, cari p:q:r.", "steps": ["Nilai q (3) sudah sama pada kedua-dua nisbah."], "ans": "p:q:r = 7:3:5"}, {"title": "Contoh 10", "q": "Nisbah buku cerita:rujukan=2:5. Nisbah rujukan:majalah=3:2. Cari cerita:rujukan:majalah.", "steps": ["Samakan nilai 'rujukan': GSTK(5,3)=15.", "2:5=6:15 (×3). 3:2=15:10 (×5)."], "ans": "6:15:10"}, {"title": "Contoh 11", "q": "Nisbah tepung:air=5:3. Jika tepung 480g, cari jisim air.", "steps": ["1 bahagian = 480÷5 = 96g.", "Air = 3×96 = 288g."], "ans": "288 g"}, {"title": "Contoh 12", "q": "Derma kantin:SyarikatBukuJaya:PIBG = 2:6:5. PIBG derma RM900. Cari derma kantin dan Syarikat Buku Jaya.", "steps": ["1 bahagian = 900÷5 = RM180.", "Kantin = 2×180=RM360. Syarikat Buku Jaya = 6×180=RM1080."], "ans": "RM360 dan RM1080"}, {"title": "Contoh 13", "q": "Dawai 12cm dibahagi 3 bahagian PQ,QR,RS. PQ:QR=3:2, RS=2cm. Cari PQ:QR:RS.", "steps": ["PR = 12–2 = 10cm.", "Jumlah bahagian PQ+QR = 5. 1 bahagian = 10÷5=2cm.", "PQ=3×2=6cm, QR=2×2=4cm."], "ans": "PQ:QR:RS = 6:4:2 = 3:2:1"}, {"title": "Contoh 14", "q": "Denyutan jantung 420 kali dalam 4 minit. Cari denyutan dalam 12 minit.", "steps": ["Kadaran: 420/4 = x/12.", "x = 420×12÷4 = 1260."], "ans": "1260 kali"}, {"title": "Contoh 15", "q": "Kaedah tangkap-tanda: 24 siput ditanda, tangkap semula 30 ekor dengan 5 bertanda. Anggarkan populasi.", "steps": ["5/30 = 24/x.", "x = 24×30÷5 = 144."], "ans": "144 ekor"}], "exercises": [{"group": "4.4a", "title": "Latih Diri 4.4a — Menggabungkan Nisbah", "questions": [{"num": 1, "stem": "Jika p : q = 2 : 9 dan q : r = 9 : 7, cari nisbah p : q : r.", "parts": [{"label": null, "ans": ["2:9:7"], "steps": ["Nilai q (9) sudah SAMA dalam kedua-dua nisbah, terus gabungkan.", "p : q : r = 2 : 9 : 7."]}], "open": false, "sample": null}, {"num": 2, "stem": "Wang derma P:Q = 2:3, Q:R = 4:1. Cari nisbah P:Q:R.", "parts": [{"label": null, "ans": ["8:12:3"], "steps": ["Samakan nilai Q: GSTK(3,4)=12.", "P:Q=2:3=8:12 (×4). Q:R=4:1=12:3 (×3).", "P:Q:R = 8:12:3."]}], "open": false, "sample": null}]}, {"group": "4.4b", "title": "Latih Diri 4.4b — Mencari Nilai daripada Nisbah", "questions": [{"num": 1, "stem": "Nisbah harga baju kebaya:kurung = 7:4. Baju kebaya RM84. Cari harga baju kurung.", "parts": [{"label": null, "ans": ["48"], "steps": ["1 bahagian = 84÷7 = RM12.", "Baju kurung = 4×12 = RM48."]}], "open": false, "sample": null}, {"num": 2, "stem": "Nisbah jisim Encik Arif:anak = 3:2. Jisim anak 42 kg. Cari jisim Encik Arif.", "parts": [{"label": null, "ans": ["63"], "steps": ["1 bahagian = 42÷2 = 21 kg.", "Encik Arif = 3×21 = 63 kg."]}], "open": false, "sample": null}, {"num": 3, "stem": "Zanariah:Rusita:Hanifah bayar hadiah mengikut nisbah 5:3:2. Hanifah bayar RM50. Cari jumlah bayaran Zanariah dan Rusita.", "parts": [{"label": null, "ans": ["200"], "steps": ["1 bahagian = 50÷2 = RM25.", "Zanariah = 5×25 = RM125. Rusita = 3×25 = RM75.", "Jumlah = 125+75 = RM200."]}], "open": false, "sample": null}, {"num": 4, "stem": "Kadir:Chandran:Ping Wei jawab soalan mengikut nisbah 4:6:3. Chandran jawab 30 soalan. Cari jumlah soalan dijawab Kadir dan Ping Wei.", "parts": [{"label": null, "ans": ["35"], "steps": ["1 bahagian = 30÷6 = 5.", "Kadir = 4×5 = 20. Ping Wei = 3×5 = 15.", "Jumlah = 20+15 = 35 soalan."]}], "open": false, "sample": null}, {"num": 5, "stem": "42 murid daftar 3 kelab: Komputer, Robotik, Taekwondo. Bilangan Robotik = 1/3 bilangan Komputer. Bilangan Taekwondo = 14. Cari nisbah Komputer:Robotik:Taekwondo.", "parts": [{"label": null, "ans": ["3:1:2"], "steps": ["K + K/3 + 14 = 42 → (4K/3) = 28 → K = 21.", "Robotik = 21/3 = 7.", "Nisbah = 21:7:14 ÷7 = 3:1:2."]}], "open": false, "sample": null}]}, {"group": "4.4c", "title": "Latih Diri 4.4c — Nilai daripada Kadar", "questions": [{"num": 1, "stem": "Berjalan bakar 2.9 kalori/minit. Berapa kalori dibakar dalam 20 minit?", "parts": [{"label": null, "ans": ["58"], "steps": ["2.9 × 20 = 58 kalori."]}], "open": false, "sample": null}, {"num": 2, "stem": "6 kotak jus limau RM12.25. Tentukan harga 24 kotak.", "parts": [{"label": null, "ans": ["49.00"], "steps": ["24 kotak = 4× lebih banyak daripada 6 kotak.", "Harga = 4 × RM12.25 = RM49.00."]}], "open": false, "sample": null}, {"num": 3, "stem": "8 cawan tepung buat 60 keping biskut. Berapa cawan perlu untuk 15 keping (kadar sama)?", "parts": [{"label": null, "ans": ["2"], "steps": ["Kadar = 8÷60 cawan/keping.", "15 keping = 15×8/60 = 2 cawan."]}], "open": false, "sample": null}, {"num": 4, "stem": "USD1 = RM3.90. Ahmad beri RM200, terima balik RM5 serta mata wang USD. Berapa USD diterima?", "parts": [{"label": null, "ans": ["50"], "steps": ["RM digunakan untuk USD = 200–5 = RM195.", "USD = 195 ÷ 3.90 = 50."]}], "open": false, "sample": null}]}, {"group": "4.4d", "title": "Latih Diri 4.4d — Anggaran Populasi dan Nisbah", "questions": [{"num": 1, "stem": "Kajian ikan tasik: tangkapan pertama 60 ekor ditanda. Tangkapan kedua: 5 ekor bertanda, 20 ekor tidak bertanda. Anggarkan populasi ikan.", "parts": [{"label": null, "ans": ["300"], "steps": ["Tangkapan kedua keseluruhan = 5+20 = 25 ekor.", "Kadaran: 5/25 = 60/x.", "x = 60×25÷5 = 300 ekor."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pasukan bola sepak main 28 perlawanan, menang 4 daripada setiap 7 perlawanan.\n(a) Berapa kali kalah?\n(b) Nisbah menang:kalah.\n(c) Jika trend berlanjutan, anggarkan kekalahan selepas menang 20 perlawanan.", "parts": [{"label": "a", "ans": ["12"], "steps": ["Menang = 28×(4/7) = 16.", "Kalah = 28–16 = 12 kali."]}, {"label": "b", "ans": ["4:3"], "steps": ["Menang:Kalah = 16:12 = 4:3."]}, {"label": "c", "ans": ["15"], "steps": ["Jika menang 20, kalah = 20×(3/4) = 15 kali."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 4.4", "title": "Mahir Diri 4.4", "questions": [{"num": 1, "stem": "Setiap 12 pengakap diselia 1 guru. 90 pengakap sertai kem. Bilangan MINIMUM guru pengiring?", "parts": [{"label": null, "ans": ["8"], "steps": ["90 ÷ 12 = 7.5.", "Bundarkan ke ATAS (kerana perlu penyeliaan penuh) = 8 orang guru."]}], "open": false, "sample": null}, {"num": 2, "stem": "Akmal, Bakri, Cadin kongsi kos RM4200. Cadin bayar RM2100. Kos Akmal = 3/4 kos Bakri. Cari nisbah Akmal:Bakri:Cadin.", "parts": [{"label": null, "ans": ["3:4:7"], "steps": ["Akmal+Bakri = 4200–2100 = RM2100.", "Akmal = (3/4)Bakri, jadi (3/4)B + B = 2100 → (7/4)B=2100 → B=1200, A=900.", "Nisbah = 900:1200:2100 ÷300 = 3:4:7."]}], "open": false, "sample": null}, {"num": 3, "stem": "Harga ikan: Bawal RM1.50/100g, Cencaru RM3.20/500g, Selar RM2.70/300g, Kembung RM5.40/400g. Siti mahu beli DUA jenis ikan (1kg setiap jenis) dengan jumlah harga KURANG daripada RM20. Apakah kombinasi yang boleh dibeli?", "parts": [{"label": null, "ans": ["cencaru dan selar", "cencaru dan kembung"], "steps": ["Kira harga per kg: Bawal=RM15/kg, Cencaru=RM6.40/kg, Selar=RM9.00/kg, Kembung=RM13.50/kg.", "Cari pasangan dengan jumlah <RM20: Cencaru+Selar=6.40+9.00=RM15.40 ✓. Cencaru+Kembung=6.40+13.50=RM19.90 ✓.", "Bawal+mana-mana lain melebihi RM20 kecuali dengan Cencaru (15+6.40=21.40, masih melebihi).", "Kombinasi yang sah: Cencaru & Selar, ATAU Cencaru & Kembung."]}], "open": false, "sample": null}, {"num": 4, "stem": "Graf pertumbuhan bakteria A dan B (unit: ×10 juta sel). Dalam minit pertama, Bakteria A tumbuh lebih pantas pada kadar 5 juta sel/minit (anggaran daripada graf).\n(a) Kadar pertumbuhan Bakteria A minit pertama?\n(b) Beza bilangan sel A dan B selepas 4 minit (anggaran 20 juta)?\n(c) Anggarkan masa kedua bakteria SAMA bilangan (anggaran 3.3 minit).", "parts": [{"label": "a", "ans": ["bakteria a, 40 juta per minit"], "steps": ["Berdasarkan graf, Bakteria A menunjukkan kadar pertumbuhan lebih tinggi berbanding B pada minit pertama, anggaran 40 juta sel per minit."]}, {"label": "b", "ans": ["20 juta"], "steps": ["Anggaran beza bilangan sel selepas 4 minit ialah 20 juta sel (berdasarkan bacaan graf)."]}, {"label": "c", "ans": ["3.3"], "steps": ["Anggaran masa kedua-dua bakteria mempunyai bilangan sama ialah lebih kurang 3.3 minit (titik persilangan graf)."]}], "open": false, "sample": null}, {"num": 5, "stem": "Beg baja 30 kg label 15-20-10 (%N-P-K), baki 55% mikronutrien.\n(a) Cari nisbah N:P:K.\n(b) Hitung jisim (kg) N, P, K dalam beg.", "parts": [{"label": "a", "ans": ["3:4:2"], "steps": ["N:P:K = 15:20:10 ÷5 = 3:4:2."]}, {"label": "b", "ans": ["n=4.5, p=6, k=3"], "steps": ["N = 15% × 30 = 4.5 kg.", "P = 20% × 30 = 6 kg.", "K = 10% × 30 = 3 kg."]}], "open": false, "sample": null}]}]}, {"code": "4.5", "title": "4.5 Perkaitan dengan Peratusan, Pecahan dan Perpuluhan", "notes": [{"heading": "Peratusan dan Nisbah", "html": "<b>Peratusan</b> ialah nisbah/pecahan dengan penyebut 100. Untuk cari peratusan daripada nisbah, tukar nisbah kepada pecahan dengan penyebut 100, atau darab pecahan dengan 100%."}, {"heading": "Peratusan Melalui Kadaran", "html": "Untuk cari peratusan x: x/100 = kuantiti bahagian / jumlah kuantiti, kemudian selesaikan menggunakan pendaraban silang."}], "examples": [{"title": "Contoh 16", "q": "Nisbah perempuan:lelaki=3:2. Cari peratusan perempuan.", "steps": ["Perempuan:jumlah = 3:5 = 3/5.", "3/5 × 100% = 60%."], "ans": "60%"}, {"title": "Contoh 17", "q": "Zakaria simpan 30% wang saku hariannya. Cari nisbah simpanan:jumlah wang saku.", "steps": ["30% = 30/100.", "30:100 ÷10 = 3:10."], "ans": "3:10"}, {"title": "Contoh 18", "q": "(a) 2 daripada 8 reben berwarna biru — peratusan? (b) RM15 dibelanja daripada RM300 — peratusan?", "steps": ["(a) x/100=2/8 → x=25.", "(b) y/100=15/300 → y=5."], "ans": "(a) 25% (b) 5%"}, {"title": "Contoh 19", "q": "Kemeja RM85, diskaun dipamer 45%, harga jualan RM57.80. Adakah diskaun sebenar sepadan?", "steps": ["p/100 = 57.80/85 → p=68 (harga jualan ialah 68% harga asal).", "Diskaun sebenar = 100%–68% = 32%."], "ans": "Diskaun sebenar (32%) KURANG daripada 45% yang dipamerkan"}], "exercises": [{"group": "4.5a", "title": "Latih Diri 4.5a — Nisbah dan Peratusan", "questions": [{"num": 1, "stem": "Nisbah murid bercermin mata:tidak bercermin mata = 1:3. Cari peratusan murid TIDAK bercermin mata.", "parts": [{"label": null, "ans": ["75"], "steps": ["Jumlah bahagian = 1+3 = 4.", "Peratusan tidak bercermin mata = 3/4 × 100% = 75%."]}], "open": false, "sample": null}, {"num": 2, "stem": "35% cakera keras diisi data. Cari nisbah kapasiti diisi:belum diisi.", "parts": [{"label": null, "ans": ["7:13"], "steps": ["35% diisi, 65% belum diisi.", "Nisbah = 35:65 ÷5 = 7:13."]}], "open": false, "sample": null}]}, {"group": "4.5b", "title": "Latih Diri 4.5b — Peratusan dengan Konsep Kadaran", "questions": [{"num": 1, "stem": "Tentukan peratusan dengan konsep kadaran.\n(a) 14 daripada 56 murid siapkan kerja rumah dalam 1 jam.\n(b) 18 daripada 45 murid ialah perempuan.\n(c) Burung kolibri 2g, burung unta 150kg. Apakah peratusan jisim burung UNTA berbanding jisim burung kolibri?", "parts": [{"label": "a", "ans": ["25"], "steps": ["14/56 = x/100 → x = 25%."]}, {"label": "b", "ans": ["40"], "steps": ["18/45 = x/100 → x = 40%."]}, {"label": "c", "ans": ["7500000"], "steps": ["150 kg = 150 000 g.", "Peratusan = 150000/2 × 100% = 7 500 000%."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kasut asal RM45, diskaun 25%. Berapa wang dijimatkan?", "parts": [{"label": null, "ans": ["11.25"], "steps": ["Jimat = 25% × 45 = RM11.25."]}], "open": false, "sample": null}]}, {"group": "4.5c", "title": "Latih Diri 4.5c — Menyelesaikan Masalah", "questions": [{"num": 1, "stem": "40 penumpang dalam bas. 8 turun, 18 naik di perhentian.\n(a) Peratusan yang turun berbanding jumlah ASAL?\n(b) Nisbah yang naik berbanding jumlah BAHARU?", "parts": [{"label": "a", "ans": ["20"], "steps": ["8/40 × 100% = 20%."]}, {"label": "b", "ans": ["9:25"], "steps": ["Jumlah baharu = 40–8+18 = 50.", "Nisbah naik:baharu = 18:50 = 9:25."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 4.5", "title": "Mahir Diri 4.5", "questions": [{"num": 1, "stem": "Bakul epal: nisbah merah:hijau = 3:5.\n(a) Pecahan epal merah drpd jumlah (dan perpuluhan).\n(b) Peratusan epal merah.", "parts": [{"label": "a", "ans": ["3/8;0.375"], "steps": ["Jumlah bahagian = 3+5=8. Pecahan merah = 3/8 = 0.375."]}, {"label": "b", "ans": ["37.5"], "steps": ["3/8 × 100% = 37.5%."]}], "open": false, "sample": null}, {"num": 2, "stem": "Rajah PQR dibesarkan 150% menjadi P'Q'R'.\n(a) Nisbah P'Q':PQ?\n(b) Adakah nisbah P'R':PR sama?\n(c) Terangkan makna 'dibesarkan 150%'.", "parts": [{"label": "a", "ans": ["3:2"], "steps": ["150% = 150:100 = 3:2."]}, {"label": "b", "ans": ["sama"], "steps": ["Ya, kerana pembesaran seragam (uniform) pada semua sisi."]}, {"label": "c", "ans": ["1.5 kali"], "steps": ["Bermaksud setiap sisi rajah baharu ialah 1.5 kali (150%) panjang sisi sepadan rajah asal."]}], "open": false, "sample": null}, {"num": 3, "stem": "Buku RM25 diskaun 30% di kedai. Buku sama RM20 online, diskaun 15%. Pilihan mana lebih baik?", "parts": [{"label": null, "ans": ["dalam talian", "online"], "steps": ["Kedai: 25 × (1–0.30) = 25×0.70 = RM17.50.", "Dalam talian: 20 × (1–0.15) = 20×0.85 = RM17.00.", "Pembelian DALAM TALIAN lebih baik, lebih murah 50 sen."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 4", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 4", "questions": [{"num": 1, "stem": "Padankan pasangan nisbah setara: 6:9, 6:90, 9:60 dengan 1:15, 2:3, 3:20.", "parts": [{"label": null, "ans": ["6:9=2:3, 6:90=1:15, 9:60=3:20"], "steps": ["6:9 ÷3 = 2:3.", "6:90 ÷6 = 1:15.", "9:60 ÷3 = 3:20."]}], "open": false, "sample": null}, {"num": 2, "stem": "Akuarium A ada 16 ikan emas, akuarium B ada 20.\n(a) Nisbah A:B.\n(b) Bilangan MINIMUM ikan ditambah ke setiap akuarium supaya nisbah (a) KEKAL.", "parts": [{"label": "a", "ans": ["4:5"], "steps": ["16:20 ÷4 = 4:5."]}, {"label": "b", "ans": ["a tambah 4, b tambah 5"], "steps": ["Kerana 16:20 sudah dalam bentuk termudah (4:5), tambahan minimum yang mengekalkan nisbah ialah menambah mengikut bahagian asal: A +4, B +5 (memberi 20:25=4:5)."]}], "open": false, "sample": null}, {"num": 3, "stem": "Kumpulan P: Chong:Rahim:Hassan=5:4:7, jumlah=144. Kumpulan Q: Nurin:Bala:Shanthy=3:2:1, jumlah=168.\n(a) Skor Rahim?\n(b) Nisbah skor Hassan:Bala?\n(c) Siapa skor tertinggi, berapa?", "parts": [{"label": "a", "ans": ["36"], "steps": ["1 bahagian P = 144÷16 = 9.", "Rahim = 4×9 = 36."]}, {"label": "b", "ans": ["9:8"], "steps": ["Hassan = 7×9 = 63.", "1 bahagian Q = 168÷6 = 28. Bala = 2×28 = 56.", "Nisbah Hassan:Bala = 63:56 = 9:8."]}, {"label": "c", "ans": ["nurin, 84"], "steps": ["Nurin = 3×28 = 84 — skor tertinggi berbanding semua individu lain (Chong=45,Rahim=36,Hassan=63,Bala=56,Shanthy=28)."]}], "open": false, "sample": null}, {"num": 4, "stem": "Jus oren: 400 ml @RM6.40, 950 ml @RM14.25, 1.8 l @RM21.60. Jus manakah paling menjimatkan?", "parts": [{"label": null, "ans": ["1.8 l"], "steps": ["400ml: RM6.40÷0.4 = RM16/liter.", "950ml: RM14.25÷0.95 = RM15/liter.", "1.8l: RM21.60÷1.8 = RM12/liter.", "Jus oren 1.8 liter PALING MENJIMATKAN (harga per liter terendah)."]}], "open": false, "sample": null}, {"num": 5, "stem": "Kolah 120cm×60cm×50cm diisi air pada kadar 2.4 liter/minit, bermula 0630. Bila kolah penuh? (1 l = 1000 cm³)", "parts": [{"label": null, "ans": ["0900"], "steps": ["Isi padu kolah = 120×60×50 = 360 000 cm³ = 360 liter.", "Masa = 360÷2.4 = 150 minit = 2 jam 30 minit.", "0630 + 2:30 = 0900."]}], "open": false, "sample": null}, {"num": 6, "stem": "Atong (tinggi 1.55m) ada bayang 0.93m. Anggarkan tinggi pokok jika bayangnya 6m.", "parts": [{"label": null, "ans": ["10"], "steps": ["Kadaran: tinggi/bayang = 1.55/0.93 = tinggi pokok/6.", "Tinggi pokok = 1.55×6÷0.93 ≈ 10 m."]}], "open": false, "sample": null}, {"num": 7, "stem": "Petrol RON95: 29 Feb RM1.75/l, 6 Mac RM1.60/l. Lai Huat belanja RM15 setiap kali isi.\n(a) Beza isi padu (liter) antara dua tarikh?\n(b) Rumah semasa: sewa RM300, jarak 24km/hari. Rumah baharu: sewa RM340, jarak 18km/hari. Guna petrol 20km/liter, 20 hari/bulan, harga RM1.60/l. Patutkah Lai Huat pindah?", "parts": [{"label": "a", "ans": ["0.804"], "steps": ["29Feb: 15÷1.75=8.571 liter. 6Mac: 15÷1.60=9.375 liter.", "Beza = 9.375–8.571 = 0.804 liter."]}, {"label": "b", "ans": ["tidak patut pindah, jimat rm30.40"], "steps": ["Rumah semasa: jarak bulanan=24×20=480km. Petrol=480÷20=24 liter. Kos petrol=24×1.60=RM38.40. Jumlah=300+38.40=RM338.40.", "Rumah baharu: jarak bulanan=18×20=360km. Petrol=360÷20=18 liter. Kos petrol=18×1.60=RM28.80. Jumlah=340+28.80=RM368.80.", "Rumah semasa LEBIH JIMAT (RM338.40<RM368.80), beza RM30.40. Lai Huat TIDAK PATUT pindah."]}], "open": false, "sample": null}, {"num": 8, "stem": "Kadar parking: 2 jam pertama RM1.60, setiap 1 jam berikutnya (atau sebahagian) RM1.00, selepas 5pm-10pm (sekali masuk) RM2.00, kehilangan tiket RM20.\n(a) Puan Zaiton park 1030-1400 (Rabu). Berapa bayaran?\n(b) Encik Ong park 0800-2000 (Khamis), tiket tertinggal di pejabat. Patutkah dia naik ambil tiket atau bayar denda?", "parts": [{"label": "a", "ans": ["3.60"], "steps": ["Tempoh = 3.5 jam. 2 jam pertama = RM1.60. Baki 1.5 jam dibundarkan ke 2 jam (sebahagian jam dikira penuh) = 2×RM1.00=RM2.00.", "Jumlah = 1.60+2.00 = RM3.60."]}, {"label": "b", "ans": ["naik semula ambil tiket"], "steps": ["0800-1700 (9 jam, kadar biasa): 2 jam pertama=RM1.60, baki 7 jam×RM1.00=RM7.00. Subjumlah=RM8.60.", "1700-2000 (dalam waktu 5pm-10pm, sekali masuk) = RM2.00 tambahan.", "Jumlah jika bayar normal = RM8.60+RM2.00 = RM10.60.", "RM10.60 (naik ambil tiket) JAUH LEBIH MURAH berbanding RM20 (denda kehilangan tiket). Encik Ong PATUT naik semula ke pejabat."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

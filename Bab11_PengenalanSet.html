@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (37 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 37 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "11", "chapterTitle": "Pengenalan Set", "subtopics": [{"code": "11.1", "title": "11.1 Set", "notes": [{"heading": "Apakah Set?", "html": "<b>Set</b> ialah kumpulan objek yang mempunyai ciri-ciri SEPUNYA yang jelas. Setiap objek dalam set dipanggil <b>unsur</b>."}, {"heading": "Menghuraikan Set", "html": "3 cara: (1) <b>Perihalan</b> — ayat penerangan. (2) <b>Penyenaraian</b> — {a,b,c,...} dengan koma. (3) <b>Tatatanda pembina set</b> — {x : syarat x}."}, {"heading": "Set Kosong", "html": "Set TANPA unsur langsung, ditulis ∅ atau { }. Simbol ∅ dipanggil 'phi'."}, {"heading": "Unsur dan Bilangan Unsur", "html": "∈ = 'unsur bagi' / 'ialah ahli'. ∉ = 'bukan unsur bagi'. n(P) = bilangan unsur dalam set P."}, {"heading": "Kesamaan Set", "html": "Dua set adalah SAMA jika mempunyai UNSUR YANG SAMA (tertib tidak penting, unsur berulang tidak dikira dua kali)."}], "examples": [{"title": "Contoh 1", "q": "Huraikan (a) huruf dalam 'MALAYSIA' (b) nombor ganjil <20, dgn perihalan/penyenaraian/tatatanda pembina set.", "steps": ["(a) P={M,A,L,Y,S,I} (unsur berulang tidak diulang tulis).", "(b) Q={1,3,...,19}."], "ans": "(a) P={M,A,L,Y,S,I} (b) Q={1,3,5,7,9,11,13,15,17,19}"}, {"title": "Contoh 2", "q": "P={x: x nombor perdana, 0<x<20}. Lengkapkan dgn ∈/∉: (a)5 (b)8 (c)19 (d)1.", "steps": ["P={2,3,5,7,11,13,17,19}.", "(a)5∈P (b)8∉P (c)19∈P (d)1∉P (1 bukan nombor perdana)."], "ans": "(a)∈ (b)∉ (c)∈ (d)∉"}, {"title": "Contoh 3", "q": "P={huruf dalam 'WAWASAN'}, Q={nombor 2digit dgn jumlah digit=7}. Cari n(P),n(Q).", "steps": ["P={W,A,S,N} (4 unsur, tanpa ulang).", "Q={16,25,34,43,52,61,70} (7 unsur)."], "ans": "n(P)=4, n(Q)=7"}, {"title": "Contoh 4", "q": "Set sama atau bukan? (a) P=vokal 'SEKOLAH', Q=vokal 'KEJOHANAN' (b) F=kuasa dua sempurna<50, G={4,9,16,25,36,49}", "steps": ["(a) P={E,O,A}, Q={E,O,A} - sama unsur - P=Q.", "(b) F={1,4,9,16,25,36,49} (ada 1), G tiada 1 - F≠G."], "ans": "(a) P=Q (b) F≠G"}], "exercises": [{"group": "11.1a", "title": "Latih Diri 11.1a — Mengenal Set", "questions": [{"num": 1, "stem": "Kelaskan objek berikut kepada pengangkutan DARAT, LAUT dan UDARA: Kereta, Roket, Sampan, Lori, Kapal terbang, Bot, Kapal, Van, Feri, Helikopter, Bas, Belon udara panas.", "parts": [{"label": "darat", "ans": ["kereta,lori,van,bas"], "steps": []}, {"label": "laut", "ans": ["sampan,bot,kapal,feri"], "steps": []}, {"label": "udara", "ans": ["roket,kapal terbang,helikopter,belon udara panas"], "steps": []}], "open": false, "sample": null}]}, {"group": "11.1b", "title": "Latih Diri 11.1b — Menghuraikan Set", "questions": [{"num": 1, "stem": "Huraikan set berikut dengan (i) perihalan (ii) penyenaraian (iii) tatatanda pembina set.\n(a) Warna pelangi\n(b) Gandaan bagi 3 yang kurang daripada 25", "parts": [{"label": "a-ii", "ans": ["merah,jingga,kuning,hijau,biru,indigo,ungu"], "steps": ["Perihalan: P ialah set warna pelangi.", "Penyenaraian: P = {merah, jingga, kuning, hijau, biru, indigo, ungu}.", "Tatatanda pembina set: P = {x : x ialah warna pelangi}."]}, {"label": "b-ii", "ans": ["3,6,9,12,15,18,21,24"], "steps": ["Perihalan: Q ialah set gandaan bagi 3 yang kurang daripada 25.", "Penyenaraian: Q = {3,6,9,12,15,18,21,24}.", "Tatatanda pembina set: Q = {x : x ialah gandaan bagi 3 dan x<25}."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tentukan BENAR atau PALSU.\n(a) Jika P = {segi tiga yang mempunyai pepenjuru}, maka P = kosong.\n(b) Jika Q = {nombor perdana yang juga nombor genap}, maka Q = kosong.\n(c) Jika R = {nombor ganjil yang boleh dibahagi tepat dgn 2}, maka R = kosong.\n(d) Jika S = {x : x integer negatif dan x³<0}, maka S = kosong.", "parts": [{"label": "a", "ans": ["benar"], "steps": ["Segi tiga TIADA pepenjuru (semua bucu bersebelahan) - P memang kosong - BENAR."]}, {"label": "b", "ans": ["palsu"], "steps": ["2 ialah nombor perdana DAN genap! Q = {2}, TIDAK kosong - PALSU."]}, {"label": "c", "ans": ["benar"], "steps": ["Nombor ganjil tidak boleh dibahagi tepat dengan 2 - R memang kosong - BENAR."]}, {"label": "d", "ans": ["palsu"], "steps": ["SEMUA integer negatif memenuhi x³<0 (kubus nombor negatif sentiasa negatif) - S mengandungi banyak unsur, BUKAN kosong - PALSU."]}], "open": false, "sample": null}]}, {"group": "11.1c", "title": "Latih Diri 11.1c — Unsur dalam Set", "questions": [{"num": 1, "stem": "Diberi A = {negeri-negeri di Malaysia}. Lengkapkan dengan simbol ∈ atau ∉.\n(a) Johor __ A\n(b) Langkawi __ A\n(c) Putrajaya __ A\n(d) Selangor __ A", "parts": [{"label": "a", "ans": ["masuk"], "steps": ["Johor ialah sebuah negeri - Johor ∈ A."]}, {"label": "b", "ans": ["tidak masuk"], "steps": ["Langkawi ialah pulau/daerah dalam negeri Kedah, BUKAN negeri - Langkawi ∉ A."]}, {"label": "c", "ans": ["tidak masuk"], "steps": ["Putrajaya ialah Wilayah Persekutuan, BUKAN salah satu daripada 13 negeri - Putrajaya ∉ A."]}, {"label": "d", "ans": ["masuk"], "steps": ["Selangor ialah sebuah negeri - Selangor ∈ A."]}], "open": false, "sample": null}, {"num": 2, "stem": "P = {x: x nombor ganjil, 0<x<50}, Q = {x: x gandaan sepunya bagi 4 dan 6, x<100}. Lengkapkan dengan ∈ atau ∉.\n(a) 8 __ P\n(b) 17 __ P\n(c) 63 __ P\n(d) 84 __ Q\n(e) 60 __ Q\n(f) 46 __ Q", "parts": [{"label": "a", "ans": ["tidak masuk"], "steps": ["8 genap, bukan ganjil - ∉."]}, {"label": "b", "ans": ["masuk"], "steps": ["17 ganjil, <50 - ∈."]}, {"label": "c", "ans": ["tidak masuk"], "steps": ["63 ganjil tetapi TIDAK <50 - ∉."]}, {"label": "d", "ans": ["masuk"], "steps": ["GSTK(4,6)=12. 84÷12=7 (integer) - ∈."]}, {"label": "e", "ans": ["masuk"], "steps": ["60÷12=5 - ∈."]}, {"label": "f", "ans": ["tidak masuk"], "steps": ["46÷12 bukan integer - ∉."]}], "open": false, "sample": null}]}, {"group": "11.1d", "title": "Latih Diri 11.1d — Bilangan Unsur", "questions": [{"num": 1, "stem": "Tentukan bilangan unsur.\n(a) A={kon,silinder,sfera,piramid,kubus}\n(b) B={huruf konsonan dalam 'KEMAHIRAN'}\n(c) C={warna lampu isyarat}\n(d) D={gandaan 11 yang kurang daripada 100}", "parts": [{"label": "a", "ans": ["5"], "steps": ["A ada 5 unsur - n(A)=5."]}, {"label": "b", "ans": ["5"], "steps": ["Konsonan dalam KEMAHIRAN: K,M,H,R,N (5 huruf berbeza) - n(B)=5."]}, {"label": "c", "ans": ["3"], "steps": ["Merah, kuning, hijau - n(C)=3."]}, {"label": "d", "ans": ["9"], "steps": ["11,22,...,99 = 9 nombor - n(D)=9."]}], "open": false, "sample": null}, {"num": 2, "stem": "P={integer antara -5 dgn 2}, Q={x: x<15, x genap}. Cari (a) n(P) (b) n(Q).", "parts": [{"label": "a", "ans": ["6"], "steps": ["P={-4,-3,-2,-1,0,1} = 6 unsur."]}, {"label": "b", "ans": ["7"], "steps": ["Q={2,4,6,8,10,12,14} = 7 unsur (nombor genap positif kurang drpd 15)."]}], "open": false, "sample": null}]}, {"group": "11.1e", "title": "Latih Diri 11.1e — Kesamaan Set", "questions": [{"num": 1, "stem": "Tentukan sama ada set sama atau bukan.\n(a) G={huruf dalam 'RAJIN'}, H={huruf dalam 'JIRAN'}\n(b) M={1,2,3,4,5}, N={nombor bulat kurang drpd 6}\n(c) P={gandaan 2, 25<x<45}, Q={nombor mengandungi digit 2, 25<x<45}\n(d) A={Bahasa Kebangsaan Malaysia}, B={Bahasa Melayu}", "parts": [{"label": "a", "ans": ["ya"], "steps": ["Kedua-dua set ada huruf sama: R,A,J,I,N - SET SAMA."]}, {"label": "b", "ans": ["bukan"], "steps": ["N mengandungi 0 (nombor bulat termasuk 0), M tidak - BUKAN set sama."]}, {"label": "c", "ans": ["bukan"], "steps": ["P={26,28,...,44}, Q={26,27,28,29,32,42} - unsur berbeza - BUKAN set sama."]}, {"label": "d", "ans": ["ya"], "steps": ["Bahasa Kebangsaan Malaysia IALAH Bahasa Melayu - SET SAMA."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 11.1", "title": "Mahir Diri 11.1", "questions": [{"num": 1, "stem": "Huraikan set berikut dengan perihalan.\n(a) X={a,e,i,o,u}\n(b) Y={1,4,9,16,25,36,49}", "parts": [{"label": "a", "ans": ["huruf vokal"], "steps": ["X ialah set semua huruf vokal."]}, {"label": "b", "ans": ["kuasa dua sempurna kurang 50"], "steps": ["Y ialah set kuasa dua sempurna yang kurang daripada 50."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis dengan penyenaraian.\n(a) P=set planet dalam Sistem Suria.\n(b) Q={faktor perdana bagi 30}", "parts": [{"label": "a", "ans": ["utarid,zuhrah,bumi,marikh,musytari,zuhal,uranus,neptun"], "steps": []}, {"label": "b", "ans": ["2,3,5"], "steps": ["30=2×3×5, faktor perdananya 2,3,5."]}], "open": false, "sample": null}, {"num": 3, "stem": "Tulis dgn tatatanda pembina set.\n(a) G={Mac,Mei}\n(b) H={7,14,21,28,...,98}", "parts": [{"label": "a", "ans": ["nama bulan bermula dgn m"], "steps": ["G = {x : x ialah nama bulan yang huruf pertamanya M}."]}, {"label": "b", "ans": ["gandaan 7, 1<x<100"], "steps": ["H = {x : x ialah gandaan 7 dan 1<x<100}."]}], "open": false, "sample": null}, {"num": 4, "stem": "Tentukan sama ada 4 unsur bagi setiap set.\n(a) P={1,2,3,4,5}\n(b) Q={gandaan bagi 8}\n(c) R={nombor perdana}\n(d) S={faktor bagi 52}", "parts": [{"label": "a", "ans": ["ya"], "steps": []}, {"label": "b", "ans": ["bukan"], "steps": ["4 bukan gandaan 8."]}, {"label": "c", "ans": ["bukan"], "steps": ["4 bukan nombor perdana (4=2×2)."]}, {"label": "d", "ans": ["ya"], "steps": ["52=4×13, 4 ialah faktor bagi 52."]}], "open": false, "sample": null}, {"num": 5, "stem": "A={bulan bermula huruf J}, B={negeri di Malaysia}, C={nombor 2digit, jumlah digit=5}. Cari n(A),n(B),n(C).", "parts": [{"label": "a", "ans": ["3"], "steps": ["Januari, Jun, Julai = 3."]}, {"label": "b", "ans": ["13"], "steps": ["Malaysia ada 13 negeri."]}, {"label": "c", "ans": ["5"], "steps": ["14,23,32,41,50 = 5 nombor."]}], "open": false, "sample": null}, {"num": 6, "stem": "P={7,3,13,x,11,5}, Q={nombor perdana kurang drpd 15}. Jika P=Q, cari x.", "parts": [{"label": null, "ans": ["2"], "steps": ["Q={2,3,5,7,11,13}.", "Bandingkan dgn P: unsur yang tiada dalam P ialah 2.", "x = 2."]}], "open": false, "sample": null}]}]}, {"code": "11.2", "title": "11.2 Gambar Rajah Venn, Set Semesta, Pelengkap bagi suatu Set dan Subset", "notes": [{"heading": "Set Semesta dan Pelengkap", "html": "<b>Set semesta (ξ)</b> mengandungi SEMUA unsur dalam perbincangan. <b>Pelengkap bagi set A (A')</b> ialah semua unsur dalam ξ yang BUKAN dalam A."}, {"heading": "Gambar Rajah Venn", "html": "Set semesta diwakili SEGI EMPAT TEPAT. Set lain diwakili bulatan/bujur/segi tiga DI DALAMNYA. Setiap titik = satu unsur."}, {"heading": "Subset", "html": "B ialah <b>subset</b> bagi A (B⊂A) jika SETIAP unsur B terdapat dalam A. Set kosong dan set itu sendiri SENTIASA subset bagi sebarang set. Jika set ada n unsur, bilangan subset yang mungkin = 2ⁿ."}], "examples": [{"title": "Contoh 5", "q": "Adakah {1..10} set semesta bagi {2,3,5,7}? Adakah {ganjil<10}?", "steps": ["{1..10} mengandungi semua unsur - SET SEMESTA.", "{ganjil<10} tiada unsur 2 - BUKAN set semesta."], "ans": "Ya; Bukan"}, {"title": "Contoh 6", "q": "ξ={integer,1<x<10}. Cari pelengkap (a) P=kuasa dua sempurna<10 (b) Q=faktor bagi 10.", "steps": ["ξ={2,...,9} (atau 1-10 bergantung takrifan).", "(a) P={1,4,9}. P'={2,3,5,6,7,8,10}.", "(b) Q={1,2,5,10}. Q'={3,4,6,7,8,9}."], "ans": "(a) P'={2,3,5,6,7,8,10} (b) Q'={3,4,6,7,8,9}"}, {"title": "Contoh 8", "q": "Adakah A subset B? (a) A={2,4,6},B={1..6} (b) A=perdana<20,B=ganjil<20 (c) A=huruf'SOPAN',B=huruf'KESOPANAN'", "steps": ["(a) semua unsur A dalam B - A⊂B.", "(b) 2 ada dalam A tapi bukan ganjil, tiada dalam B - A⊄B.", "(c) semua huruf SOPAN ada dalam KESOPANAN - A⊂B."], "ans": "(a) A⊂B (b) A⊄B (c) A⊂B"}, {"title": "Contoh 9", "q": "Senaraikan semua subset (a) {3,4} (b) {a,b,c}.", "steps": ["(a) 2²=4 subset.", "(b) 2³=8 subset."], "ans": "(a) ∅,{3},{4},{3,4} (b) ∅,{a},{b},{c},{a,b},{a,c},{b,c},{a,b,c}"}], "exercises": [{"group": "11.2a", "title": "Latih Diri 11.2a — Set Semesta dan Pelengkap", "questions": [{"num": 1, "stem": "Tentukan sama ada set berikut set semesta bagi {1,3,5,7,9,11,13,15}.\n(a) {nombor bulat}\n(b) {nombor perdana}\n(c) {x: integer positif, x<=15}", "parts": [{"label": "a", "ans": ["ya"], "steps": ["Mengandungi semua unsur - SET SEMESTA."]}, {"label": "b", "ans": ["bukan"], "steps": ["Tidak mengandungi 1,9,15 (bukan perdana) - BUKAN set semesta."]}, {"label": "c", "ans": ["ya"], "steps": ["Mengandungi semua unsur set itu - SET SEMESTA."]}], "open": false, "sample": null}, {"num": 2, "stem": "ξ={nombor bulat kurang drpd 10}. Tentukan pelengkap bagi\n(a) P={gandaan bagi 3}\n(b) Q={nombor perdana}", "parts": [{"label": "a", "ans": ["0,1,2,4,5,7,8"], "steps": ["ξ={0,1,2,...,9}. P={3,6,9} (gandaan 3, tidak termasuk 0 mengikut konvensyen).", "P' = ξ - P = {0,1,2,4,5,7,8}."]}, {"label": "b", "ans": ["0,1,4,6,8,9"], "steps": ["Q={2,3,5,7} (nombor perdana dalam ξ).", "Q' = {0,1,4,6,8,9}."]}], "open": false, "sample": null}]}, {"group": "11.2b", "title": "Latih Diri 11.2b — Gambar Rajah Venn (Senaraikan Unsur Setiap Rantau)", "questions": [{"num": 1, "stem": "ξ={1,3,5,7,9,11}, A={3,5,9}. Senaraikan unsur DI DALAM bulatan A dan unsur DI LUAR bulatan A (dalam ξ).", "parts": [{"label": "dalam", "ans": ["3,5,9"], "steps": []}, {"label": "luar", "ans": ["1,7,11"], "steps": ["Unsur ξ yang bukan dalam A: 1,7,11."]}], "open": false, "sample": null}, {"num": 2, "stem": "ξ={x: integer, 10<x<20}, B={nombor perdana}. Senaraikan unsur dalam B dan di luar B.", "parts": [{"label": "dalam", "ans": ["11,13,17,19"], "steps": ["Nombor perdana antara 11-19: 11,13,17,19."]}, {"label": "luar", "ans": ["12,14,15,16,18"], "steps": ["Unsur ξ lain: 12,14,15,16,18."]}], "open": false, "sample": null}]}, {"group": "11.2c", "title": "Latih Diri 11.2c — Subset", "questions": [{"num": 1, "stem": "Lengkapkan dengan ⊂ atau ⊄.\n(a) A={a,u}, B={a,e,i,o,u}: A __ B\n(b) E={gandaan 4}, F={integer positif boleh dibahagi 2}: E __ F\n(c) M={ganjil<50}, N={gandaan 5<50}: N __ M\n(d) P={sisi empat}, Q={segi empat tepat,rombus,pentagon}: Q __ P", "parts": [{"label": "a", "ans": ["subset"], "steps": ["Semua unsur A ada dalam B - A ⊂ B."]}, {"label": "b", "ans": ["subset"], "steps": ["Setiap gandaan 4 boleh dibahagi 2 - E ⊂ F."]}, {"label": "c", "ans": ["bukan subset"], "steps": ["N mengandungi 10,20,30,40 (genap, bukan ganjil) - N ⊄ M."]}, {"label": "d", "ans": ["bukan subset"], "steps": ["Pentagon BUKAN sisi empat (5 sisi) - Q ⊄ P."]}], "open": false, "sample": null}, {"num": 2, "stem": "Senaraikan SEMUA subset yang mungkin.\n(a) {p,q}\n(b) {nombor perdana kurang drpd 10}", "parts": [{"label": "a", "ans": ["kosong,{p},{q},{p,q}"], "steps": ["Subset {p,q}: kosong, {p}, {q}, {p,q} (2²=4 subset)."]}, {"label": "b", "ans": ["16 subset"], "steps": ["{2,3,5,7} ada 4 unsur, jadi 2⁴=16 subset yang mungkin (termasuk set kosong dan set itu sendiri)."]}], "open": false, "sample": null}]}, {"group": "11.2d", "title": "Latih Diri 11.2d — Subset dengan Gambar Rajah Venn", "questions": [{"num": 1, "stem": "A={10,20,30,40,50,60,70}, B={20,40,60}. Senaraikan unsur A yang BUKAN dalam B (rantau A sahaja, di luar B).", "parts": [{"label": null, "ans": ["10,30,50,70"], "steps": ["B ⊂ A. Unsur dalam A tetapi bukan B: 10,30,50,70."]}], "open": false, "sample": null}, {"num": 2, "stem": "M={huruf dalam 'BIJAK'}, N={huruf vokal dalam 'BIJAK'}. Senaraikan unsur M yang bukan N.", "parts": [{"label": null, "ans": ["b,j,k"], "steps": ["M={B,I,J,A,K}. N={I,A} (vokal).", "M bukan N: B,J,K."]}], "open": false, "sample": null}]}, {"group": "11.2e", "title": "Latih Diri 11.2e — Perkaitan Set dengan Gambar Rajah Venn", "questions": [{"num": 1, "stem": "ξ={a,b,c,d,e,f,g,h}, P={a,b,c,d}, Q={b}, R={f,g}. Senaraikan unsur DI LUAR P, Q, dan R semuanya (iaitu di luar ketiga-tiga set dalam ξ).", "parts": [{"label": null, "ans": ["e,h"], "steps": ["Unsur dalam ξ yang bukan dalam P,Q atau R: e, h.", "(Q ⊂ P kerana {b} ⊂ {a,b,c,d}.)"]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 11.2", "title": "Mahir Diri 11.2", "questions": [{"num": 1, "stem": "ξ={nombor bulat<10}, A={faktor bagi 18}, B={0,4,5,7,8}. Tentukan sama ada A'=B.", "parts": [{"label": null, "ans": ["ya"], "steps": ["A={1,2,3,6,9} (faktor 18 dalam ξ). A' = ξ-A = {0,4,5,7,8} = B.", "Maka A' = B."]}], "open": false, "sample": null}, {"num": 2, "stem": "Berdasarkan gambar rajah Venn (P dalam Q, R dalam Q, berasingan drpd P), nyatakan hubungan (a) P dgn Q (b) R dgn Q.", "parts": [{"label": "a", "ans": ["p subset q"], "steps": ["P ⊂ Q."]}, {"label": "b", "ans": ["r subset q"], "steps": ["R ⊂ Q."]}], "open": false, "sample": null}, {"num": 3, "stem": "K={kuasa dua sempurna kurang drpd 20}={1,4,9,16}.\n(a) Berapa BILANGAN subset yang mungkin bagi K?\n(b) L={1,2,...,20}. Adakah K subset L?", "parts": [{"label": "a", "ans": ["16"], "steps": ["K ada 4 unsur, bilangan subset = 2⁴ = 16."]}, {"label": "b", "ans": ["ya"], "steps": ["Semua unsur K (1,4,9,16) terdapat dalam L - K ⊂ L."]}], "open": false, "sample": null}, {"num": 4, "stem": "Dalam kelas: sebahagian perempuan bercermin mata, semua lelaki tidak bercermin mata. ξ=murid kelas, P=perempuan, Q=lelaki, R=bercermin mata. Apakah hubungan R dengan P?", "parts": [{"label": null, "ans": ["r subset p"], "steps": ["Kerana semua murid bercermin mata adalah PEREMPUAN (lelaki semuanya tidak bercermin mata), maka R ⊂ P."]}], "open": false, "sample": null}, {"num": 5, "stem": "Gambar rajah Venn menunjukkan C ⊂ B ⊂ A ⊂ ξ. Tulis hubungan ini.", "parts": [{"label": null, "ans": ["c subset b subset a subset xi"], "steps": ["C ⊂ B ⊂ A ⊂ ξ."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 11", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 11", "questions": [{"num": 1, "stem": "Huraikan P={segi empat sama,segi empat tepat,trapezium,segi empat selari,lelayang,rombus} secara perihalan.", "parts": [{"label": null, "ans": ["set sisi empat"], "steps": ["P ialah set sisi empat (kesemua bentuk yang disenaraikan mempunyai 4 sisi)."]}], "open": false, "sample": null}, {"num": 2, "stem": "A={x: x bukan integer positif dan juga bukan integer negatif}. Apakah unsur A?", "parts": [{"label": null, "ans": ["0"], "steps": ["Nombor yang bukan positif dan bukan negatif hanyalah SIFAR.", "A = {0}."]}], "open": false, "sample": null}, {"num": 3, "stem": "Tentukan set sama atau bukan.\n(a) P={nombor genap}, Q={gandaan 2}\n(b) A={0}, B=kosong\n(c) E={faktor bagi 15}, F={nombor boleh dibahagi tepat dgn 15}", "parts": [{"label": "a", "ans": ["sama"], "steps": ["Kedua-duanya set yang sama: {...,-2,0,2,4,...} - P=Q."]}, {"label": "b", "ans": ["tidak sama"], "steps": ["A mengandungi UNSUR '0', B tiada unsur langsung - A≠B."]}, {"label": "c", "ans": ["tidak sama"], "steps": ["E={1,3,5,15}, F={15,30,45,...} - unsur berbeza - E≠F."]}], "open": false, "sample": null}, {"num": 4, "stem": "ξ={x: 10<x<30, x genap}, P={gandaan bagi 4}. Cari n(P').", "parts": [{"label": null, "ans": ["4"], "steps": ["ξ = {12,14,16,18,20,22,24,26,28} → n(ξ)=9.", "P (dalam ξ) = {12,16,20,24,28} → n(P)=5.", "n(P') = n(ξ) - n(P) = 9 - 5 = 4."]}], "open": false, "sample": null}, {"num": 5, "stem": "Diberi set semesta ξ, A ⊂ ξ, B ⊂ A, C ⊂ A. Terangkan susunan set-set ini.", "parts": [], "open": true, "sample": "B dan C kedua-duanya terletak DI DALAM bulatan A, dan bulatan A terletak di dalam segi empat tepat ξ. B dan C boleh bertindih atau berasingan bergantung maklumat tambahan."}, {"num": 6, "stem": "Berdasarkan gambar rajah Venn (Q mengandungi R sepenuhnya). (a) Hubungan Q dengan R? (b) Apakah kawasan berlorek (luar R, dalam Q) mewakili?", "parts": [{"label": "a", "ans": ["r subset q"], "steps": ["R ⊂ Q."]}, {"label": "b", "ans": ["q intersect r complement"], "steps": ["Kawasan berlorek mewakili unsur dalam Q tetapi BUKAN dalam R (Q∩R')."]}], "open": false, "sample": null}, {"num": 7, "stem": "P={integer positif}, Q={nombor perdana lebih besar drpd 2}.\n(a) Set manakah set semesta? Justifikasikan.\n(b) Jika Q⊂R⊂P, takrifkan R secara perihalan.", "parts": [{"label": "a", "ans": ["p"], "steps": ["P ialah set semesta kerana P mengandungi SEMUA unsur dalam perbincangan (semua integer positif, termasuk semua nombor perdana >2)."]}, {"label": "b", "ans": ["nombor ganjil"], "steps": ["R = {nombor ganjil} (atau takrifan sesuai lain di antara Q dan P)."]}], "open": false, "sample": null}, {"num": 8, "stem": "Pusat latihan tawarkan 3 kursus (masakan,reka cipta,komputer)=set K. Setiap pilihan murid ialah subset K. Berapa CARA yang mungkin?", "parts": [{"label": null, "ans": ["8"], "steps": ["K ada 3 unsur, bilangan subset = 2³ = 8 cara (termasuk tidak memilih apa-apa)."]}], "open": false, "sample": null}, {"num": 9, "stem": "Yazid: set semesta={murid kelas 1 Bakti}, A={pengawas perempuan}. Mei Li kata pelengkap A ialah 'murid perempuan bukan pengawas'. Adakah BENAR?", "parts": [{"label": null, "ans": ["tidak benar"], "steps": ["Pelengkap A (A') ialah SEMUA murid dalam set semesta yang BUKAN ahli A.", "Ini termasuk murid PEREMPUAN yang bukan pengawas, DAN semua murid LELAKI (kerana lelaki juga bukan 'pengawas perempuan').", "Kenyataan Mei Li TIDAK BENAR kerana dia terlupa murid lelaki juga sebahagian daripada pelengkap A."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

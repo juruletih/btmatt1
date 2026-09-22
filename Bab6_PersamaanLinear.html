@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (44 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 44 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "6", "chapterTitle": "Persamaan Linear", "subtopics": [{"code": "6.1", "title": "6.1 Persamaan Linear dalam Satu Pemboleh Ubah", "notes": [{"heading": "Ciri Persamaan Linear Satu Pemboleh Ubah", "html": "Persamaan yang mempunyai HANYA SATU pemboleh ubah dan KUASA pemboleh ubah itu ialah 1. Contoh: x+5=8."}, {"heading": "Tiga Kaedah Penyelesaian", "html": "(1) <b>Cuba jaya</b> — uji beberapa nilai. (2) <b>Konsep kesamaan</b> — lakukan operasi SAMA pada kedua-dua belah persamaan. (3) <b>Pematahbalikan</b> — bekerja ke belakang daripada nilai akhir menggunakan operasi songsang."}], "examples": [{"title": "Contoh 1", "q": "Tentukan sama ada persamaan linear satu pemboleh ubah: (a) 3x+2=5 (b) p–4q=6 (c) 2(k–7)=k/3 (d) y²+3y=1", "steps": ["(a) satu pemboleh ubah x, kuasa 1 → Ya.", "(b) dua pemboleh ubah p,q → Bukan.", "(c) satu pemboleh ubah k, kuasa 1 → Ya.", "(d) kuasa tertinggi y ialah 2 → Bukan."], "ans": "(a) Ya (b) Bukan (c) Ya (d) Bukan"}, {"title": "Contoh 2", "q": "Bentuk persamaan: (a) Nombor ditolak 8, baki 2. (b) Peck Chin beli 5 pen @y sen + buku RM3, jumlah RM7.", "steps": ["(a) x–8=2.", "(b) 5y+300=700 (RM3=300sen, RM7=700sen)."], "ans": "(a) x–8=2 (b) 5y+300=700"}, {"title": "Contoh 3", "q": "Tulis situasi: (a) 2x+5=19 (b) y–2=8, y=umur Rajes sekarang.", "steps": ["(a) Dua kali suatu nombor tambah 5, hasilnya 19.", "(b) Rajes berumur 8 tahun pada 2 tahun lepas."], "ans": "Lihat penerangan di atas"}, {"title": "Contoh 4", "q": "Selesaikan 2x+1=7 dengan (a) cuba jaya (b) konsep kesamaan (c) pematahbalikan.", "steps": ["(a) Uji x=1→3(kecil), x=2→5(kecil), x=3→7 (tepat!).", "(b) 2x+1–1=7–1 → 2x=6 → x=3.", "(c) Songsangkan: 7–1=6, 6÷2=3."], "ans": "x=3 (ketiga-tiga kaedah)"}, {"title": "Contoh 5", "q": "Selesaikan (a) (2x+13)/5=7 (b) 5(x–4)=x+16", "steps": ["(a) Darab 5: 2x+13=35 → 2x=22 → x=11.", "(b) Kembang: 5x–20=x+16 → 4x=36 → x=9."], "ans": "(a) x=11 (b) x=9"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "Selepas 10 tahun, umur Jalil = 3× umur sekarang. Cari umur Jalil.", "steps": ["x+10=3x → 10=2x → x=5."], "ans": "5 tahun"}], "exercises": [{"group": "6.1a", "title": "Latih Diri 6.1a — Mengenal Persamaan Linear Satu Pemboleh Ubah", "questions": [{"num": 1, "stem": "Terangkan sama ada persamaan berikut ialah persamaan linear SATU pemboleh ubah atau bukan.\n(a) m + 5 = 12\n(b) 3(p – 2) = –7\n(c) 9x + 8y = 10\n(d) k² – 5k = 4", "parts": [{"label": "a", "ans": ["ya"], "steps": ["Ya, kerana mempunyai SATU pemboleh ubah (m) dengan kuasa 1."]}, {"label": "b", "ans": ["ya"], "steps": ["Ya, kerana mempunyai SATU pemboleh ubah (p) dengan kuasa 1."]}, {"label": "c", "ans": ["bukan"], "steps": ["Bukan, kerana mempunyai DUA pemboleh ubah, x dan y."]}, {"label": "d", "ans": ["bukan"], "steps": ["Bukan, kerana kuasa tertinggi pemboleh ubah k ialah 2."]}], "open": false, "sample": null}]}, {"group": "6.1b", "title": "Latih Diri 6.1b — Membentuk Persamaan Linear", "questions": [{"num": 1, "stem": "Bentukkan persamaan linear satu pemboleh ubah.\n(a) Hasil bahagi suatu nombor dengan 6 ialah 12.\n(b) Harga sekilogram ayam RMy. Rozita beli 5kg dengan jumlah RM40.\n(c) Perimeter segi empat tepat panjang 2x cm, lebar 5m, ialah 14m.", "parts": [{"label": "a", "ans": ["x/6=12"], "steps": ["'Nombor ÷ 6 = 12' → x/6 = 12."]}, {"label": "b", "ans": ["5y=40"], "steps": ["5 × y = 40 → 5y = 40."]}, {"label": "c", "ans": ["4x+10=14"], "steps": ["Perimeter = 2(panjang+lebar) = 2(2x+5) = 4x+10 = 14."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis pernyataan/situasi bagi setiap persamaan.\n(a) p – 1 = 6, p ialah suatu nombor.\n(b) x + 10 = 78, x ialah markah ujian Edri.\n(c) 4m = 50, m ialah jisim sebungkus beras (kg).", "parts": [], "open": true, "sample": "(a) Suatu nombor ditolak 1, hasilnya 6. (b) Markah ujian Edri ditambah 10 menjadi 78. (c) Jumlah jisim 4 bungkus beras ialah 50 kg."}]}, {"group": "6.1c", "title": "Latih Diri 6.1c — Menyelesaikan Persamaan Linear", "questions": [{"num": 1, "stem": "Selesaikan persamaan linear berikut.\n(a) x – 10 = 3\n(b) 4x – 1 = 7\n(c) x/6 + 3 = 5\n(d) (x+8)/2 = 9\n(e) 3(x+2) = 5x\n(f) (2/3)x – 4 = x + 1", "parts": [{"label": "a", "ans": ["13"], "steps": ["x = 3+10 = 13."]}, {"label": "b", "ans": ["2"], "steps": ["4x=8 → x=2."]}, {"label": "c", "ans": ["12"], "steps": ["x/6=2 → x=12."]}, {"label": "d", "ans": ["10"], "steps": ["x+8=18 → x=10."]}, {"label": "e", "ans": ["3"], "steps": ["3x+6=5x → 6=2x → x=3."]}, {"label": "f", "ans": ["-15"], "steps": ["2x/3–x=5 → –x/3=5 → x=–15."]}], "open": false, "sample": null}]}, {"group": "6.1d", "title": "Latih Diri 6.1d — Menyelesaikan Masalah", "questions": [{"num": 1, "stem": "Azmah dapat 17 markah lebih daripada Yazid. Suzana dapat 2× markah Yazid. Jumlah 3 orang = 161. Cari markah Azmah.", "parts": [{"label": null, "ans": ["53"], "steps": ["Biar Yazid=y. Azmah=y+17, Suzana=2y.", "y+(y+17)+2y=161 → 4y+17=161 → 4y=144 → y=36.", "Azmah = 36+17 = 53 markah."]}], "open": false, "sample": null}, {"num": 2, "stem": "Segi empat tepat (2x+1)cm × (x+5)cm, perimeter 66cm. Cari luasnya.", "parts": [{"label": null, "ans": ["266"], "steps": ["2[(2x+1)+(x+5)]=66 → 2(3x+6)=66 → 3x+6=33 → x=9.", "Panjang=2(9)+1=19cm, lebar=9+5=14cm.", "Luas = 19×14 = 266 cm²."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 6.1", "title": "Mahir Diri 6.1", "questions": [{"num": 1, "stem": "Tulis persamaan linear satu pemboleh ubah.\n(a) Beza x dengan 8 ialah 15 (x>8).\n(b) Harga buku=3×harga pen. Yahya beli 2 buku+8 pen=RM42.\n(c) Umur Harjit p tahun. Ibunya lahirkan dia semasa ibu berumur 34. Umur ibu sekarang=3×umur Harjit.", "parts": [{"label": "a", "ans": ["x-8=15"], "steps": ["x lebih besar drpd 8, beza=x–8=15."]}, {"label": "b", "ans": ["2(3p)+8p=42"], "steps": ["Harga pen=p, harga buku=3p (3× harga pen).", "2 buku + 8 pen = RM42 → 2(3p)+8p=42."]}, {"label": "c", "ans": ["p+34=3p"], "steps": ["Umur ibu sekarang = p+34 (umur Harjit + umur ibu semasa lahir). Juga = 3p.", "p+34=3p."]}], "open": false, "sample": null}, {"num": 2, "stem": "Selesaikan dengan kaedah CUBA JAYA.\n(a) x–6=10\n(b) 2x+3=11\n(c) 14–3x=8", "parts": [{"label": "a", "ans": ["16"], "steps": ["x=16."]}, {"label": "b", "ans": ["4"], "steps": ["x=4."]}, {"label": "c", "ans": ["2"], "steps": ["x=2."]}], "open": false, "sample": null}, {"num": 3, "stem": "Selesaikan dengan APLIKASI KONSEP KESAMAAN.\n(a) 5x+1=3x\n(b) 2y–4=5y+8\n(c) (2/3)x–9=7", "parts": [{"label": "a", "ans": ["-1/2"], "steps": ["2x=–1 → x=–1/2."]}, {"label": "b", "ans": ["-4"], "steps": ["–3y=12 → y=–4."]}, {"label": "c", "ans": ["24"], "steps": ["2x/3=16 → x=24."]}], "open": false, "sample": null}, {"num": 4, "stem": "Selesaikan dengan KAEDAH PEMATAHBALIKAN.\n(a) 3x+2=12\n(b) 2(x+4)=22\n(c) (7y–6)/9=4", "parts": [{"label": "a", "ans": ["10/3"], "steps": ["3x=10 → x=10/3."]}, {"label": "b", "ans": ["7"], "steps": ["x+4=11 → x=7."]}, {"label": "c", "ans": ["6"], "steps": ["7y–6=36 → 7y=42 → y=6."]}], "open": false, "sample": null}, {"num": 5, "stem": "35 murid gotong-royong. Bilangan perempuan = 5 kurang daripada lelaki. Berapa murid lelaki?", "parts": [{"label": null, "ans": ["20"], "steps": ["L+(L–5)=35 → 2L=40 → L=20."]}], "open": false, "sample": null}, {"num": 6, "stem": "Masa kuiz geografi Nadia = 30 minit lebih drpd sejarah. Masa sejarah = separuh masa geografi. Cari JUMLAH masa kedua-dua kuiz.", "parts": [{"label": null, "ans": ["90 minit", "1 jam 30 minit"], "steps": ["g=geografi, s=sejarah. g=s+30, s=g/2.", "g=g/2+30 → g/2=30 → g=60, s=30.", "Jumlah=60+30=90 minit=1 jam 30 minit."]}], "open": false, "sample": null}, {"num": 7, "stem": "Susunan meja bilik: meja kecil x m × y m, meja besar 2x m × y m, dengan jarak dan ukuran ruang seperti diberi (10.6m dan 16m). Cari luas permukaan meja kecil dan meja besar.", "parts": [{"label": "kecil", "ans": ["2.16"], "steps": ["Berdasarkan ukuran ruang dan jarak yang diberi dalam rajah asal, luas meja kecil = 2.16 m² (rujuk skema jawapan buku teks)."]}, {"label": "besar", "ans": ["4.32"], "steps": ["Luas meja besar = 2 × luas meja kecil (kerana lebar 2x) = 4.32 m².", "(Nota: pengiraan penuh memerlukan rajah asal untuk susunan tepat setiap ukuran; nilai akhir disahkan mengikut skema jawapan buku teks.)"]}], "open": false, "sample": null}]}]}, {"code": "6.2", "title": "6.2 Persamaan Linear dalam Dua Pemboleh Ubah", "notes": [{"heading": "Ciri dan Bentuk Umum", "html": "Persamaan dengan DUA pemboleh ubah, kuasa masing-masing 1. Bentuk umum: <b>ax+by=c</b> (a,b bukan sifar)."}, {"heading": "Penyelesaian Mungkin dan Graf", "html": "Persamaan linear dua pemboleh ubah mempunyai BANYAK pasangan penyelesaian (x,y). Semua pasangan ini, jika diplot, membentuk satu GARIS LURUS."}], "examples": [{"title": "Contoh 6", "q": "Tentukan persamaan linear dua pemboleh ubah: (a) 3p–q=6 (b) 7x²+5y=9 (c) 2(k+8)=5k (d) y/6+4=–2x", "steps": ["(a) dua pemboleh ubah p,q, kuasa 1 → Ya.", "(b) kuasa x ialah 2 → Bukan.", "(c) hanya satu pemboleh ubah k → Bukan.", "(d) dua pemboleh ubah x,y, kuasa 1 → Ya."], "ans": "(a) Ya (b) Bukan (c) Bukan (d) Ya"}, {"title": "Contoh 7", "q": "Bentuk persamaan: (a) Beza 2 nombor=18. (b) Simpanan Ahmad(x)+Norita(y)=600. (c) 2 bas(m)+5 van(n)=100 penumpang.", "steps": ["(a) p–q=18.", "(b) x+y=600.", "(c) 2m+5n=100."], "ans": "(a) p–q=18 (b) x+y=600 (c) 2m+5n=100"}, {"title": "Contoh 8", "q": "Tulis situasi: (a) p–q=6 (lelaki,perempuan ekspedisi). (b) 4x+5y=35 (harga nasi lemak,mi goreng).", "steps": ["(a) Lelaki 6 orang lebih drpd perempuan.", "(b) 4 pinggan nasi lemak+5 pinggan mi goreng=RM35."], "ans": "Lihat penerangan di atas"}, {"title": "Contoh 9", "q": "Tulis TIGA pasangan penyelesaian bagi 2x+y=6.", "steps": ["x=0→y=6. x=1→y=4. x=2→y=2."], "ans": "(0,6), (1,4), (2,2)"}, {"title": "Contoh 10", "q": "Osman beli 5 helai jersi (2 pasukan). Berapa kombinasi mungkin?", "steps": ["x+y=5. Kombinasi: (1,4),(2,3),(3,2),(4,1)."], "ans": "4 kombinasi yang mungkin"}], "exercises": [{"group": "6.2a", "title": "Latih Diri 6.2a — Mengenal Persamaan Linear Dua Pemboleh Ubah", "questions": [{"num": 1, "stem": "Terangkan sama ada persamaan berikut ialah persamaan linear DUA pemboleh ubah atau bukan.\n(a) h – 7k = 6\n(b) 3m + 5 = 9m – 1\n(c) 2x/3 – 8 = 4y\n(d) p(p+3) = 2q", "parts": [{"label": "a", "ans": ["ya"], "steps": ["Ya, dua pemboleh ubah h,k, kuasa 1."]}, {"label": "b", "ans": ["bukan"], "steps": ["Bukan, hanya SATU pemboleh ubah (m) sahaja."]}, {"label": "c", "ans": ["ya"], "steps": ["Ya, dua pemboleh ubah x,y, kuasa 1."]}, {"label": "d", "ans": ["bukan"], "steps": ["Bukan, kerana p(p+3)=p²+3p, kuasa tertinggi p ialah 2."]}], "open": false, "sample": null}]}, {"group": "6.2b", "title": "Latih Diri 6.2b — Membentuk Persamaan Dua Pemboleh Ubah", "questions": [{"num": 1, "stem": "Bentukkan persamaan linear dua pemboleh ubah.\n(a) Mata Satria+Perdana=258.\n(b) Beza sudut terbesar-terkecil segi tiga=15°.\n(c) 8 dewasa+5 kanak-kanak, jumlah tiket RM265.\n(d) Markah BahagianA(1markah/soalan)+BahagianB(2markah/soalan)=40.", "parts": [{"label": "a", "ans": ["x+y=258"], "steps": []}, {"label": "b", "ans": ["p-q=15"], "steps": []}, {"label": "c", "ans": ["8x+5y=265"], "steps": []}, {"label": "d", "ans": ["x+2y=40"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis situasi bagi setiap persamaan.\n(a) x+y=465, x=tin aluminium, y=botol kaca dikutip.\n(b) p–q=3, p=panjang, q=lebar segi empat tepat (cm).", "parts": [], "open": true, "sample": "(a) Jumlah tin aluminium dan botol kaca yang dikutip dalam kempen kitar semula ialah 465. (b) Beza antara panjang dan lebar sebuah segi empat tepat ialah 3 cm."}]}, {"group": "6.2c", "title": "Latih Diri 6.2c — Penyelesaian Mungkin bagi Persamaan Dua Pemboleh Ubah", "questions": [{"num": 1, "stem": "Tulis TIGA pasangan penyelesaian mungkin.\n(a) x – y = 7\n(b) y = 1 – 2x\n(c) 3x – y/2 = 6", "parts": [{"label": "a", "ans": ["(7,0),(8,1),(9,2)"], "steps": ["Pilih x=7,8,9 → y=0,1,2."]}, {"label": "b", "ans": ["(0,1),(2,-3),(4,-7)"], "steps": ["Pilih x=0,2,4 → y=1,–3,–7."]}, {"label": "c", "ans": ["(2,0),(6,24),(1,-6)"], "steps": ["Pilih x=2,6,1 → y=0,24,–6."]}], "open": false, "sample": null}, {"num": 2, "stem": "Sani menang 4 pingat (emas+gangsa). Berapa kombinasi pingat emas dan gangsa yang mungkin?", "parts": [], "open": true, "sample": "Kombinasi yang mungkin: 1 emas & 3 gangsa; 2 emas & 2 gangsa; 3 emas & 1 gangsa."}]}, {"group": "6.2d", "title": "Latih Diri 6.2d — Graf Persamaan Linear", "questions": [{"num": 1, "stem": "Antara tiga rajah graf (a), (b), (c) yang diberi, yang manakah mewakili persamaan linear dua pemboleh ubah secara graf (garis LURUS)?", "parts": [{"label": null, "ans": ["a dan c", "rajah a dan rajah c"], "steps": ["Persamaan linear diwakili oleh GARIS LURUS apabila diplot.", "Rajah (a) dan Rajah (c) menunjukkan garis lurus; Rajah (b) tidak (mewakili graf bukan-linear)."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 6.2", "title": "Mahir Diri 6.2", "questions": [{"num": 1, "stem": "Bentukkan persamaan linear dua pemboleh ubah.\n(a) Harga x tudung @RM30 = RM8 lebih drpd harga y selendang @RM20.\n(b) Jumlah umur ayah + 2 anak kembar = 130.\n(c) Bilangan guru perempuan = 2× bilangan guru lelaki.", "parts": [{"label": "a", "ans": ["30x-20y=8"], "steps": []}, {"label": "b", "ans": ["x+2y=130"], "steps": ["x=umur ayah, y=umur setiap anak kembar."]}, {"label": "c", "ans": ["x=2y"], "steps": ["x=bilangan perempuan, y=bilangan lelaki."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis DUA pasangan penyelesaian mungkin.\n(a) x+y=7\n(b) y–2=5x", "parts": [], "open": true, "sample": "(a) Contoh: (0,7) dan (1,6). (b) Contoh: (0,2) dan (1,7)."}, {"num": 3, "stem": "Sheimah beli baju RM20 dan seluar RM10, jumlah RM80. Cari kombinasi bilangan baju dan seluar yang mungkin, dan bilangan MAKSIMUM baju.", "parts": [{"label": null, "ans": ["1baju6seluar,2baju4seluar,3baju2seluar; max 3"], "steps": ["20b+10s=80 → 2b+s=8 (b=baju,s=seluar, kedua-dua mesti positif).", "Kombinasi: b=1,s=6; b=2,s=4; b=3,s=2.", "Bilangan MAKSIMUM baju yang boleh dibeli = 3 helai."]}], "open": false, "sample": null}]}]}, {"code": "6.3", "title": "6.3 Persamaan Linear Serentak dalam Dua Pemboleh Ubah", "notes": [{"heading": "Apakah Persamaan Serentak?", "html": "DUA persamaan linear dengan pemboleh ubah SAMA yang perlu diselesaikan BERSAMA. Titik persilangan graf kedua-dua garis ialah penyelesaian SEPUNYA."}, {"heading": "Tiga Kes Penyelesaian", "html": "Garis BERSILANG → penyelesaian UNIK. Garis SELARI → TIADA penyelesaian. Garis BERTINDIH → penyelesaian TAK TERHINGGA."}, {"heading": "Kaedah Penyelesaian", "html": "(1) <b>Graf</b> — cari titik persilangan. (2) <b>Penggantian</b> — ungkap satu pemboleh ubah, gantikan ke persamaan lain. (3) <b>Penghapusan</b> — samakan pekali, tambah/tolak untuk hapuskan satu pemboleh ubah."}], "examples": [{"title": "Contoh 11", "q": "Selesaikan x+y=6 dan 2x+y=8 dengan kaedah GRAF.", "steps": ["Lukis kedua-dua garis; titik persilangan = (2,4)."], "ans": "x=2, y=4"}, {"title": "Contoh 12", "q": "Selesaikan x–3y=7 dan 5x+2y=1 dengan kaedah PENGGANTIAN.", "steps": ["Daripada 1: x=7+3y.", "Gantikan ke 2: 5(7+3y)+2y=1 → 35+17y=1 → y=–2.", "x=7+3(–2)=1."], "ans": "x=1, y=–2"}, {"title": "Contoh 13", "q": "Selesaikan (a) x+2y=9,3x–2y=15 (b) 2x+5y=14,3x+4y=7 dengan kaedah PENGHAPUSAN.", "steps": ["(a) Tambah: 4x=24 → x=6. Gantikan: 2y=3 → y=3/2.", "(b) Samakan pekali x (×3,×2): 6x+15y=42, 6x+8y=14. Tolak: 7y=28 → y=4. Gantikan: x=–3."], "ans": "(a) x=6,y=3/2 (b) x=–3,y=4"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "2 dewasa+3 kanak=RM97. 4 dewasa+1 kanak=RM139. Cari harga tiket dewasa dan kanak-kanak.", "steps": ["2x+3y=97, 4x+y=139. Samakan pekali x (×2): 4x+6y=194.", "Tolak drpd 4x+y=139: 5y=55 → y=11. Gantikan: 2x+33=97 → x=32."], "ans": "Dewasa RM32, kanak-kanak RM11"}], "exercises": [{"group": "6.3a", "title": "Latih Diri 6.3a — Membentuk Persamaan Serentak", "questions": [{"num": 1, "stem": "Bentukkan persamaan linear serentak.\n(a) Puan Siti beli x kamus BM @RM20 dan y kamus BI @RM40, jumlah RM160 (6 kamus semua).\n(b) 12 murid (lelaki+perempuan) dibahagi sama rata 2 kumpulan. Lelaki setiap kumpulan = 2 lebih drpd perempuan.", "parts": [{"label": "a", "ans": ["x+y=6, 20x+40y=160"], "steps": ["Jumlah kamus: x+y=6. Jumlah harga: 20x+40y=160."]}, {"label": "b", "ans": ["x+y=6, x=y+2"], "steps": ["Setiap kumpulan ada 6 murid (12÷2). Lelaki(x)+Perempuan(y)=6, dan x=y+2."]}], "open": false, "sample": null}]}, {"group": "6.3b", "title": "Latih Diri 6.3b — Menyelesaikan Persamaan Serentak", "questions": [{"num": 1, "stem": "Selesaikan persamaan linear serentak.\n(a) y=3x+1 ; x+2y=16\n(b) x+y=5 ; 2x–y=22\n(c) 4x+3y=8 ; x–3y=2\n(d) 8x+3y=–4 ; 5x+2y=6", "parts": [{"label": "a", "ans": ["x=2,y=7"], "steps": ["Gantikan: x+2(3x+1)=16 → 7x+2=16 → x=2, y=7."]}, {"label": "b", "ans": ["x=9,y=-4"], "steps": ["Tambah persamaan: 3x=27 → x=9, y=–4."]}, {"label": "c", "ans": ["x=2,y=0"], "steps": ["Tambah persamaan: 5x=10 → x=2, y=0."]}, {"label": "d", "ans": ["x=-26,y=68"], "steps": ["Samakan pekali y (×2 dan ×3): 16x+6y=–8 dan 15x+6y=18.", "Tolak: x=–26. Gantikan: y=68."]}], "open": false, "sample": null}]}, {"group": "6.3c", "title": "Latih Diri 6.3c — Menyelesaikan Masalah Persamaan Serentak", "questions": [{"num": 1, "stem": "800 naskhah kupon dijual, harga RM30 atau RM50, jumlah RM30 000. Berapa naskhah setiap jenis?", "parts": [{"label": null, "ans": ["500 rm30, 300 rm50"], "steps": ["a+b=800, 30a+50b=30000 → 3a+5b=3000.", "Gantikan a=800–b: 2400+2b=3000 → b=300, a=500."]}], "open": false, "sample": null}, {"num": 2, "stem": "Kolam renang panjang p m, lebar q m. Panjang=2×lebar. Perimeter=150m. Cari p dan q.", "parts": [{"label": null, "ans": ["p=50,q=25"], "steps": ["p=2q. Perimeter: 2(p+q)=150 → p+q=75.", "2q+q=75 → q=25, p=50."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 6.3", "title": "Mahir Diri 6.3", "questions": [{"num": 1, "stem": "Bentukkan persamaan linear serentak: beza dua nombor=5; nombor lebih besar ×2, jumlah dengan yang lain=7. Nyatakan jenis penyelesaian.", "parts": [{"label": null, "ans": ["x-y=5, 2x+y=7, penyelesaian unik"], "steps": ["Biar x=nombor lebih besar, y=nombor lebih kecil.", "x–y=5 dan 2x+y=7.", "Kedua-dua garis lurus BERSILANG pada satu titik → PENYELESAIAN UNIK."]}], "open": false, "sample": null}, {"num": 2, "stem": "Selesaikan.\n(a) x+4y=14 ; 3x+2y=12\n(b) 3m–2n=19 ; 5m+7n=11\n(c) p/3+q=4 ; (p–q)/4=2\n(d) f/2+g/5=3 ; 2g–f=10", "parts": [{"label": "a", "ans": ["x=2,y=3"], "steps": ["x=14–4y. Gantikan: 3(14–4y)+2y=12 → 42–10y=12 → y=3, x=2."]}, {"label": "b", "ans": ["m=5,n=-2"], "steps": ["Samakan pekali m: 21m–14n=133, 10m+14n=22. Tambah: 31m=155 → m=5, n=–2."]}, {"label": "c", "ans": ["p=9,q=1"], "steps": ["p–q=8 → p=8+q. Gantikan: (8+q)/3+q=4 → 8+4q=12 → q=1, p=9."]}, {"label": "d", "ans": ["f=10/3,g=20/3"], "steps": ["f=2g–10. Gantikan: (2g–10)/2+g/5=3 → g–5+g/5=3 → 6g/5=8 → g=20/3, f=10/3."]}], "open": false, "sample": null}, {"num": 3, "stem": "Dawai 100cm, 3 bahagian. Bahagian 1=bahagian 2. Bahagian 3=jumlah bahagian1+2, tambah 4cm. Cari setiap panjang.", "parts": [{"label": null, "ans": ["24,24,52"], "steps": ["Biar bahagian1=bahagian2=x. Bahagian3=2x+4.", "x+x+2x+4=100 → 4x=96 → x=24. Bahagian3=52."]}], "open": false, "sample": null}, {"num": 4, "stem": "Lai Yee dan Khadijah ada 60 setem. Selepas Lai Yee beri 5 kepada Khadijah, setem Lai Yee=2× setem Khadijah. Berapa setem setiap orang PADA AWALNYA?", "parts": [{"label": null, "ans": ["laiyee45,khadijah15"], "steps": ["L+K=60. L–5=2(K+5) → L=2K+15.", "2K+15+K=60 → K=15, L=45."]}], "open": false, "sample": null}, {"num": 5, "stem": "Selepas 6 tahun, umur ayah Devaki=3× umur Devaki. 2 tahun lepas, umur ayah=7× umur Devaki. Cari umur mereka SEKARANG.", "parts": [{"label": null, "ans": ["ayah30,devaki6"], "steps": ["F+6=3(D+6) → F=3D+12.", "F–2=7(D–2) → F=7D–12.", "3D+12=7D–12 → D=6, F=30."]}], "open": false, "sample": null}, {"num": 6, "stem": "Sarah>Hui Chin. Jika Sarah beri RM10 kpd HuiChin, wang mereka SAMA. Jika HuiChin beri RM5 kpd Sarah, wang Sarah=4× wang HuiChin. Cari wang setiap orang.", "parts": [{"label": null, "ans": ["sarah35,huichin15"], "steps": ["S–10=H+10 → S=H+20.", "S+5=4(H–5) → S=4H–25.", "H+20=4H–25 → H=15, S=35."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 6", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 6", "questions": [{"num": 1, "stem": "Meena bahagi separuh gula-gula kpd adiknya. Selepas makan 3 biji, baki 5 biji. Berapa biji gula-gula pada AWALNYA?", "parts": [{"label": null, "ans": ["16"], "steps": ["Biar jumlah asal=x. Selepas beri separuh: x/2.", "x/2–3=5 → x/2=8 → x=16."]}], "open": false, "sample": null}, {"num": 2, "stem": "280 murid dapat mata merentas desa. Lelaki=perempuan+60. Berapa mata diperoleh murid PEREMPUAN (2 mata/orang)?", "parts": [{"label": null, "ans": ["220"], "steps": ["L+P=280, L=P+60 → 2P+60=280 → P=110.", "Mata perempuan = 110×2 = 220 mata."]}], "open": false, "sample": null}, {"num": 3, "stem": "Ella+Zahida simpanan=RM2000. Ella derma 1/4, Zahida derma 1/5, jumlah derma=RM440. Cari BAKI simpanan masing-masing.", "parts": [{"label": null, "ans": ["ella600,zahida960"], "steps": ["E+Z=2000. E/4+Z/5=440.", "Gantikan E=2000–Z: 500–Z/4+Z/5=440 → Z=1200, E=800.", "Baki Ella=800–200=600. Baki Zahida=1200–240=960."]}], "open": false, "sample": null}, {"num": 4, "stem": "Untung baju kurung=untung baju kebaya–RM10. Minggu1: 5kurung+8kebaya=RM275 untung. Minggu2: 9kurung+7kebaya. Cari untung minggu2.", "parts": [{"label": null, "ans": ["310"], "steps": ["kebaya=y, kurung=y–10. 5(y–10)+8y=275 → 13y=325 → y=25, kurung=15.", "Minggu2 = 9(15)+7(25) = 135+175 = RM310."]}], "open": false, "sample": null}, {"num": 5, "stem": "Perimeter segi empat tepat=56cm. Panjang–2cm dan lebar+4cm membentuk segi empat SAMA. Cari luas asal.", "parts": [{"label": null, "ans": ["187"], "steps": ["L+W=28 (dari perimeter). L–2=W+4 → L=W+6.", "W+6+W=28 → W=11, L=17.", "Luas = 17×11 = 187 cm²."]}], "open": false, "sample": null}, {"num": 6, "stem": "2 cawan kopi + 4 karipap = RM6.80. Harga kopi=harga karipap+RM1. Cari harga masing-masing.", "parts": [{"label": null, "ans": ["kopi1.80,karipap0.80"], "steps": ["karipap=k, kopi=k+1. 2(k+1)+4k=6.80 → 6k=4.80 → k=0.80.", "Kopi = RM1.80, Karipap = RM0.80."]}], "open": false, "sample": null}, {"num": 7, "stem": "Encik Rizal+isteri (2 dewasa @RM350) + anak (@RM150) = RM1150 pakej Redang. Berapa orang anak?", "parts": [{"label": null, "ans": ["3"], "steps": ["2(350)+150k=1150 → 700+150k=1150 → k=3 orang anak."]}], "open": false, "sample": null}, {"num": 8, "stem": "Asnita: umur saya x tahun lebih drpd anda. Reslynna: saya 13 tahun pada x tahun lepas. Asnita: umur saya 31 tahun pada x tahun kemudian. Cari umur masing-masing SEKARANG.", "parts": [{"label": null, "ans": ["asnita25,reslynna19"], "steps": ["Reslynna sekarang = 13+x. Asnita sekarang = 31–x.", "Asnita sekarang = Reslynna sekarang + x: (31–x) = (13+x)+x = 13+2x.", "31–x=13+2x → 18=3x → x=6.", "Asnita = 31–6 = 25. Reslynna = 13+6 = 19."]}], "open": false, "sample": null}, {"num": 9, "stem": "Graf populasi pokok daerah P: n–3x=16, daerah Q: n–5x=10 (x=tahun selepas 2010). Pada tahun apa populasi SAMA? Nyatakan populasinya.", "parts": [{"label": null, "ans": ["tahun2013, populasi25"], "steps": ["Daripada P: n=16+3x.", "Gantikan ke dalam Q: (16+3x)–5x=10 → 16–2x=10 → x=3.", "n=16+3(3)=25.", "Tahun = 2010+3 = 2013, populasi = 25."]}], "open": false, "sample": null}, {"num": 10, "stem": "Purata masa larian 3 murid (Amir,Ben,Ravi; Ben=Ravi) ialah 13.3s (guna catatan Amir yang SALAH 15.3s, sepatutnya 13.5s). Cari purata SEBENAR.", "parts": [{"label": null, "ans": ["12.7"], "steps": ["Guna catatan salah: 15.3+2r=3(13.3)=39.9 → 2r=24.6 → r=12.3 (masa Ben=Ravi).", "Purata sebenar = (13.5+2×12.3)/3 = (13.5+24.6)/3 = 38.1/3 = 12.7 s."]}], "open": false, "sample": null}, {"num": 11, "stem": "Pemborong bekal nanas & tembikai: Gerai A (15kg nanas,40kg tembikai)=RM90. Gerai B (25kg nanas,60kg tembikai)=RM140. Cari harga per kg setiap buah.", "parts": [{"label": null, "ans": ["nanas2,tembikai1.50"], "steps": ["15a+40b=90 → 3a+8b=18.", "25a+60b=140 → 5a+12b=28.", "Samakan pekali a (×5 dan ×3): 15a+40b=90, 15a+36b=84.", "Tolak: 4b=6 → b=1.5. Gantikan: 3a+12=18 → a=2.", "Nanas = RM2/kg, Tembikai = RM1.50/kg."]}], "open": false, "sample": null}, {"num": 12, "stem": "Syarikat untung pemacu pena P+Q (2015)=RM350000. 2016: P naik 25%, Q turun 10%, jumlah 2016=RM395500. Cari untung SETIAP jenis pada 2016.", "parts": [{"label": null, "ans": ["p287500,q108000"], "steps": ["P+Q=350000 (2015). 1.25P+0.9Q=395500 (2016).", "Q=350000–P. Gantikan: 1.25P+0.9(350000–P)=395500 → 0.35P+315000=395500 → P=230000.", "2016 P = 1.25×230000 = RM287 500.", "2016 Q = 0.9×(350000–230000) = 0.9×120000 = RM108 000."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pageTitle">Matematik Tingkatan 1</title>
+<style>
+  :root{
+    --bg:#f4f7f9; --card:#ffffff; --border:#dbe4ea; --text:#1c2b36; --muted:#5c7182;
+    --primary:#2563eb; --primary-dark:#1d4ed8; --ok:#15803d; --ok-bg:#dcfce7;
+    --bad:#b91c1c; --bad-bg:#fee2e2; --accent:#f59e0b; --radius:12px;
+    --nota-bg:#fffbeb; --nota-border:#fcd34d;
+    --contoh-bg:#eff6ff; --contoh-border:#93c5fd;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;}
+  #app{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+  header.top{position:sticky;top:0;background:var(--bg);z-index:20;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+  header.top h1{font-size:1.05rem;margin:0 0 2px;font-weight:800;color:var(--primary-dark);}
+  header.top p{margin:0;font-size:0.78rem;color:var(--muted);}
+  .progresswrap{margin-top:8px;background:#e7edf2;border-radius:999px;height:9px;overflow:hidden;}
+  .progressbar{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%;transition:width .3s;}
+  .progresslabel{font-size:0.72rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px;}
+  .toc button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 9px;font-size:0.72rem;color:var(--text);cursor:pointer;}
+  section.subtopic{margin-bottom:10px;}
+  .subtopic > h2{font-size:1.05rem;background:#dbeafe;color:var(--primary-dark);padding:10px 14px;border-radius:10px;margin:26px 0 12px;border-left:5px solid var(--primary);}
+  .notabox{background:var(--nota-bg);border:1px solid var(--nota-border);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.87rem;}
+  .notabox h3{margin:0 0 6px;font-size:0.82rem;color:#92400e;}
+  .contohbox{background:var(--contoh-bg);border:1px solid var(--contoh-border);border-left:5px solid #3b82f6;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:0.88rem;}
+  .contohbox h3{margin:0 0 6px;font-size:0.85rem;color:var(--primary-dark);}
+  .contohbox .q{white-space:pre-line;margin-bottom:8px;}
+  .contohbox ol{margin:0 0 6px;padding-left:18px;}
+  .contohbox li{margin-bottom:3px;}
+  .contohbox .final{font-weight:800;color:var(--primary-dark);}
+  h3.latihan-head{font-size:0.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.03em;margin:20px 0 8px;border-bottom:2px solid var(--border);padding-bottom:4px;}
+  .grouptitle{font-size:0.85rem;font-weight:700;color:var(--muted);margin:16px 0 8px;}
+  .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 14px 12px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,40,60,0.04);}
+  .qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+  .qnum{font-weight:800;color:var(--primary-dark);font-size:0.88rem;flex-shrink:0;}
+  .qstatus{font-size:1.05rem;}
+  .stem{font-size:0.92rem;margin:2px 0 10px;white-space:pre-line;}
+  .part{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap;}
+  .part label{font-size:0.85rem;font-weight:700;color:var(--muted);min-width:22px;}
+  .part input{flex:1;min-width:110px;padding:7px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;font-family:inherit;}
+  .part input.correct{border-color:var(--ok);background:var(--ok-bg);}
+  .part input.wrong{border-color:var(--bad);background:var(--bad-bg);}
+  .part .mark{font-size:1rem;width:20px;text-align:center;}
+  .btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  button.semak{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  button.semak:active{background:var(--primary-dark);}
+  button.toggle{background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:8px;padding:8px 14px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+  .solution{display:none;margin-top:12px;background:#f8fafc;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:0.86rem;}
+  .solution.show{display:block;}
+  .solution h4{margin:0 0 6px;font-size:0.8rem;color:var(--primary-dark);}
+  .solution ol{margin:0;padding-left:18px;}
+  .solution li{margin-bottom:4px;}
+  .solution .final{margin-top:8px;font-weight:800;color:var(--ok);}
+  .badge-open{display:inline-block;background:#fef3c7;color:#92400e;font-size:0.68rem;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;}
+  footer.foot{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border);}
+  #backTop{position:fixed;bottom:16px;right:16px;background:var(--primary);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2);display:none;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <h1 id="chapTitle">📘 <span id="chapTitleText"></span></h1>
+    <p>Matematik Tingkatan 1 (KSSM) · Nota + Contoh + Latihan (39 soalan)</p>
+    <div class="progresswrap"><div class="progressbar" id="progressbar"></div></div>
+    <div class="progresslabel"><span id="progressText">0 / 39 disemak</span><span id="scoreText">Skor: 0</span></div>
+  </header>
+  <div class="toc" id="toc"></div>
+  <div id="content"></div>
+  <footer class="foot">Latih Tubi Buku Teks Matematik Tingkatan 1 · Dibina oleh Cg Din</footer>
+</div>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.__CHAPTER_DATA__ = {"chapterCode": "7", "chapterTitle": "Ketaksamaan Linear", "subtopics": [{"code": "7.1", "title": "7.1 Ketaksamaan", "notes": [{"heading": "Simbol Ketaksamaan", "html": "<b>&gt;</b> = lebih besar daripada. <b>&lt;</b> = kurang daripada. <b>&ge;</b> = lebih besar daripada atau sama dengan (sekurang-kurangnya, minimum). <b>&le;</b> = kurang daripada atau sama dengan (selebih-lebihnya, maksimum)."}, {"heading": "Sifat Akas dan Transitif", "html": "<b>Sifat Akas:</b> Jika a&lt;b, maka b&gt;a.<br><b>Sifat Transitif:</b> Jika a&lt;b&lt;c, maka a&lt;c."}, {"heading": "Ketaksamaan dan Operasi Aritmetik", "html": "• Tambah/tolak nombor SAMA pada kedua-dua belah: arah simbol KEKAL.<br>• Darab/bahagi dengan nombor POSITIF: arah simbol KEKAL.<br>• Darab/bahagi dengan nombor NEGATIF: arah simbol DISONGSANGKAN.<br>• Salingan (1/a berbanding 1/b): arah simbol turut DISONGSANGKAN."}], "examples": [{"title": "Contoh 1", "q": "Isikan '>' atau '<': (a) –5/6 __ 4 (b) 42 __ 9. Nyatakan hubungannya.", "steps": ["(a) –5/6 < 4 (kurang daripada).", "(b) 42 > 9 (lebih besar daripada)."], "ans": "(a) < (b) >"}, {"title": "Contoh 2", "q": "Garis nombor menunjukkan x di sebelah kiri 8. Perihalkan dan terbitkan ketaksamaan algebra.", "steps": ["x di sebelah kiri 8 → x kurang daripada 8."], "ans": "x < 8"}, {"title": "Contoh 3", "q": "Fatimah dapat upah lebih masa jika bekerja sekurang-kurangnya 9 jam sehari (t=jam bekerja). Perihal dan terbitkan ketaksamaan.", "steps": ["'Sekurang-kurangnya 9' = lebih besar daripada atau sama dengan 9."], "ans": "t ≥ 9"}, {"title": "Contoh 4", "q": "(a) Tulis sifat akas: (i) 10<24 (ii) –4>–13. (b) Tulis sifat transitif: –5<–1<9.", "steps": ["(a)(i) 24>10. (a)(ii) –13<–4.", "(b) –5<9."], "ans": "(a)(i) 24>10 (ii) –13<–4 (b) –5<9"}], "exercises": [{"group": "7.1a", "title": "Latih Diri 7.1a — Membanding Nilai Nombor", "questions": [{"num": 1, "stem": "Isikan tempat kosong dengan '>' atau '<' supaya menjadi pernyataan benar. Seterusnya, nyatakan hubungan dengan 'lebih besar daripada' atau 'kurang daripada'.\n(a) –6 __ 0\n(b) 1/7 __ 1/4\n(c) 0.42 __ 0.072\n(d) 4.5 __ 4.05\n(e) 10 cm __ 50 mm\n(f) 1200 g __ 1.6 kg", "parts": [{"label": "a", "ans": ["<"], "steps": ["–6 di sebelah kiri 0 pada garis nombor.", "–6 < 0 (–6 kurang daripada 0)."]}, {"label": "b", "ans": ["<"], "steps": ["1/7≈0.143, 1/4=0.25.", "1/7 < 1/4 (kurang daripada)."]}, {"label": "c", "ans": [">"], "steps": ["0.42 > 0.072 (lebih besar daripada)."]}, {"label": "d", "ans": [">"], "steps": ["4.5 > 4.05 (lebih besar daripada)."]}, {"label": "e", "ans": [">"], "steps": ["10 cm = 100 mm. 100 mm > 50 mm.", "10 cm > 50 mm (lebih besar daripada)."]}, {"label": "f", "ans": ["<"], "steps": ["1.6 kg = 1600 g. 1200 g < 1600 g.", "1200 g < 1.6 kg (kurang daripada)."]}], "open": false, "sample": null}]}, {"group": "7.1b", "title": "Latih Diri 7.1b — Memerihal dan Menerbitkan Ketaksamaan Algebra", "questions": [{"num": 1, "stem": "Pada garis nombor, y berada di sebelah kanan 12. Perihalkan hubungan y dengan 12 menggunakan 'lebih besar daripada'. Terbitkan ketaksamaan algebranya.", "parts": [{"label": null, "ans": ["y>12", "y.12"], "steps": ["y berada di sebelah kanan 12 → y lebih besar daripada 12.", "Ketaksamaan algebra: y > 12."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pada garis nombor, 3 berada di sebelah kiri b. Perihalkan hubungan 3 dengan b menggunakan 'kurang daripada'. Terbitkan ketaksamaan algebranya.", "parts": [{"label": null, "ans": ["3<b", "3,b"], "steps": ["3 di sebelah kiri b → 3 kurang daripada b.", "Ketaksamaan algebra: 3 < b."]}], "open": false, "sample": null}]}, {"group": "7.1c", "title": "Latih Diri 7.1c — Sekurang-kurangnya / Selebih-lebihnya", "questions": [{"num": 1, "stem": "Perihalkan ketaksamaan dengan 'lebih besar daripada atau sama dengan' / 'kurang daripada atau sama dengan'.\n(a) Muatan lori m yang dibenarkan melalui jambatan.\n(b) Kelayakan umur t mengundi ialah 21 tahun.\nWakilkan dengan ketaksamaan algebra.", "parts": [{"label": "a", "ans": ["m<=had"], "steps": ["Papan tanda muatan biasanya menetapkan HAD MAKSIMUM → 'm kurang daripada atau sama dengan' nilai had.", "Ketaksamaan: m ≤ (nilai had, cth 8 tan)."]}, {"label": "b", "ans": ["t>=21"], "steps": ["Kelayakan umur mengundi ialah SEKURANG-KURANGNYA 21 tahun.", "Ketaksamaan: t ≥ 21."]}], "open": false, "sample": null}]}, {"group": "7.1d", "title": "Latih Diri 7.1d — Sifat Akas dan Transitif", "questions": [{"num": 1, "stem": "Tulis SIFAT AKAS bagi setiap ketaksamaan.\n(a) 5 < 14\n(b) 8 > –8\n(c) –23 > –32\n(d) 6.7 > 1.5\n(e) 1/13 > 1/14\n(f) –2 > –11.8", "parts": [{"label": "a", "ans": ["14>5"], "steps": ["Jika a<b, maka b>a.", "14 > 5."]}, {"label": "b", "ans": ["-8<8"], "steps": ["–8 < 8."]}, {"label": "c", "ans": ["-32<-23"], "steps": ["–32 < –23."]}, {"label": "d", "ans": ["1.5<6.7"], "steps": ["1.5 < 6.7."]}, {"label": "e", "ans": ["1/14<1/13"], "steps": ["1/14 < 1/13."]}, {"label": "f", "ans": ["-11.8<-2"], "steps": ["–11.8 < –2."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis SIFAT TRANSITIF bagi setiap ketaksamaan.\n(a) –2<5<10\n(b) –15<–8<0\n(c) –4.56<–1.52<2.01\n(d) –17 2/9<11 1/5<20 1/3\n(e) 1/20<1/14<1/7\n(f) –8<–4.3<19", "parts": [{"label": "a", "ans": ["-2<10"], "steps": ["Jika a<b<c, maka a<c.", "–2 < 10."]}, {"label": "b", "ans": ["-15<0"], "steps": ["–15 < 0."]}, {"label": "c", "ans": ["-4.56<2.01"], "steps": ["–4.56 < 2.01."]}, {"label": "d", "ans": ["-17 2/9<20 1/3"], "steps": ["–17 2/9 < 20 1/3."]}, {"label": "e", "ans": ["1/20<1/7"], "steps": ["1/20 < 1/7."]}, {"label": "f", "ans": ["-8<19"], "steps": ["–8 < 19."]}], "open": false, "sample": null}]}, {"group": "7.1e", "title": "Latih Diri 7.1e — Ketaksamaan dan Operasi Aritmetik", "questions": [{"num": 1, "stem": "Lengkapkan dengan '<' atau '>'.\n(a)(i) –8 __ 16 (ii) –8+2 __ 16+2 (iii) –8–2 __ 16–2\n(b)(i) 8 __ –16 (ii) 8+5 __ –16+5 (iii) 8–5 __ –16–5\n(c)(i) –8 __ –16 (ii) –8+1 __ –16+1 (iii) –8–1 __ –16–1", "parts": [{"label": "a", "ans": ["<,<,<"], "steps": ["Tambah/tolak nombor sama pada kedua-dua belah TIDAK mengubah arah simbol.", "–8<16 kekal <16 selepas +2 dan –2."]}, {"label": "b", "ans": [">,>,>"], "steps": ["8>–16 kekal > selepas +5 dan –5."]}, {"label": "c", "ans": [">,>,>"], "steps": ["–8>–16 kekal > selepas +1 dan –1."]}], "open": false, "sample": null}, {"num": 2, "stem": "Lengkapkan.\n(a)(i) 8 __ 16 (ii) 8×2 __ 16×2 (iii) 8÷2 __ 16÷2\n(b) Jika 8<16 dan c>0, maka 8c __ 16c dan 8/c __ 16/c.\n(c) Jika 16>8 dan c>0, maka 16c __ 8c dan 16/c __ 8/c.", "parts": [{"label": "a", "ans": ["<,<,<"], "steps": ["Darab/bahagi dengan nombor POSITIF tidak mengubah arah simbol."]}, {"label": "b", "ans": ["<,<"], "steps": ["8c < 16c dan 8/c < 16/c."]}, {"label": "c", "ans": [">,>"], "steps": ["16c > 8c dan 16/c > 8/c."]}], "open": false, "sample": null}, {"num": 3, "stem": "Lengkapkan.\n(a)(i) 6 __ 12 (ii) 6×(–3) __ 12×(–3) (iii) 6÷(–3) __ 12÷(–3) (iv) –6 __ –12 (v) 1/6 __ 1/12\n(b) Jika 6<12 dan d<0, maka 6d __ 12d dan 6/d __ 12/d.\n(c) Jika 12>6 dan d<0, maka 12d __ 6d dan 12/d __ 6/d.", "parts": [{"label": "a", "ans": ["<,>,>,>,>"], "steps": ["Darab/bahagi dengan nombor NEGATIF MENYONGSANGKAN arah simbol.", "6<12 tetapi 6×(–3)=–18 > 12×(–3)=–36, dan seterusnya."]}, {"label": "b", "ans": [">,>"], "steps": ["6d > 12d dan 6/d > 12/d (disongsangkan kerana d<0)."]}, {"label": "c", "ans": ["<,<"], "steps": ["12d < 6d dan 12/d < 6/d."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 7.1", "title": "Mahir Diri 7.1", "questions": [{"num": 1, "stem": "Isikan '>' atau '<'.\n(a) (–5)² __ (–6)²\n(b) 0.1 __ ∛0.008\n(c) 6+x __ 8+x\n(d) m+3 __ m\n(e) 10–k __ 8–k\n(f) 2x+5 __ 2x–5", "parts": [{"label": "a", "ans": ["<"], "steps": ["25 < 36."]}, {"label": "b", "ans": ["<"], "steps": ["∛0.008=0.2. 0.1 < 0.2."]}, {"label": "c", "ans": ["<"], "steps": ["6 < 8, tambah x pada kedua-dua belah tidak ubah arah."]}, {"label": "d", "ans": [">"], "steps": ["m+3 sentiasa lebih besar drpd m."]}, {"label": "e", "ans": [">"], "steps": ["10–k sentiasa lebih besar drpd 8–k (10>8)."]}, {"label": "f", "ans": [">"], "steps": ["2x+5 sentiasa lebih besar drpd 2x–5."]}], "open": false, "sample": null}, {"num": 2, "stem": "Pada garis nombor, x berada di sebelah kiri y. (a) Perihalkan hubungan y dgn x guna 'lebih besar daripada'. (b) Terbitkan ketaksamaan algebra.", "parts": [{"label": "a", "ans": ["y lebih besar daripada x"], "steps": []}, {"label": "b", "ans": ["y>x"], "steps": []}], "open": false, "sample": null}, {"num": 3, "stem": "Simpanan minimum RM100 diperlukan untuk buka akaun bank.\n(a) Perihalkan ketaksamaan bagi simpanan a.\n(b) Wakilkan dengan garis nombor dan terbitkan ketaksamaan algebra.", "parts": [{"label": "a", "ans": ["a lebih besar daripada atau sama dengan 100"], "steps": []}, {"label": "b", "ans": ["a>=100"], "steps": ["a ≥ 100 (titik pejal pada 100, anak panah ke kanan pada garis nombor)."]}], "open": false, "sample": null}, {"num": 4, "stem": "Wakilkan pada garis nombor (jelaskan sama ada bulatan PEJAL atau KOSONG dan arah anak panah): (a) x>3 (b) x<15 (c) x>=–19 (d) –5>=x (e) y<8.3 (f) p>=–5.7 (g) x<–3/5 (h) 7.8>q", "parts": [], "open": true, "sample": "(a) Bulatan kosong pada 3, anak panah ke kanan. (b) Bulatan kosong pada 15, anak panah ke kiri. (c) Bulatan pejal pada –19, ke kanan. (d) Bulatan pejal pada –5, ke kiri (x≤–5). (e) Bulatan kosong pada 8.3, ke kiri. (f) Bulatan pejal pada –5.7, ke kanan. (g) Bulatan kosong pada –3/5, ke kiri. (h) Bulatan kosong pada 7.8, ke kiri (q<7.8)."}, {"num": 5, "stem": "Isikan '>' atau '<'.\n(a) Jika x<y, maka y __ x.\n(b) Jika p<q dan q<0, maka p __ 0.\n(c) Jika –2>x dan x>y, maka –2 __ y.\n(d) Jika x>y, maka x/10 __ y/10.\n(e) Jika x>y, maka (–5)x __ (–5)y.\n(f) Jika u>0, maka (–3)u __ 0.", "parts": [{"label": "a", "ans": [">"], "steps": []}, {"label": "b", "ans": ["<"], "steps": ["p<q<0, maka p<0."]}, {"label": "c", "ans": [">"], "steps": ["Sifat transitif: –2>x>y, maka –2>y."]}, {"label": "d", "ans": [">"], "steps": ["Bahagi dengan nombor positif (10), arah kekal."]}, {"label": "e", "ans": ["<"], "steps": ["Darab dengan nombor negatif (–5), arah disongsangkan."]}, {"label": "f", "ans": ["<"], "steps": ["u>0, maka (–3)u<0 (nombor negatif didarab positif)."]}], "open": false, "sample": null}]}]}, {"code": "7.2", "title": "7.2 Ketaksamaan Linear dalam Satu Pemboleh Ubah", "notes": [{"heading": "Ciri Ketaksamaan Linear", "html": "Hubungan TAK SAMA antara satu pemboleh ubah berkuasa SATU dengan suatu nombor. Contoh: 3x<7. Mempunyai LEBIH DARIPADA SATU penyelesaian yang mungkin (berbeza daripada persamaan linear yang hanya ada SATU penyelesaian)."}, {"heading": "Menyelesaikan Ketaksamaan", "html": "Serupa dengan menyelesaikan persamaan linear, TETAPI perlu SONGSANGKAN arah simbol apabila mendarab/membahagi dengan nombor NEGATIF."}, {"heading": "Ketaksamaan Serentak", "html": "Selesaikan KEDUA-DUA ketaksamaan berasingan, kemudian cari BAHAGIAN SEPUNYA (irisan) kedua-dua penyelesaian menggunakan garis nombor."}], "examples": [{"title": "Contoh 5", "q": "Bina ketaksamaan: (a) masa t hari <42. (b) panjang l cm sekurang-kurangnya 32. (c) jisim x kg tidak lebih drpd 2 (dibahagi 10). (d) keuntungan p melebihi RM240 (3% daripadanya adalah derma).", "steps": ["(a) t<42.", "(b) l≥32.", "(c) x≤2/10=0.2 (atau x≤2 bergantung konteks).", "(d) 3p/100>240."], "ans": "(a) t<42 (b) l≥32 (c) x≤0.2 (d) 3p/100>240"}, {"title": "Contoh 6", "q": "Tulis situasi: (a) h≥110 (tinggi penumpang roller coaster). (b) T<–5 (suhu peti sejuk). (c) m>4600 (gaji Encik Siva).", "steps": ["(a) Tinggi minimum untuk menaiki roller coaster ialah 110cm.", "(b) Suhu ruang pembeku kurang drpd –5°C.", "(c) Gaji Encik Siva lebih drpd RM4600."], "ans": "Lihat penerangan di atas"}, {"title": "Contoh 7", "q": "Selesaikan (a) x–2<6 (b) 7x≥28 (c) –x/3<9 (d) 7–4x>15", "steps": ["(a) x<8.", "(b) x≥4.", "(c) Darab –3, songsang: x>–27.", "(d) –4x>8, bahagi –4, songsang: x<–2."], "ans": "(a) x<8 (b) x≥4 (c) x>–27 (d) x<–2"}, {"title": "Contoh (Penyelesaian Masalah)", "q": "Buku RM12.50 sebiji. Ghani belanja tidak lebih drpd RM80. Bilangan MAKSIMUM buku?", "steps": ["12.5n≤80 → n≤6.4.", "Bilangan integer maksimum = 6 buah."], "ans": "6 buah buku"}, {"title": "Contoh 8", "q": "Selesaikan ketaksamaan serentak (a) 2x+5<11 dan 3x–10<5 (b) 8x+5≥5x–13 dan 3x–4>9x+20", "steps": ["(a) x<3 dan x<5. Bahagian sepunya: x<3.", "(b) x≥–6 dan x<–4. Bahagian sepunya: –6≤x<–4."], "ans": "(a) x<3 (b) –6≤x<–4"}], "exercises": [{"group": "7.2a", "title": "Latih Diri 7.2a — Membentuk Ketaksamaan Linear", "questions": [{"num": 1, "stem": "Bina satu ketaksamaan linear.\n(a) Harga rumah RMx ialah RM450 000 dan ke atas.\n(b) Markah lulus 50. Hajar dapat y markah dan GAGAL.\n(c) 5 pasukan bahas, setiap pasukan TIDAK MELEBIHI 6 peserta. Jumlah peserta k.\n(d) Kad ganjaran: 1 mata/RM5 dibelanja. Belanja RMq, layak tebus hadiah eksklusif (perlu ≥120 mata).", "parts": [{"label": "a", "ans": ["x>=450000"], "steps": []}, {"label": "b", "ans": ["y<50"], "steps": ["Gagal bermaksud markah KURANG daripada markah lulus."]}, {"label": "c", "ans": ["k<=30"], "steps": ["5 pasukan × 6 (had setiap pasukan) = 30 (had maksimum)."]}, {"label": "d", "ans": ["q>=600"], "steps": ["120 mata × RM5/mata = RM600 (jumlah belanja minimum untuk 120 mata)."]}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis satu situasi bagi setiap ketaksamaan.\n(a) n<=4, n=bilangan penumpang teksi.\n(b) A>1000, A=luas pangsapuri (m²).\n(c) 4y>=60, y=perbelanjaan seorang pelanggan restoran (RM).", "parts": [], "open": true, "sample": "(a) Bilangan penumpang dalam sebuah teksi tidak boleh melebihi 4 orang. (b) Luas sebuah pangsapuri lebih daripada 1000 m². (c) Jumlah perbelanjaan bagi 4 orang pelanggan restoran sekurang-kurangnya RM60."}]}, {"group": "7.2b", "title": "Latih Diri 7.2b — Menyelesaikan Ketaksamaan Linear", "questions": [{"num": 1, "stem": "Selesaikan.\n(a) x+3>=10\n(b) –2x<18\n(c) –7>x/3\n(d) 16–5x<=–4", "parts": [{"label": "a", "ans": ["x>=7"], "steps": ["x ≥ 10–3 = 7."]}, {"label": "b", "ans": ["x>-9"], "steps": ["Bahagi dengan –2, songsangkan: x > –9."]}, {"label": "c", "ans": ["x<-21"], "steps": ["Darab dengan 3: –21 > x, iaitu x < –21."]}, {"label": "d", "ans": ["x>=4"], "steps": ["–5x ≤ –20. Bahagi dengan –5, songsangkan: x ≥ 4."]}], "open": false, "sample": null}, {"num": 2, "stem": "Fatimah dibayar 10 sen/tin, mahu upah sekurang-kurangnya RM20/jam. Berapa tin perlu dijual dalam sejam?", "parts": [{"label": null, "ans": ["n>=200", "sekurang-kurangnya 200"], "steps": ["10n ≥ 2000 (sen) → n ≥ 200 tin."]}], "open": false, "sample": null}, {"num": 3, "stem": "Sadiah ada RM120, simpan RM40/bulan. Bilangan MINIMUM bulan supaya simpanan melebihi RM500?", "parts": [{"label": null, "ans": ["10"], "steps": ["120+40m>500 → 40m>380 → m>9.5.", "Bilangan bulan minimum (integer) = 10 bulan."]}], "open": false, "sample": null}, {"num": 4, "stem": "Pakej A: RM40+RM8/jam. Pakej B: RM15/jam. Tempoh MAKSIMUM (jam, integer) supaya Pakej B lebih murah?", "parts": [{"label": null, "ans": ["5"], "steps": ["15h<40+8h → 7h<40 → h<5.71.", "Tempoh maksimum (integer) = 5 jam."]}], "open": false, "sample": null}]}, {"group": "7.2c", "title": "Latih Diri 7.2c — Ketaksamaan Linear Serentak", "questions": [{"num": 1, "stem": "Selesaikan ketaksamaan linear serentak.\n(a) x+2>4 dan 4x>20\n(b) x–3<=–6 dan 3x–4<=5\n(c) 2x+3>0 dan 9x–2<=16\n(d) 5x–3<2 dan 4x+6>=x+3\n(e) 5x–7<13 dan 7x+4<16\n(f) 6x+5>3x+14 dan 13x–4>=9x", "parts": [{"label": "a", "ans": ["x>5"], "steps": ["x>2 dan x>5. Lebih ketat: x>5."]}, {"label": "b", "ans": ["x<=-3"], "steps": ["x≤–3 dan x≤3. Lebih ketat: x≤–3."]}, {"label": "c", "ans": ["-3/2<x<=2"], "steps": ["x>–3/2 dan x≤2. Gabung: –3/2<x≤2."]}, {"label": "d", "ans": ["-1<=x<1"], "steps": ["x<1 dan x≥–1. Gabung: –1≤x<1."]}, {"label": "e", "ans": ["x<1 5/7"], "steps": ["x<4 dan x<12/7=1 5/7. Lebih ketat: x<1 5/7."]}, {"label": "f", "ans": ["x>3"], "steps": ["x>3 dan x≥1. Lebih ketat: x>3."]}], "open": false, "sample": null}]}, {"group": "Mahir Diri 7.2", "title": "Mahir Diri 7.2", "questions": [{"num": 1, "stem": "Bina ketaksamaan linear.\n(a) Jualan minimum sebulan RMx ialah 18000.\n(b) Masa t untuk kira inventori selebih-lebihnya 8 jam.\n(c) Jualan harian h haruslah lebih daripada RM700.", "parts": [{"label": "a", "ans": ["x>=18000"], "steps": []}, {"label": "b", "ans": ["t<=8"], "steps": []}, {"label": "c", "ans": ["h>700"], "steps": []}], "open": false, "sample": null}, {"num": 2, "stem": "Tulis situasi bagi (a) x<30, x=kelajuan kenderaan (km/j) dekat sekolah. (b) m>1100, m=jisim kereta(kg). (c) y<900, y=gaji ibubapa(RM) utk biasiswa.", "parts": [], "open": true, "sample": "(a) Kelajuan kenderaan tidak melebihi 30 km/j apabila menghampiri kawasan sekolah. (b) Jisim sebuah kereta lebih daripada 1100 kg. (c) Murid dengan gaji ibu bapa kurang daripada RM900 layak memohon biasiswa."}, {"num": 3, "stem": "Encik Tan: baki harian sekurang-kurangnya RM1200 supaya tiada bayaran perkhidmatan.\n(a) Wakilkan pada garis nombor.\n(b) Tulis ketaksamaan bagi baki x.", "parts": [{"label": "a", "ans": ["bulatan pejal 1200 ke kanan"], "steps": []}, {"label": "b", "ans": ["x>=1200"], "steps": []}], "open": false, "sample": null}, {"num": 4, "stem": "Garam per peket mi segera ≤800mg. Pengambilan harian maksimum disyorkan 2300mg. Bilangan peket MAKSIMUM supaya pengambilan garam KURANG drpd 2300mg?", "parts": [{"label": null, "ans": ["2"], "steps": ["800n<2300 → n<2.875.", "Bilangan peket maksimum (integer) = 2 peket."]}], "open": false, "sample": null}, {"num": 5, "stem": "Ghanesh: set makanan pertama RM10.50. Kupon membolehkan guna jika set kedua (RMm) TIDAK LEBIH MAHAL. Bina ketaksamaan dan wakilkan pada garis nombor.", "parts": [{"label": null, "ans": ["m<=10.50"], "steps": ["Kupon sah jika harga set kedua tidak melebihi harga set pertama: m ≤ 10.50."]}], "open": false, "sample": null}, {"num": 6, "stem": "Muatan maksimum lif 960kg. Setiap budak lelaki 45kg. Bilangan MAKSIMUM budak lelaki?", "parts": [{"label": null, "ans": ["21"], "steps": ["45n≤960 → n≤21.33.", "Bilangan maksimum (integer) = 21 orang."]}], "open": false, "sample": null}, {"num": 7, "stem": "Puan Chong 72kg, turun 3kg/bulan. Bilangan MINIMUM bulan supaya jisim KURANG drpd 52kg?", "parts": [{"label": null, "ans": ["7"], "steps": ["72–3m<52 → –3m<–20 → m>20/3≈6.67.", "Bilangan bulan minimum (integer) = 7 bulan."]}], "open": false, "sample": null}, {"num": 8, "stem": "Selesaikan ketaksamaan linear serentak.\n(a) 10–3x>8–2x dan 14–2x<9–8x\n(b) x/2–1<3 dan 3x/5–2<=x\n(c) x/9<2/3 dan (5–2x)/7>=1", "parts": [{"label": "a", "ans": ["x<-5/6"], "steps": ["x<2 dan x<–5/6. Lebih ketat: x<–5/6."]}, {"label": "b", "ans": ["-5<=x<8"], "steps": ["x<8 dan x≥–5. Gabung: –5≤x<8."]}, {"label": "c", "ans": ["x<=-1"], "steps": ["x<6 dan x≤–1. Lebih ketat: x≤–1."]}], "open": false, "sample": null}]}]}], "review": {"title": "Marilah Praktis — Ulang Kaji Bab 7", "exercises": [{"group": "Marilah Praktis", "title": "Marilah Praktis — Ulang Kaji Bab 7", "questions": [{"num": 1, "stem": "Diberi p<q, bandingkan dengan '<' atau '>'.\n(a) p+5 __ q+5\n(b) p/3 __ q/3\n(c) –p __ –q", "parts": [{"label": "a", "ans": ["<"], "steps": []}, {"label": "b", "ans": ["<"], "steps": []}, {"label": "c", "ans": [">"], "steps": ["Darab dengan –1, songsangkan arah."]}], "open": false, "sample": null}, {"num": 2, "stem": "Umur Stella x tahun, anaknya 18 tahun (Stella lebih tua). Bina ketaksamaan (a) sekarang (b) 3 tahun lagi (c) 5 tahun lepas.", "parts": [{"label": "a", "ans": ["x>18"], "steps": []}, {"label": "b", "ans": ["x+3>21"], "steps": ["3 tahun lagi: (x+3) > (18+3) = 21."]}, {"label": "c", "ans": ["x-5>13"], "steps": ["5 tahun lepas: (x–5) > (18–5) = 13."]}], "open": false, "sample": null}, {"num": 3, "stem": "Zain beli x kad @RM1.20, bayar RM20, baki MELEBIHI RM5. Bina ketaksamaan.", "parts": [{"label": null, "ans": ["20-1.20x>5"], "steps": ["Baki = 20–1.20x. Baki melebihi RM5: 20–1.20x > 5."]}], "open": false, "sample": null}, {"num": 4, "stem": "Encik Koh: 3 keping RM50, 2 keping RM10, n keping RM1.\n(a) Ungkapkan jumlah nilai wang.\n(b) Jika jumlah < RM178 dan n>0, cari nilai n yang mungkin.", "parts": [{"label": "a", "ans": ["170+n"], "steps": ["3(50)+2(10)+n(1) = 150+20+n = 170+n."]}, {"label": "b", "ans": ["1,2,3,4,5,6,7"], "steps": ["170+n<178 → n<8. Dengan n>0 (integer): n=1,2,3,4,5,6,7."]}], "open": false, "sample": null}, {"num": 5, "stem": "Selesaikan.\n(a) 3x+7<19\n(b) 15x–6<8x+8", "parts": [{"label": "a", "ans": ["x<4"], "steps": ["3x<12 → x<4."]}, {"label": "b", "ans": ["x<2"], "steps": ["7x<14 → x<2."]}], "open": false, "sample": null}, {"num": 6, "stem": "Yoke Ling ada 4 bebola logam sama jisim. Berdasarkan bacaan neraca (rajah asal), kawan meneka jisim sebiji ialah 12g, 13g, 14g atau 15g. Yang manakah mungkin?", "parts": [{"label": null, "ans": ["14"], "steps": ["Gunakan bacaan neraca (rajah a dan b) untuk menentukan JULAT jisim sebiji bebola.", "Uji setiap pilihan (12,13,14,15) terhadap kedua-dua bacaan neraca — hanya SATU nilai memenuhi kedua-dua syarat serentak.", "Jisim sebiji bebola logam ialah 14 g.", "(Nota: rajah neraca asal tidak dapat disahkan sepenuhnya daripada imbasan teks; jawapan akhir disahkan mengikut skema jawapan buku teks.)"]}], "open": false, "sample": null}, {"num": 7, "stem": "Yuran ahli kompleks sukan RM50/tahun. Sewa gelanggang: ahli RM12/jam, bukan ahli RM15/jam. Bilangan jam MINIMUM (integer) supaya kos sebagai AHLI lebih berjimat?", "parts": [{"label": null, "ans": ["17"], "steps": ["Kos ahli = 50+12h. Kos bukan ahli = 15h.", "50+12h<15h → 50<3h → h>16.67.", "Bilangan jam minimum (integer) = 17 jam."]}], "open": false, "sample": null}, {"num": 8, "stem": "Sfera logam 15g sebiji, kotak 200g. n sfera dimasukkan. Jumlah jisim > 290g.\n(a) Bina ketaksamaan.\n(b) Cari nilai TERKECIL n.", "parts": [{"label": "a", "ans": ["15n+200>290"], "steps": []}, {"label": "b", "ans": ["7"], "steps": ["15n>90 → n>6.", "Nilai terkecil n (integer) = 7."]}], "open": false, "sample": null}, {"num": 9, "stem": "Syarikat Satria: RM50/hari + 3% komisen. Syarikat Perdana: RM35/hari + 5% komisen. Cari hasil jualan MINIMUM (RM terdekat) supaya Perdana lebih baik.", "parts": [{"label": null, "ans": ["751"], "steps": ["35+0.05S>50+0.03S → 0.02S>15 → S>750.", "Hasil jualan minimum (RM terdekat) = RM751."]}], "open": false, "sample": null}, {"num": 10, "stem": "Selesaikan ketaksamaan linear serentak.\n(a) 4–3x>=–5 dan 3x+1>=–11\n(b) 3x/2–1>3 dan 3–x<=7\n(c) (2x–5)/3<3 dan (5–x)/2<1\n(d) (x–4)/3>=2–x dan (3x–1)/4<2", "parts": [{"label": "a", "ans": ["-4<=x<=3"], "steps": ["x≤3 dan x≥–4. Gabung: –4≤x≤3."]}, {"label": "b", "ans": ["x>8/3"], "steps": ["x>8/3 dan x≥–4. Lebih ketat: x>8/3."]}, {"label": "c", "ans": ["3<x<7"], "steps": ["x<7 dan x>3. Gabung: 3<x<7."]}, {"label": "d", "ans": ["5/2<=x<3"], "steps": ["x≥5/2 dan x<3. Gabung: 5/2≤x<3."]}], "open": false, "sample": null}]}]}};
+(function(){
+"use strict";
+
+function normalize(s){
+  if (s === null || s === undefined) return "";
+  s = String(s).toLowerCase().trim();
+  s = s.replace(/rm/g,"").replace(/\s+/g,"").replace(/–/g,"-").replace(/—/g,"-");
+  s = s.replace(/≥/g,">=").replace(/≤/g,"<=").replace(/⩾/g,">=").replace(/⩽/g,"<=");
+  return s;
+}
+
+function toNumber(s){
+  s = normalize(s);
+  if (s === "") return null;
+  if (/^-?\d+\/\d+$/.test(s)){
+    var parts = s.split("/");
+    return parseFloat(parts[0])/parseFloat(parts[1]);
+  }
+  if (/^-?\d+(\.\d+)?$/.test(s)){
+    return parseFloat(s);
+  }
+  return null;
+}
+
+function fuzzyNumberMatch(input, accepted){
+  var vi = toNumber(input);
+  if (vi === null) return false;
+  for (var i=0;i<accepted.length;i++){
+    var va = toNumber(accepted[i]);
+    if (va !== null && Math.abs(vi - va) < 0.005) return true;
+  }
+  return false;
+}
+
+function checkPart(inputRaw, acceptedList){
+  var inputN = normalize(inputRaw);
+  if (inputN === "") return false;
+  for (var i=0;i<acceptedList.length;i++){
+    if (normalize(acceptedList[i]) === inputN) return true;
+  }
+  var inputSpaced = String(inputRaw).toLowerCase().trim().replace(/–/g,"-");
+  for (var j=0;j<acceptedList.length;j++){
+    if (String(acceptedList[j]).toLowerCase().trim() === inputSpaced) return true;
+  }
+  if (fuzzyNumberMatch(inputRaw, acceptedList)) return true;
+  return false;
+}
+
+var CHAPTER = window.__CHAPTER_DATA__;
+var totalQuestions = 0;
+var totalPartsCount = 0;
+CHAPTER.subtopics.forEach(function(st){
+  st.exercises.forEach(function(grp){
+    grp.questions.forEach(function(qq){
+      totalQuestions++;
+      totalPartsCount += qq.open ? 1 : qq.parts.length;
+    });
+  });
+});
+CHAPTER.review.exercises.forEach(function(grp){
+  grp.questions.forEach(function(qq){
+    totalQuestions++;
+    totalPartsCount += qq.open ? 1 : qq.parts.length;
+  });
+});
+
+var checkedCount = 0;
+var correctPartsCount = 0;
+
+function updateProgress(){
+  document.getElementById("progressText").textContent = checkedCount + " / " + totalQuestions + " disemak";
+  document.getElementById("scoreText").textContent = "Skor: " + correctPartsCount + " / " + totalPartsCount;
+  var pct = totalQuestions ? Math.round((checkedCount/totalQuestions)*100) : 0;
+  document.getElementById("progressbar").style.width = pct + "%";
+}
+
+function nl2br(s){ return s.replace(/\n/g,"<br>"); }
+
+function buildToc(){
+  var toc = document.getElementById("toc");
+  CHAPTER.subtopics.forEach(function(st){
+    var btn = document.createElement("button");
+    btn.textContent = st.code;
+    btn.onclick = function(){ document.getElementById("st-"+st.code).scrollIntoView({behavior:"smooth", block:"start"}); };
+    toc.appendChild(btn);
+  });
+  var btn2 = document.createElement("button");
+  btn2.textContent = "Praktis";
+  btn2.onclick = function(){ document.getElementById("review-sec").scrollIntoView({behavior:"smooth", block:"start"}); };
+  toc.appendChild(btn2);
+}
+
+var qCounter = 0;
+function renderExerciseGroup(grp, htmlArr){
+  htmlArr.push('<div class="grouptitle">'+grp.title+'</div>');
+  grp.questions.forEach(function(qq){
+    var qid = "q"+(qCounter++);
+    htmlArr.push('<div class="qcard" id="card-'+qid+'">');
+    htmlArr.push('<div class="qhead"><span class="qnum">Soalan '+qq.num+'</span><span class="qstatus" id="status-'+qid+'"></span></div>');
+    htmlArr.push('<div class="stem">'+nl2br(qq.stem)+(qq.open?'<span class="badge-open">Jawapan Terbuka</span>':'')+'</div>');
+    if (qq.open){
+      htmlArr.push('<div class="part"><label>Jwp</label><input type="text" data-part="0" placeholder="Tulis pengiraan anda di sini"><span class="mark" id="mark-'+qid+'-0"></span></div>');
+    } else {
+      qq.parts.forEach(function(pp, pi){
+        var lbl = pp.label ? "("+pp.label+")" : "Jwp";
+        htmlArr.push('<div class="part"><label>'+lbl+'</label><input type="text" data-part="'+pi+'" placeholder="Masukkan jawapan"><span class="mark" id="mark-'+qid+'-'+pi+'"></span></div>');
+      });
+    }
+    htmlArr.push('<div class="btnrow"><button class="semak" data-action="semak" data-qid="'+qid+'">Semak Jawapan</button><button class="toggle" data-action="toggle" data-qid="'+qid+'">Lihat Langkah</button></div>');
+    htmlArr.push('<div class="solution" id="sol-'+qid+'">');
+    if (qq.open){
+      htmlArr.push('<h4>Contoh Jawapan (jawapan lain yang sah turut diterima)</h4><p>'+qq.sample+'</p>');
+    } else {
+      qq.parts.forEach(function(pp){
+        var lbl = pp.label ? "("+pp.label+")" : "";
+        htmlArr.push('<h4>Langkah Penyelesaian '+lbl+'</h4><ol>');
+        pp.steps.forEach(function(st){ htmlArr.push('<li>'+st+'</li>'); });
+        htmlArr.push('</ol><div class="final">Jawapan: '+pp.ans[0]+'</div>');
+      });
+    }
+    htmlArr.push('</div>'); // solution
+    htmlArr.push('</div>'); // qcard
+    QMAP[qid] = qq;
+  });
+}
+
+var QMAP = {};
+
+function setTitles(){
+  var t = "Bab " + CHAPTER.chapterCode + " — " + CHAPTER.chapterTitle;
+  document.getElementById("chapTitleText").textContent = t;
+  document.getElementById("pageTitle").textContent = t + " | Matematik Tingkatan 1";
+}
+
+function render(){
+  setTitles();
+  var htmlArr = [];
+  CHAPTER.subtopics.forEach(function(st){
+    htmlArr.push('<section class="subtopic" id="st-'+st.code+'"><h2>'+st.title+'</h2>');
+    st.notes.forEach(function(n){
+      htmlArr.push('<div class="notabox"><h3>📝 Nota — '+n.heading+'</h3><div>'+n.html+'</div></div>');
+    });
+    st.examples.forEach(function(ex){
+      htmlArr.push('<div class="contohbox"><h3>📖 '+ex.title+'</h3><div class="q">'+nl2br(ex.q)+'</div><ol>');
+      ex.steps.forEach(function(s){ htmlArr.push('<li>'+s+'</li>'); });
+      htmlArr.push('</ol><div class="final">Jawapan: '+ex.ans+'</div></div>');
+    });
+    htmlArr.push('<h3 class="latihan-head">✏️ Latihan</h3>');
+    st.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+    htmlArr.push('</section>');
+  });
+  htmlArr.push('<section class="subtopic" id="review-sec"><h2>'+CHAPTER.review.title+'</h2><h3 class="latihan-head">✏️ Latihan Ulang Kaji</h3>');
+  CHAPTER.review.exercises.forEach(function(grp){ renderExerciseGroup(grp, htmlArr); });
+  htmlArr.push('</section>');
+  document.getElementById("content").innerHTML = htmlArr.join("");
+}
+
+function onSemak(qid){
+  var qq = QMAP[qid];
+  var card = document.getElementById("card-"+qid);
+  var alreadyChecked = card.getAttribute("data-checked") === "1";
+
+  if (qq.open){
+    var inp = card.querySelector('input[data-part="0"]');
+    var val = inp.value.trim();
+    var mark = document.getElementById("mark-"+qid+"-0");
+    if (val.length > 0){ mark.textContent = "✅"; inp.classList.add("correct"); } else { mark.textContent = ""; }
+    document.getElementById("sol-"+qid).classList.add("show");
+    if (!alreadyChecked){
+      checkedCount++; correctPartsCount += 1; card.setAttribute("data-checked","1"); updateProgress();
+    }
+    document.getElementById("status-"+qid).textContent = "📝";
+    return;
+  }
+
+  var allCorrect = true, correctHere = 0;
+  qq.parts.forEach(function(pp, pi){
+    var inp = card.querySelector('input[data-part="'+pi+'"]');
+    var mark = document.getElementById("mark-"+qid+"-"+pi);
+    var ok = checkPart(inp.value, pp.ans);
+    inp.classList.remove("correct","wrong");
+    if (ok){ inp.classList.add("correct"); mark.textContent = "✅"; correctHere++; }
+    else { inp.classList.add("wrong"); mark.textContent = "❌"; allCorrect = false; }
+  });
+
+  document.getElementById("sol-"+qid).classList.add("show");
+  document.getElementById("status-"+qid).textContent = allCorrect ? "✅" : "❌";
+
+  if (!alreadyChecked){
+    checkedCount++; correctPartsCount += correctHere;
+    card.setAttribute("data-checked","1"); card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  } else {
+    var prevCorrect = parseInt(card.getAttribute("data-correct-count")||"0",10);
+    correctPartsCount += (correctHere - prevCorrect);
+    card.setAttribute("data-correct-count", correctHere);
+    updateProgress();
+  }
+}
+
+function onToggle(qid){
+  document.getElementById("sol-"+qid).classList.toggle("show");
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.matches('button[data-action="semak"]')) onSemak(t.getAttribute("data-qid"));
+  else if (t.matches('button[data-action="toggle"]')) onToggle(t.getAttribute("data-qid"));
+});
+
+window.addEventListener("scroll", function(){
+  document.getElementById("backTop").style.display = window.scrollY > 400 ? "block" : "none";
+});
+
+buildToc();
+render();
+updateProgress();
+
+})();
+
+</script>
+</body>
+</html>
